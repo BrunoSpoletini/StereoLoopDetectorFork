@@ -31,7 +31,8 @@ set(DEPENDENCY_DIR
 set(DEPENDENCY_INSTALL_DIR
     ${DEPENDENCY_DIR}/install)
 set(DEPENDENCY_CMAKE_ARGS
-    -DCMAKE_BUILD_TYPE={CMAKE_BUILD_TYPE})
+    -DCMAKE_BUILD_TYPE={CMAKE_BUILD_TYPE}
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5)
 
 # OpenCV
 if(DEFINED OpenCV_DIR)
@@ -60,7 +61,7 @@ endif()
 FetchContent_Declare(
   yaml-cpp
   GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
-  GIT_TAG yaml-cpp-0.7.0)
+  GIT_TAG yaml-cpp-0.9.0)
 FetchContent_GetProperties(yaml-cpp)
 if(NOT yaml-cpp_POPULATED)
   message(STATUS "Fetching yaml-cpp...")
@@ -86,7 +87,7 @@ macro(GetDependency name other_dependency)
       endif()
       ExternalProject_Add(${name}
         PREFIX ${DEPENDENCY_DIR}
-        GIT_REPOSITORY http://github.com/dorian3d/${name}
+        GIT_REPOSITORY https://github.com/dorian3d/${name}
         GIT_TAG master
         INSTALL_DIR ${DEPENDENCY_INSTALL_DIR}
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${DEPENDENCY_CMAKE_ARGS}
@@ -118,7 +119,7 @@ message("DBoW2 library not found in the system, it will be downloaded on build")
     endif()
     ExternalProject_Add(DBoW2
         PREFIX ${DEPENDENCY_DIR}
-        GIT_REPOSITORY http://github.com/dorian3d/DBoW2
+        GIT_REPOSITORY https://github.com/dorian3d/DBoW2
         GIT_TAG master
         INSTALL_DIR ${DEPENDENCY_INSTALL_DIR}
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${DEPENDENCY_CMAKE_ARGS}
