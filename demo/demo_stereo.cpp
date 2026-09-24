@@ -102,6 +102,7 @@ int main(int argc, char* argv[])
     std::string path_calibration;
     std::string poses_path;
     std::string type, voc_path;
+    float frequency;
     // Program Options (BOOST library w/special compilation needed)
     po::options_description options_desc(
         "StereoLoopDetector demo usage with ORB or BRIEF features.\n\n"
@@ -119,6 +120,9 @@ int main(int argc, char* argv[])
         ("type", po::value(&type)->default_value("ORB"), "Type of keypoint extractor/descriptor")
         ("voc", po::value(&voc_path), "Path to vocabulary file for specified type")
         ("noshow", po::value<bool>()->default_value(true), "Don't display results")
+        ("frequency", po::value(&frequency)->default_value(10.0f),
+            "capture frequency of the sequence in Hz; sets dislocal (=20s) and "
+            "the other time-derived detector parameters")
     ;
 
     // Parse program options
@@ -157,14 +161,14 @@ int main(int argc, char* argv[])
         vocabulary = options_vm.count("voc")? voc_path : BRIEF_VOC_FILE;
         demoDetectorStereo<BriefVocabulary, BriefLoopDetector, FBrief::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show);
+                 sparams, show, frequency);
         BriefExtractor extractor(BRIEF_PATTERN_FILE);
         demo.run(type, extractor);
         } else if (type == "ORB") {
         vocabulary = options_vm.count("voc")? voc_path : ORB_VOC_FILE;
         demoDetectorStereo<OrbVocabulary, OrbLoopDetector, FORB::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show);
+                 sparams, show, frequency);
         OrbExtractor extractor(ORB_NFEATURES, ORB_SCALEFACTOR, ORB_NLEVELS);
         demo.run(type, extractor);
         }
