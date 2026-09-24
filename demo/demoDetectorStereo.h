@@ -77,7 +77,7 @@ public:
    */
   demoDetectorStereo(const std::string &vocfile, const std::string &imagedir1,
     const std::string &imagedir2, const std::string &posefile, 
-    StereoParameters &stereoparams, bool show);
+    StereoParameters &stereoparams, bool show, float frequency);
     
   ~demoDetectorStereo(){}
 
@@ -112,6 +112,7 @@ protected:
   std::string m_posefile;
   StereoParameters m_stereoparams;
   bool m_show;
+  float m_frequency;
 };
 
 // ---------------------------------------------------------------------------
@@ -121,9 +122,10 @@ demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::demoDetectorStereo
   (const std::string &vocfile,
    const std::string &imagedir1, const std::string &imagedir2,
    const std::string &posefile, StereoParameters &stereoparams, 
-   bool show)
+   bool show, float frequency)
   : m_vocfile(vocfile), m_imagedir1(imagedir1), m_imagedir2(imagedir2),
-    m_posefile(posefile), m_stereoparams(stereoparams), m_show(show)
+    m_posefile(posefile), m_stereoparams(stereoparams), m_show(show),
+    m_frequency(frequency)
 {
 }
 
@@ -193,7 +195,6 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   // Set loop detector parameters
   // Some references for frequency:
   //   EuRoC 20fps, FieldSAFE stereo 10fps / webcam 30fps
-  float m_frequency = 10;
   int m_height = m_stereoparams.size.height;
   int m_width = m_stereoparams.size.width;
   typename TDetector::Parameters params(m_height, m_width, m_frequency);
@@ -214,7 +215,9 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   params.di_levels = 2; // number of direct index levels
   params.near_distance = 0.4; // min meters for triangulated points
   params.far_distance = 50; // max meters for triangulated points 
-  // params.dislocal = 20; // number of frames to consider close in time
+  // NO tocar params.dislocal: Parameters(h, w, frequency) ya lo deja en
+  // 20*frequency, o sea los 20 segundos que usa el paper, y ademas deriva de
+  // la frecuencia otros 5 parametros que deben quedar coherentes entre si.
   params.min_Fpoints = 20; // min points to compute fundamental matrix 
   
   // To verify loops you can select one of the next geometrical checkings:
@@ -305,11 +308,13 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   // prepare profiler to measure times
   DUtils::Profiler profiler;
 
-  // Loop Detection Matrix to store and save
-  cv::Mat2i ldmat(filenames1.size(), filenames1.size(), (int) 0);
-
-  // Loop Metric Distance Matrix to store and save
-  cv::Mat2f lmmat(filenames1.size(), filenames1.size(), (float) 0);
+  // Detected loops: query image id, matched image id, and the estimated
+  // translation in the query camera frame (x right, y down, z forward)
+  std::vector<int> loop_query_ids;
+  std::vector<int> loop_match_ids;
+  std::vector<float> loop_translation_x;
+  std::vector<float> loop_translation_y;
+  std::vector<float> loop_translation_z;
 
   // Create a file to save detection info
   auto t = std::time(nullptr);
@@ -376,6 +381,12 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
       cout << "- Loop found with image " << result.match << "!" << endl;
       cout << "- \t with translation:  " << result.transform << endl;
       ++count;
+
+      loop_query_ids.push_back((int) i);
+      loop_match_ids.push_back((int) result.match);
+      loop_translation_x.push_back(static_cast<float>(result.transform[0]));
+      loop_translation_y.push_back(static_cast<float>(result.transform[1]));
+      loop_translation_z.push_back(static_cast<float>(result.transform[2]));
     }
     else
     {
@@ -435,8 +446,17 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
     }
   }
 
+  fstore << "num_images" << (int) filenames1.size();
+  fstore << "num_loops" << count;
+  fstore << "loop_query_ids" << loop_query_ids;
+  fstore << "loop_match_ids" << loop_match_ids;
+  fstore << "loop_translation_x" << loop_translation_x;
+  fstore << "loop_translation_y" << loop_translation_y;
+  fstore << "loop_translation_z" << loop_translation_z;
+  fstore << "feature_time_ms" << profiler.getMeanTime("features") * 1e3;
+  fstore << "loop_detection_time_ms" << profiler.getMeanTime("detection") * 1e3;
   fstore.release();
-  
+
   if(count == 0)
   {
     cout << "No loops found in this image sequence" << endl;
