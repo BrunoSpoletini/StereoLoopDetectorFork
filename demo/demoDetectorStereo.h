@@ -20,6 +20,7 @@
 #include <string>
 #include <algorithm>
 #include <iomanip>
+#include <cmath>
 
 // OpenCV
 #include <opencv2/core.hpp>
@@ -74,10 +75,13 @@ public:
    * @param imagedir directory to read images from
    * @param posefile pose file
    * @param sparam stereo camera parameters
+   * @param min_distance min distance (meters) travelled since an image to
+   *   match against it
    */
   demoDetectorStereo(const std::string &vocfile, const std::string &imagedir1,
     const std::string &imagedir2, const std::string &posefile, 
-    StereoParameters &stereoparams, bool show, float frequency);
+    StereoParameters &stereoparams, bool show, float frequency,
+    double min_distance);
     
   ~demoDetectorStereo(){}
 
@@ -113,6 +117,7 @@ protected:
   StereoParameters m_stereoparams;
   bool m_show;
   float m_frequency;
+  double m_min_distance;
 };
 
 // ---------------------------------------------------------------------------
@@ -122,10 +127,10 @@ demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::demoDetectorStereo
   (const std::string &vocfile,
    const std::string &imagedir1, const std::string &imagedir2,
    const std::string &posefile, StereoParameters &stereoparams, 
-   bool show, float frequency)
+   bool show, float frequency, double min_distance)
   : m_vocfile(vocfile), m_imagedir1(imagedir1), m_imagedir2(imagedir2),
     m_posefile(posefile), m_stereoparams(stereoparams), m_show(show),
-    m_frequency(frequency)
+    m_frequency(frequency), m_min_distance(min_distance)
 {
 }
 
@@ -215,9 +220,9 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   params.di_levels = 2; // number of direct index levels
   params.near_distance = 0.4; // min meters for triangulated points
   params.far_distance = 50; // max meters for triangulated points 
-  // NO tocar params.dislocal: Parameters(h, w, frequency) ya lo deja en
-  // 20*frequency, o sea los 20 segundos que usa el paper, y ademas deriva de
-  // la frecuencia otros 5 parametros que deben quedar coherentes entre si.
+  // Reemplaza al dislocal (20 s) original: solo se matchea contra imagenes
+  // desde las que el robot recorrio al menos esta distancia
+  params.min_travel_distance = m_min_distance;
   params.min_Fpoints = 20; // min points to compute fundamental matrix 
   
   // To verify loops you can select one of the next geometrical checkings:
@@ -288,6 +293,16 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   // readPoseFile(m_posefile.c_str(), xs, ys);
   readPoseFileCSV(m_posefile.c_str(), xs, ys);
   cout << "done..." << endl;
+  if(xs.size() != filenames1.size())
+    throw string("Expected one pose per image, got ") +
+      to_string(xs.size()) + " poses for " + to_string(filenames1.size()) +
+      " images";
+
+  // Distance travelled up to each image, on the xy plane. The poses file is
+  // a stand-in for the robot's wheel odometry
+  std::vector<double> travelled(xs.size(), 0.0);
+  for(size_t i = 1; i < xs.size(); ++i)
+    travelled[i] = travelled[i-1] + std::hypot(xs[i] - xs[i-1], ys[i] - ys[i-1]);
   
   // we can allocate memory for the expected number of images
   detector.allocate(filenames1.size());
@@ -373,7 +388,7 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
     
     profiler.profile("detection");
     detector.detectLoop(
-        s_keys1, s_descriptors1, result, s_keys2, s_descriptors2);
+        s_keys1, s_descriptors1, travelled[i], result, s_keys2, s_descriptors2);
     profiler.stop();
     
     if(result.detection())
@@ -394,7 +409,8 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
       switch(result.status)
       {
         case CLOSE_MATCHES_ONLY:
-          cout << "All the images in the database are very recent" << endl;
+          cout << "The robot hasn't travelled " << params.min_travel_distance
+            << " m since any image in the database" << endl;
           break;
           
         case NO_DB_RESULTS:
@@ -446,6 +462,8 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
     }
   }
 
+  fstore << "vocabulary" << m_vocfile;
+  fstore << "min_travel_distance" << params.min_travel_distance;
   fstore << "num_images" << (int) filenames1.size();
   fstore << "num_loops" << count;
   fstore << "loop_query_ids" << loop_query_ids;

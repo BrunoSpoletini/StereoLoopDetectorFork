@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <numeric>
+#include <algorithm>
 #include <fstream>
 #include <string>
 
@@ -134,8 +135,9 @@ public:
     
     // These are less deciding parameters of the system
     
-    /// Distance between entries to be consider a match
-    int dislocal;
+    /// Min distance (meters) the robot must have travelled since an entry
+    /// for it to be considered a match
+    double min_travel_distance;
     /// Max number of results from db queries to consider
     int max_db_results;
     /// Min raw score between current entry and previous one to consider a match 
@@ -278,6 +280,8 @@ public:
    * and returns the match if any
    * @param keys keypoints of the image
    * @param descriptors descriptors associated to the given keypoints
+   * @param travelled distance (meters) travelled by the robot from the first
+   *    image up to this one, e.g. from wheel odometry. Must be non-decreasing
    * @param match (out) match or failing information
    * @param keys2 optional keypoints of the stereo second image
    * @param descriptors2 optional descriptors associated to the keypoints
@@ -286,6 +290,7 @@ public:
    */
   bool detectLoop(const std::vector<cv::KeyPoint> &keys, 
     const std::vector<TDescriptor> &descriptors,
+    double travelled,
     DetectionResult &match,
     const std::vector<cv::KeyPoint> &keys2 = std::vector<cv::KeyPoint>(),
     const std::vector<TDescriptor> &descriptors2 = std::vector<TDescriptor>());
@@ -565,6 +570,9 @@ protected:
   /// Descriptors of stereo second images
   vector<vector<TDescriptor> > m_image_descriptors2;
 
+  /// Distance travelled by the robot up to each image
+  vector<double> m_travelled;
+
   /// Last bow vector added to database
   BowVector m_last_bowvec;
   
@@ -605,7 +613,7 @@ TemplatedLoopDetector<TDescriptor,F>::Parameters::Parameters
 template <class TDescriptor, class F> 
 void TemplatedLoopDetector<TDescriptor,F>::Parameters::set(float f)
 {
-  dislocal = 20 * f;
+  min_travel_distance = 0;
   max_db_results = 50 * f;
   min_nss_factor = 0.005;
   min_matches_per_group = f;
@@ -763,6 +771,7 @@ TemplatedLoopDetector<TDescriptor, F>::getVocabulary() const
  *
  * @param keys keypoints for the monocular or first stereo image
  * @param descriptors descriptors for the monocular or first stereo image
+ * @param travelled distance travelled by the robot up to this image
  * @param match information about the match if a loop was detected
  * @param keys2 keypoints for the second stereo image
  * @param descriptors2 descriptors for the second stereo image
@@ -772,6 +781,7 @@ template<class TDescriptor, class F>
 bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   const std::vector<cv::KeyPoint> &keys, 
   const std::vector<TDescriptor> &descriptors,
+  double travelled,
   DetectionResult &match,
   const std::vector<cv::KeyPoint> &keys2,
   const std::vector<TDescriptor> &descriptors2)
@@ -799,18 +809,26 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   else
     m_database->getVocabulary()->transform(descriptors, bowvec);
 
-  if((int)entry_id <= m_params.dislocal)
+  if(m_travelled.size() <= entry_id) m_travelled.resize(entry_id + 1);
+  m_travelled[entry_id] = travelled;
+  assert(entry_id == 0 || travelled >= m_travelled[entry_id - 1]);
+
+  // only entries [0, max_id) are at least `min_travel_distance` away from
+  // the current one (m_travelled is sorted since it's non-decreasing)
+  const int max_id = std::upper_bound(m_travelled.begin(),
+    m_travelled.begin() + entry_id,
+    travelled - m_params.min_travel_distance) - m_travelled.begin();
+
+  if(max_id == 0)
   {
-    // for the first `dislocal` entries there's no need to check as
-    // there's certainly not enough distance between them, so we
-    // only add the entry to the database and finish
+    // the robot hasn't travelled enough since any of the previous entries,
+    // so we only add the entry to the database and finish
     m_database->add(bowvec, featvec);
     match.status = CLOSE_MATCHES_ONLY;
   }
   else
   {
-    int max_id = (int)entry_id - m_params.dislocal;
-    
+    // the database only returns entries with id < max_id
     QueryResults qret;
     m_database->query(bowvec, qret, m_params.max_db_results, max_id);
 
@@ -965,7 +983,7 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   }
   
   // store this bowvec if we are going to use it in next iteratons
-  if(m_params.use_nss && (int)entry_id + 1 > m_params.dislocal)
+  if(m_params.use_nss)
   {
     m_last_bowvec = bowvec;
   }

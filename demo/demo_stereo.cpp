@@ -103,6 +103,7 @@ int main(int argc, char* argv[])
     std::string poses_path;
     std::string type, voc_path;
     float frequency;
+    double min_distance;
     // Program Options (BOOST library w/special compilation needed)
     po::options_description options_desc(
         "StereoLoopDetector demo usage with ORB or BRIEF features.\n\n"
@@ -121,8 +122,11 @@ int main(int argc, char* argv[])
         ("voc", po::value(&voc_path), "Path to vocabulary file for specified type")
         ("noshow", po::value<bool>()->default_value(true), "Don't display results")
         ("frequency", po::value(&frequency)->default_value(10.0f),
-            "capture frequency of the sequence in Hz; sets dislocal (=20s) and "
-            "the other time-derived detector parameters")
+            "capture frequency of the sequence in Hz; sets the time-derived "
+            "detector parameters")
+        ("min-distance", po::value(&min_distance)->required(),
+            "min distance in meters the robot must have travelled since an "
+            "image to match against it (measured with the poses file)")
     ;
 
     // Parse program options
@@ -151,6 +155,12 @@ int main(int argc, char* argv[])
         throw po::validation_error(po::validation_error::invalid_option_value, "type");
     }
 
+    if (min_distance <= 0) {
+        std::cerr << "\"min-distance\" option should be positive, not " <<
+        min_distance << std::endl;
+        throw po::validation_error(po::validation_error::invalid_option_value, "min-distance");
+    }
+
     StereoParameters sparams(path_calibration);
 
     // prepares the demo
@@ -161,14 +171,14 @@ int main(int argc, char* argv[])
         vocabulary = options_vm.count("voc")? voc_path : BRIEF_VOC_FILE;
         demoDetectorStereo<BriefVocabulary, BriefLoopDetector, FBrief::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show, frequency);
+                 sparams, show, frequency, min_distance);
         BriefExtractor extractor(BRIEF_PATTERN_FILE);
         demo.run(type, extractor);
         } else if (type == "ORB") {
         vocabulary = options_vm.count("voc")? voc_path : ORB_VOC_FILE;
         demoDetectorStereo<OrbVocabulary, OrbLoopDetector, FORB::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show, frequency);
+                 sparams, show, frequency, min_distance);
         OrbExtractor extractor(ORB_NFEATURES, ORB_SCALEFACTOR, ORB_NLEVELS);
         demo.run(type, extractor);
         }
