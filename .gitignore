@@ -1,1 +1,5 @@
 build/
+# Vocabularios demasiado pesados para GitHub
+resources/ORBvoc.txt
+resources/ORBvoc.txt.tar.gz
+resources/ORBvoc_orbslam3.yml.gz
