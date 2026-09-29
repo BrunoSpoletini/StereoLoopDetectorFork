@@ -53,3 +53,36 @@ nunca extraídas (11:34 y 12:37). Calibración de Rosario: una única calibraci�
 (repo oficial `CIFASIS/rosariov2`, Kalibr) → se usa la misma para todas las secuencias.
 
 **Próximo paso**: baseline en las 7 sesiones disponibles; después Fase 1 (arreglos 1–4, uno por uno).
+
+---
+
+## 2026-09-29 — Baseline completo (SLD original, frecuencia real de cada dataset)
+
+| Dataset | Loops | TP | Triviales | FP | Recall | Cobertura | e_vec med |
+|---|---|---|---|---|---|---|---|
+| FieldSAFE (3 ses.) | 517 | 61 | 456 | 0 | 0.3 % | 1.7 % | 0.50 m |
+| Rosario (4 sec.) | 3643 | 3441 | 202 | 0 | 15 % | 33 % | 0.04 m |
+
+Rosario es muy desparejo: 12-22 13:14 da 3375 TP (cobertura 80 %); las otras 3 dan 55, 0 y 11 TP.
+
+## 2026-09-29 — Fase 1: arreglos (FieldSAFE)
+
+| Config | TP | Triviales | e_vec med (TP) | e_yaw med | ‖t‖ con robot quieto (verdad ≈ 0) |
+|---|---|---|---|---|---|
+| baseline | 61 | 456 | 0.50 m | 8.5° | 0.157 m |
+| p1_near (0.4 m real) | 61 | 456 | 0.50 m | 8.5° | 0.157 m (sin efecto) |
+| p1_rectK (K rectificada) | 61 | 456 | 0.60 m | 10.3° | **0.001 m** |
+| p1_ransac (≥ 20 inliers a 3 px) | 16 | 449 | 0.39 m | 4.7° | 0.102 m |
+| p1_disp (disparidad > 0, z > 0) | 45 | 456 | **0.26 m** | **4.1°** | 0.154 m |
+| p1_all | 40 | 454 | 0.29 m | 4.8° | 0.001 m |
+
+- **Confirmado**: el sesgo de 0.16 m con el robot quieto era el desajuste de intrínsecos (K cruda vs P
+  rectificada, 4 % de focal). Con la K correcta cae a 1 mm.
+- Con la K rectificada, e_vec de los TP en movimiento empeora (0.50 → 0.60 m): hay que revisar si el GT
+  en movimiento (brazo de palanca antena–cámara, offset temporal GPS de 19.25 s) domina ese error.
+- RANSAC con ≥ 20 inliers descarta 45 de 61 TP: la geometría de los loops reales es débil (pocos inliers).
+- Los arreglos mejoran la pose (yaw 8.5° → ~4.5°) pero **no el recall**: el cuello de botella está antes
+  (recuperación de candidatos, consistencia temporal y el umbral geométrico).
+
+**Próximo paso**: Fase 2 sobre `p1_all`: exclusión por distancia con odometría visual, verificación sin
+chequeo cruzado L-L/R-R, ratio test 0.8, 3 candidatos, bypass temporal con ≥ 60 inliers.

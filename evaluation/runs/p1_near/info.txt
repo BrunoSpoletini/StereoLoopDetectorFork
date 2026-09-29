@@ -1,0 +1,4 @@
+commit: b502031
+config: p1_near.yaml
+# Fase 1: filtro de cercania con el valor pretendido (0.4 m; antes se truncaba a 0)
+near_distance: 0.4

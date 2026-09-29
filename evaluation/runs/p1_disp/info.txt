@@ -1,0 +1,5 @@
+commit: b502031
+config: p1_disp.yaml
+# Fase 1: matches estereo con disparidad positiva y puntos delante de la camara
+stereo_min_disparity: 0.5
+require_positive_depth: true
