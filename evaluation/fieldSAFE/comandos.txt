@@ -1,0 +1,45 @@
+Comandos usados para generar los resultados de StereoLoopDetector en FieldSAFE
+============================================================================
+Fecha: 2026-09-28
+Binario: build/demo_stereo (compilado el 2026-09-18, commit d3fff0e del repo)
+Vocabulario: resources/ORBvoc.yml.gz
+Calibración: resources/fs_stereo_parameters.yaml
+Datos preparados: /mnt/datalake/datasets/fieldsafe/prepared
+
+El demo escribe los resultados en <fecha>_results.yml en el directorio desde
+donde se lo ejecuta; después se renombraron a fieldSAFE_<sesion>_f10_results.yml
+en esta carpeta.
+
+OpenCV está compilado localmente y no instalado en el sistema, así que hay que
+indicar dónde están sus librerías:
+
+  export LD_LIBRARY_PATH=/home/bruno/Desktop/tesina/opencv_build/install/lib
+  REPO=/home/bruno/Desktop/tesina/StereoLoopDetectorFork
+  P=/mnt/datalake/datasets/fieldsafe/prepared
+
+Dinámica #1 (2016-10-25-11-41-21) -> fieldSAFE_dynamic_1_f10_results.yml
+------------------------------------------------------------------------
+  $REPO/build/demo_stereo \
+      --input-left $P/left_2016-10-25-11-41-21.txt \
+      --input-right $P/right_2016-10-25-11-41-21.txt \
+      --calibration $REPO/resources/fs_stereo_parameters.yaml \
+      --poses-file $P/poses_2016-10-25-11-41-21.csv \
+      --type ORB --voc $REPO/resources/ORBvoc.yml.gz --frequency 10
+
+Estática #1 (2016-10-25-11-09-42) -> fieldSAFE_static_1_f10_results.yml
+-----------------------------------------------------------------------
+  $REPO/build/demo_stereo \
+      --input-left $P/left_2016-10-25-11-09-42.txt \
+      --input-right $P/right_2016-10-25-11-09-42.txt \
+      --calibration $REPO/resources/fs_stereo_parameters.yaml \
+      --poses-file $P/poses_2016-10-25-11-09-42.csv \
+      --type ORB --voc $REPO/resources/ORBvoc.yml.gz --frequency 10
+
+Dinámica #2 (2016-10-25-12-07-22) -> fieldSAFE_dynamic_2_f10_results.yml
+------------------------------------------------------------------------
+  $REPO/build/demo_stereo \
+      --input-left $P/left_2016-10-25-12-07-22.txt \
+      --input-right $P/right_2016-10-25-12-07-22.txt \
+      --calibration $REPO/resources/fs_stereo_parameters.yaml \
+      --poses-file $P/poses_2016-10-25-12-07-22.csv \
+      --type ORB --voc $REPO/resources/ORBvoc.yml.gz --frequency 10
