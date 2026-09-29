@@ -9,3 +9,4 @@ evaluation/__pycache__/
 evaluation/runs/**/*_results.yml
 evaluation/runs/**/*_queries.csv
 evaluation/runs/**/*.log
+evaluation/runs/**/demo_stereo

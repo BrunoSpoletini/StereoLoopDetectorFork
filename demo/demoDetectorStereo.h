@@ -35,6 +35,7 @@
 #include <DVision/DVision.h>
 
 #include "RowMatcher.hpp"
+#include "StereoOdometry.hpp"
 #include "StereoParameters.h"
 #include "yaml-cpp/yaml.h"
 
@@ -293,6 +294,15 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   params.min_pnp_inliers = cfg(c, "min_pnp_inliers", params.min_Fpoints);
   params.stereo_cross_check = cfg(c, "stereo_cross_check", true);
   params.require_positive_depth = cfg(c, "require_positive_depth", false);
+  params.exclusion_distance = cfg(c, "exclusion_distance", 0.0);
+  params.geom_candidates = cfg(c, "geom_candidates", 1);
+  params.strong_inliers = cfg(c, "strong_inliers", 0);
+  // motion gating with stereo visual odometry (0 disables it)
+  const double motion_step = cfg(c, "motion_step", 0.0);
+  const bool keyframes_only = cfg(c, "keyframes_only", false);
+  StereoOdometry odometry(m_stereoparams, motion_step > 0 ? motion_step : 1.0);
+  // image index of every entry added to the detector database
+  std::vector<int> entry_image;
   
   // To verify loops you can select one of the next geometrical checkings:
   // GEOM_EXHAUSTIVE_STEREO: correspondence points are computed by comparing 
@@ -404,7 +414,7 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   // one row per query with the diagnostics of the detection
   std::ofstream qlog(prefix + "_queries.csv");
   qlog << "query,status,candidate,ns_factor,best_score,consistent,"
-          "geom_matches,geom_inliers,n_stereo,tx,ty,tz,rx,ry,rz\n";
+          "geom_matches,geom_inliers,n_stereo,tx,ty,tz,rx,ry,rz,odometer\n";
   std::vector<float> loop_rotation_x, loop_rotation_y, loop_rotation_z;
 
   // feature cache (ORB only): read it if it exists, write it otherwise
@@ -488,13 +498,33 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
       stereo_matches, descriptors1, descriptors2, s_descriptors1, s_descriptors2
     );
     
+    // motion gating: travelled distance and keyframe selection
+    double odometer = -1;
+    bool process = true;
+    if (motion_step > 0)
+    {
+      StereoOdometry::Result mo =
+        odometry.update(s_keys1, s_keys2, toMat(s_descriptors1));
+      odometer = mo.odometer;
+      process = mo.keyframe || !keyframes_only;
+    }
+
     // add image to the collection and check if there is some loop
     DetectionResult result;
+    if (!process)
+    {
+      qlog << i << ",-1,-1,-1,-1,0,-1,-1," << s_keys1.size()
+        << ",0,0,0,0,0,0," << odometer << "\n";
+      continue;
+    }
     
     profiler.profile("detection");
     detector.detectLoop(
-        s_keys1, s_descriptors1, result, s_keys2, s_descriptors2);
+        s_keys1, s_descriptors1, result, s_keys2, s_descriptors2, odometer);
     profiler.stop();
+    entry_image.push_back((int)i);
+    if (result.status >= NO_GROUPS || result.status == LOOP_DETECTED)
+      result.match = entry_image[result.match];
     
     if(result.detection())
     {
@@ -565,7 +595,8 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
       << result.geom_inliers << "," << s_keys1.size() << ","
       << result.transform[0] << "," << result.transform[1] << ","
       << result.transform[2] << "," << result.rotation[0] << ","
-      << result.rotation[1] << "," << result.rotation[2] << "\n";
+      << result.rotation[1] << "," << result.rotation[2] << ","
+      << odometer << "\n";
     
     // show trajectory
     if(m_show && i > 0)

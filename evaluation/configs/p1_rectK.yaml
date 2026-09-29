@@ -1,0 +1,2 @@
+# Fase 1: PnP con los intrinsecos rectificados (P) y sin distorsion
+pnp_rectified_intrinsics: true

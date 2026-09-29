@@ -9,6 +9,7 @@ Salida en evaluation/runs/<nombre_config>/:
 """
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -31,13 +32,14 @@ def cache_path(session, config):
     return CACHE / f'{session.dataset}_{session.seq}_orb{nfeat}.bin'
 
 
-def run_one(session, config_path, config, outdir, force):
+def run_one(session, config_path, config, outdir, force, binary):
     prefix = outdir / session.name
-    if (Path(f'{prefix}_results.yml').exists() and not force):
+    done = Path(f'{prefix}_results.yml')
+    if done.exists() and 'num_images' in done.read_text() and not force:
         return session.name, 'cached'
     CACHE.mkdir(parents=True, exist_ok=True)
     freq = config.get('frequency', session.frequency)
-    cmd = [str(BIN), '--input-left', str(session.left), '--input-right', str(session.right),
+    cmd = [str(binary), '--input-left', str(session.left), '--input-right', str(session.right),
            '--calibration', str(config.get(f'calibration_{session.dataset}', session.calibration)),
            '--poses-file', str(session.poses), '--type', 'ORB', '--voc', str(VOC),
            '--frequency', str(freq), '--config', str(config_path), '--output', str(prefix),
@@ -65,8 +67,15 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
     sessions = select(a.sessions)
 
+    # copia congelada del binario (se puede recompilar mientras corre) + commit usado
+    binary = outdir / 'demo_stereo'
+    shutil.copy2(BIN, binary)
+    commit = subprocess.run(['git', 'describe', '--always', '--dirty'], cwd=REPO,
+                            capture_output=True, text=True).stdout.strip()
+    (outdir / 'info.txt').write_text(f'commit: {commit}\nconfig: {config_path.name}\n{config_path.read_text()}')
+
     with ThreadPoolExecutor(a.jobs) as ex:
-        for s, status in ex.map(lambda s: run_one(s, config_path, config, outdir, a.force), sessions):
+        for s, status in ex.map(lambda s: run_one(s, config_path, config, outdir, a.force, binary), sessions):
             print(f'  {s}: {status}', flush=True)
 
     rows = []

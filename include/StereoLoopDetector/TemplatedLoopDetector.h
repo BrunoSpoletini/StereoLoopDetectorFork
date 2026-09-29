@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <numeric>
+#include <algorithm>
 #include <fstream>
 #include <string>
 
@@ -197,6 +198,14 @@ public:
     bool stereo_cross_check = true;
     /// Discard triangulated points with non-positive depth (z <= 0)
     bool require_positive_depth = false;
+    /// If > 0, the exclusion window is defined by travelled distance (m)
+    /// using the odometer given to detectLoop, instead of `dislocal` entries
+    double exclusion_distance = 0;
+    /// Number of candidates (best entry of the best islands) to verify
+    int geom_candidates = 1;
+    /// If > 0, accept loops without temporal consistency when the RANSAC
+    /// PnP has at least this many inliers
+    int strong_inliers = 0;
   
     /**
      * Creates parameters by default
@@ -316,7 +325,8 @@ public:
     const std::vector<TDescriptor> &descriptors,
     DetectionResult &match,
     const std::vector<cv::KeyPoint> &keys2 = std::vector<cv::KeyPoint>(),
-    const std::vector<TDescriptor> &descriptors2 = std::vector<TDescriptor>());
+    const std::vector<TDescriptor> &descriptors2 = std::vector<TDescriptor>(),
+    double odometer = -1);
 
   /**
    * Resets the detector and clears the database, such that the next entry
@@ -596,6 +606,9 @@ protected:
 
   /// Last bow vector added to database
   BowVector m_last_bowvec;
+
+  /// Odometer (m) of every entry, for the distance based exclusion window
+  vector<double> m_odometers;
   
   /// Temporal consistency window
   tTemporalWindow m_window;
@@ -803,7 +816,8 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   const std::vector<TDescriptor> &descriptors,
   DetectionResult &match,
   const std::vector<cv::KeyPoint> &keys2,
-  const std::vector<TDescriptor> &descriptors2)
+  const std::vector<TDescriptor> &descriptors2,
+  double odometer)
 {
   // assert(keys.size() == descriptors.size())
   // assert(keys2.size() == descriptors2.size());
@@ -828,7 +842,19 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   else
     m_database->getVocabulary()->transform(descriptors, bowvec);
 
-  if((int)entry_id <= m_params.dislocal)
+  // last entry that may be matched (exclusion window)
+  int max_id = (int)entry_id - m_params.dislocal;
+  const bool by_distance = m_params.exclusion_distance > 0 && odometer >= 0;
+  if (by_distance)
+  {
+    // entries whose odometer is at least exclusion_distance behind
+    max_id = (int)(std::upper_bound(m_odometers.begin(), m_odometers.end(),
+      odometer - m_params.exclusion_distance) - m_odometers.begin()) - 1;
+  }
+  m_odometers.push_back(odometer);
+
+  if((!by_distance && (int)entry_id <= m_params.dislocal) ||
+     (by_distance && max_id < 0))
   {
     // for the first `dislocal` entries there's no need to check as
     // there's certainly not enough distance between them, so we
@@ -838,8 +864,6 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   }
   else
   {
-    int max_id = (int)entry_id - m_params.dislocal;
-    
     QueryResults qret;
     m_database->query(bowvec, qret, m_params.max_db_results, max_id);
 
@@ -893,58 +917,86 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
             match.match = island.best_entry;
             
             match.consistent = getConsistentEntries();
-            if(getConsistentEntries() > m_params.k)
+            const bool temporal_ok = getConsistentEntries() > m_params.k;
+            // without temporal consistency a loop can still be accepted if
+            // the geometric evidence is strong enough (only with RANSAC PnP)
+            const bool bypass = !temporal_ok && m_params.strong_inliers > 0 &&
+              m_params.geom_check == GEOM_EXHAUSTIVE_STEREO && m_params.pnp_ransac;
+            if(temporal_ok || bypass)
             {
               // candidate loop detected
-              // check geometry
-              bool detection;
+              // check geometry on the best entries of the best islands
+              std::vector<EntryId> candidates;
+              if (m_params.geom_candidates > 1) {
+                std::vector<tIsland> sorted_islands = islands;
+                std::sort(sorted_islands.begin(), sorted_islands.end(),
+                  tIsland::gt);
+                for (const auto &isl : sorted_islands) {
+                  if ((int)candidates.size() >= m_params.geom_candidates) break;
+                  candidates.push_back(isl.best_entry);
+                }
+              } else {
+                candidates.push_back(island.best_entry);
+              }
 
-              if(m_params.geom_check == GEOM_DI)
+              bool detection = false;
+              for (size_t ci = 0; ci < candidates.size() && !detection; ++ci)
               {
-                // all the DI stuff is implicit in the database
-                detection = isGeometricallyConsistent_DI(island.best_entry, 
-                  keys, descriptors, featvec);
-              }
-              else if(m_params.geom_check == GEOM_FLANN)
-              {
-                cv::FlannBasedMatcher flann_structure;
-                getFlannStructure(descriptors, flann_structure);
-                            
-                detection = isGeometricallyConsistent_Flann(island.best_entry, 
-                  keys, descriptors, flann_structure);
-              }
-              else if(m_params.geom_check == GEOM_EXHAUSTIVE)
-              { 
-                detection = isGeometricallyConsistent_Exhaustive(
-                  m_image_keys[island.best_entry], 
-                  m_image_descriptors[island.best_entry],
-                  keys, descriptors);            
-              }
-              else if(m_params.geom_check == GEOM_EXHAUSTIVE_STEREO)
-              { 
-                assert(stereo);
-                detection = isGeometricallyConsistent_Exhaustive_Stereo(
-                  m_image_keys[island.best_entry], 
-                  m_image_descriptors[island.best_entry],
-                  m_image_keys2[island.best_entry], 
-                  m_image_descriptors2[island.best_entry],
-                  keys, descriptors, keys2, descriptors2,
-                  match.transform, match.rotation,
-                  match.geom_matches, match.geom_inliers);
-              }
-              else // GEOM_NONE, accept the match
-              {
-                detection = true;
+                const EntryId cand = candidates[ci];
+                cv::Vec3d tr, rot;
+                int gm = -1, gi = -1;
+                bool ok;
+                if(m_params.geom_check == GEOM_DI)
+                {
+                  // all the DI stuff is implicit in the database
+                  ok = isGeometricallyConsistent_DI(cand, keys, descriptors,
+                    featvec);
+                }
+                else if(m_params.geom_check == GEOM_FLANN)
+                {
+                  cv::FlannBasedMatcher flann_structure;
+                  getFlannStructure(descriptors, flann_structure);
+                  ok = isGeometricallyConsistent_Flann(cand, keys, descriptors,
+                    flann_structure);
+                }
+                else if(m_params.geom_check == GEOM_EXHAUSTIVE)
+                { 
+                  ok = isGeometricallyConsistent_Exhaustive(
+                    m_image_keys[cand], m_image_descriptors[cand],
+                    keys, descriptors);            
+                }
+                else if(m_params.geom_check == GEOM_EXHAUSTIVE_STEREO)
+                { 
+                  assert(stereo);
+                  ok = isGeometricallyConsistent_Exhaustive_Stereo(
+                    m_image_keys[cand], m_image_descriptors[cand],
+                    m_image_keys2[cand], m_image_descriptors2[cand],
+                    keys, descriptors, keys2, descriptors2,
+                    tr, rot, gm, gi);
+                }
+                else // GEOM_NONE, accept the match
+                {
+                  ok = true;
+                }
+                if (ok && !temporal_ok) ok = gi >= m_params.strong_inliers;
+
+                // keep the diagnostics of the first or the accepted candidate
+                if (ci == 0 || ok) {
+                  match.match = cand;
+                  match.transform = tr;
+                  match.rotation = rot;
+                  match.geom_matches = gm;
+                  match.geom_inliers = gi;
+                }
+                detection = ok;
               }
               
               if(detection)
-              {
                 match.status = LOOP_DETECTED;
-              }
-              else
-              {
+              else if(temporal_ok)
                 match.status = NO_GEOMETRICAL_CONSISTENCY;
-              }
+              else
+                match.status = NO_TEMPORAL_CONSISTENCY;
               
             } // if enough temporal matches
             else
@@ -998,7 +1050,7 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   }
   
   // store this bowvec if we are going to use it in next iteratons
-  if(m_params.use_nss && (int)entry_id + 1 > m_params.dislocal)
+  if(m_params.use_nss && (by_distance || (int)entry_id + 1 > m_params.dislocal))
   {
     m_last_bowvec = bowvec;
   }
@@ -1013,6 +1065,7 @@ inline void TemplatedLoopDetector<TDescriptor, F>::clear()
 {
   m_database->clear();
   m_window.nentries = 0;
+  m_odometers.clear();
 }
 
 // --------------------------------------------------------------------------
