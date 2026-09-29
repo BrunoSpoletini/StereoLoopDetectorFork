@@ -102,6 +102,7 @@ int main(int argc, char* argv[])
     std::string path_calibration;
     std::string poses_path;
     std::string type, voc_path;
+    std::string config_path, output_prefix, cache_path;
     float frequency;
     // Program Options (BOOST library w/special compilation needed)
     po::options_description options_desc(
@@ -123,6 +124,14 @@ int main(int argc, char* argv[])
         ("frequency", po::value(&frequency)->default_value(10.0f),
             "capture frequency of the sequence in Hz; sets dislocal (=20s) and "
             "the other time-derived detector parameters")
+        ("config", po::value(&config_path), 
+            "YAML file overriding detector/matcher parameters")
+        ("output", po::value(&output_prefix), 
+            "prefix for the output files (<prefix>_results.yml, "
+            "<prefix>_queries.csv); defaults to the current date")
+        ("cache", po::value(&cache_path), 
+            "binary feature cache file (ORB only): read if it exists, "
+            "written otherwise")
     ;
 
     // Parse program options
@@ -152,6 +161,8 @@ int main(int argc, char* argv[])
     }
 
     StereoParameters sparams(path_calibration);
+    YAML::Node config;
+    if (!config_path.empty()) config = YAML::LoadFile(config_path);
 
     // prepares the demo
     try 
@@ -161,15 +172,16 @@ int main(int argc, char* argv[])
         vocabulary = options_vm.count("voc")? voc_path : BRIEF_VOC_FILE;
         demoDetectorStereo<BriefVocabulary, BriefLoopDetector, FBrief::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show, frequency);
+                 sparams, show, frequency, config, output_prefix, cache_path);
         BriefExtractor extractor(BRIEF_PATTERN_FILE);
         demo.run(type, extractor);
         } else if (type == "ORB") {
         vocabulary = options_vm.count("voc")? voc_path : ORB_VOC_FILE;
         demoDetectorStereo<OrbVocabulary, OrbLoopDetector, FORB::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show, frequency);
-        OrbExtractor extractor(ORB_NFEATURES, ORB_SCALEFACTOR, ORB_NLEVELS);
+                 sparams, show, frequency, config, output_prefix, cache_path);
+        OrbExtractor extractor(cfg(config, "orb_nfeatures", ORB_NFEATURES),
+            ORB_SCALEFACTOR, ORB_NLEVELS);
         demo.run(type, extractor);
         }
     }

@@ -93,6 +93,20 @@ struct DetectionResult
   
   /// Matched transformation if loop detected, otherwise undefined behavior
   cv::Vec3d transform = {0.0, 0.0, 0.0};
+  /// Matched rotation (Rodrigues vector) if loop detected
+  cv::Vec3d rotation = {0.0, 0.0, 0.0};
+
+  // Diagnostics (filled as far as the pipeline gets for this query)
+  /// Normalized similarity factor (score against the previous entry)
+  double ns_factor = -1;
+  /// Raw BoW score of the best candidate
+  double best_score = -1;
+  /// Number of temporally consistent entries
+  int consistent = 0;
+  /// Number of correspondences that reached the geometric model
+  int geom_matches = -1;
+  /// Number of inliers of the geometric model (PnP RANSAC)
+  int geom_inliers = -1;
 
   /**
    * Checks if the loop was detected
@@ -166,9 +180,23 @@ public:
     double max_neighbor_ratio;
     /// Camera calibration information for triangulation and PnP
     StereoParameters stereo_params;
-    /// Distances for 3d point culling
-    int near_distance;
-    int far_distance;
+    /// Distances for 3d point culling (meters)
+    double near_distance = 0.0;
+    double far_distance = 50.0;
+    /// Use the rectified projection matrix (instead of the raw camera matrix
+    /// and distortion) as intrinsics for PnP; images are assumed rectified
+    bool pnp_rectified_intrinsics = false;
+    /// Use RANSAC PnP and require a minimum number of inliers
+    bool pnp_ransac = false;
+    /// Max reprojection error (px) for RANSAC PnP inliers
+    double pnp_reprojection_error = 3.0;
+    /// Min number of PnP inliers to accept the loop (RANSAC only)
+    int min_pnp_inliers = 20;
+    /// Require left-left AND right-right agreement (true, original
+    /// behaviour) or only left-left matches (false)
+    bool stereo_cross_check = true;
+    /// Discard triangulated points with non-positive depth (z <= 0)
+    bool require_positive_depth = false;
   
     /**
      * Creates parameters by default
@@ -530,7 +558,8 @@ protected:
     const std::vector<TDescriptor> &cur_descriptors1,
     const std::vector<cv::KeyPoint> &cur_keys2,
     const std::vector<TDescriptor> &cur_descriptors2,
-    cv::Vec3d &transform ) const;
+    cv::Vec3d &transform, cv::Vec3d &rotation,
+    int &n_matches, int &n_inliers) const;
 
   /**
    * Calculate the matches between the descriptors A[i_A] and the descriptors
@@ -826,6 +855,8 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
       {
         ns_factor = m_database->getVocabulary()->score(bowvec, m_last_bowvec);
       }
+      match.ns_factor = ns_factor;
+      match.best_score = qret[0].Score;
       
       if(!m_params.use_nss || ns_factor >= m_params.min_nss_factor)
       {
@@ -861,6 +892,7 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
             // get the best candidate (maybe match)
             match.match = island.best_entry;
             
+            match.consistent = getConsistentEntries();
             if(getConsistentEntries() > m_params.k)
             {
               // candidate loop detected
@@ -897,7 +929,8 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
                   m_image_keys2[island.best_entry], 
                   m_image_descriptors2[island.best_entry],
                   keys, descriptors, keys2, descriptors2,
-                  match.transform);
+                  match.transform, match.rotation,
+                  match.geom_matches, match.geom_inliers);
               }
               else // GEOM_NONE, accept the match
               {
@@ -1382,7 +1415,8 @@ bool TemplatedLoopDetector<TDescriptor, F>::
     const std::vector<TDescriptor> &cur_descriptors1,
     const std::vector<cv::KeyPoint> &cur_keys2,
     const std::vector<TDescriptor> &cur_descriptors2,
-    cv::Vec3d& transform) const
+    cv::Vec3d& transform, cv::Vec3d& rotation,
+    int &n_matches, int &n_inliers) const
 {
   // We already have left/right stereo matches, we calculate the
   // left/left and right/right matches, then we filter for those that
@@ -1396,35 +1430,46 @@ bool TemplatedLoopDetector<TDescriptor, F>::
 
   getMatches_neighratio(old_descriptors1, i_all_old, 
     cur_descriptors1, i_all_cur, i_old1, i_cur1);
-  getMatches_neighratio(old_descriptors2, i_all_old, 
-    cur_descriptors2, i_all_cur, i_old2, i_cur2);
+  if (m_params.stereo_cross_check)
+    getMatches_neighratio(old_descriptors2, i_all_old, 
+      cur_descriptors2, i_all_cur, i_old2, i_cur2);
 
   // we keep the min_Fpoints as a threshold value for computing stereo
   // but we dont use it as intended
-  // FIXME
+  n_matches = (int)i_old1.size();
   if (((int)i_old1.size() >= m_params.min_Fpoints) &&
-      ((int)i_old2.size() >= m_params.min_Fpoints))
+      (!m_params.stereo_cross_check ||
+       (int)i_old2.size() >= m_params.min_Fpoints))
   {
     // we filter matches by the condition that they agree on both
     // the stereo configurations
     std::vector<unsigned int> i_old, i_cur;  // final agreeing indices
-    std::vector<unsigned int>::const_iterator oit1, cit1, oit2, cit2;
-    oit1 = i_old1.begin();
-    cit1 = i_cur1.begin();
-    for(; oit1 != i_old1.end(); ++oit1, ++cit1)
+    if (m_params.stereo_cross_check)
     {
-      oit2 = i_old2.begin();
-      cit2 = i_cur2.begin();
-      for(; oit2 != i_old2.end(); ++oit2, ++cit2)
+      std::vector<unsigned int>::const_iterator oit1, cit1, oit2, cit2;
+      oit1 = i_old1.begin();
+      cit1 = i_cur1.begin();
+      for(; oit1 != i_old1.end(); ++oit1, ++cit1)
       {
-        if (*oit1 == *oit2 && *cit1 == *cit2) 
+        oit2 = i_old2.begin();
+        cit2 = i_cur2.begin();
+        for(; oit2 != i_old2.end(); ++oit2, ++cit2)
         {
-          // theres a pair (oit1, cit1) == (oit2, cit2)
-          i_old.push_back(*oit1);
-          i_cur.push_back(*cit1);
+          if (*oit1 == *oit2 && *cit1 == *cit2) 
+          {
+            // theres a pair (oit1, cit1) == (oit2, cit2)
+            i_old.push_back(*oit1);
+            i_cur.push_back(*cit1);
+          }
         }
       }
     }
+    else
+    {
+      i_old = i_old1;
+      i_cur = i_cur1;
+    }
+    n_matches = (int)i_old.size();
 
     // check enough matches to compute camera translation
     // FIXME
@@ -1471,7 +1516,6 @@ bool TemplatedLoopDetector<TDescriptor, F>::
 
     // Triangulate the stereo 3D points
     cv::Mat stereo_3d_points;
-    std::cout << "left projection:\n" << m_params.stereo_params.left_projection << std::endl;
     cv::sfm::triangulatePoints(
       stereo_points, stereo_projection_matrices, stereo_3d_points
     );  // stereo_3d_points is 3xN
@@ -1483,8 +1527,12 @@ bool TemplatedLoopDetector<TDescriptor, F>::
     //  the triangulated points are expressed in the left camera frame
     cv::Mat good_3d_points, good_cur_points;
     std::vector<float> distances;
+    stereo_3d_points.convertTo(stereo_3d_points, CV_64F);
     for (int row = 0; row < stereo_3d_points.rows; row++) {
       float dist = cv::norm(stereo_3d_points.row(row));
+      if (m_params.require_positive_depth &&
+          stereo_3d_points.at<double>(row, 2) <= 0)
+        continue;
       if ((dist > this->m_params.near_distance) && 
           (dist < this->m_params.far_distance))
       {
@@ -1503,15 +1551,39 @@ bool TemplatedLoopDetector<TDescriptor, F>::
     // Calculate the position of the current left image to the previously
     // triangulated points via PnP of 2D matches to 3D points
     try {
-      cv::Mat rotation, translation;
-      cv::solvePnP(
-        good_3d_points, good_cur_points,
-        m_params.stereo_params.left_camera_matrix, 
-        m_params.stereo_params.left_dist_coeffs, 
-        rotation, translation, cv::SOLVEPNP_ITERATIVE);
+      cv::Mat K, dist;
+      if (m_params.pnp_rectified_intrinsics) {
+        K = m_params.stereo_params.left_projection.colRange(0, 3).clone();
+        dist = cv::Mat();
+      } else {
+        K = m_params.stereo_params.left_camera_matrix;
+        dist = m_params.stereo_params.left_dist_coeffs;
+      }
+      cv::Mat rvec, tvec;
+      if (m_params.pnp_ransac) {
+        std::vector<int> inliers;
+        bool ok = cv::solvePnPRansac(
+          good_3d_points, good_cur_points, K, dist, rvec, tvec, false,
+          200, (float)m_params.pnp_reprojection_error, 0.999, inliers,
+          cv::SOLVEPNP_EPNP);
+        n_inliers = (int)inliers.size();
+        if (!ok || n_inliers < m_params.min_pnp_inliers) return false;
+        // refine with inliers only
+        cv::Mat in3d, in2d;
+        for (int idx : inliers) {
+          in3d.push_back(good_3d_points.row(idx));
+          in2d.push_back(good_cur_points.row(idx));
+        }
+        cv::solvePnPRefineLM(in3d, in2d, K, dist, rvec, tvec);
+      } else {
+        cv::solvePnP(
+          good_3d_points, good_cur_points, K, dist,
+          rvec, tvec, cv::SOLVEPNP_ITERATIVE);
+        n_inliers = good_3d_points.rows;
+      }
 
-      // TODO: test this works
-      transform = cv::Vec3d(translation.reshape(1).at<cv::Vec3d>());
+      transform = cv::Vec3d(tvec.reshape(1).at<cv::Vec3d>());
+      rotation = cv::Vec3d(rvec.reshape(1).at<cv::Vec3d>());
       return true;
     } catch (cv::Exception const& e) {
         std::cerr << "[SExhaustive] failed PnP calculations with exception: " <<

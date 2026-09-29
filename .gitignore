@@ -5,3 +5,7 @@ resources/ORBvoc.txt.tar.gz
 resources/ORBvoc_orbslam3.yml.gz
 evaluation/__pycache__/
 .venv/
+# Salida cruda de las corridas (se regenera con evaluation/run_sld.py); solo se versiona metrics.csv
+evaluation/runs/**/*_results.yml
+evaluation/runs/**/*_queries.csv
+evaluation/runs/**/*.log
