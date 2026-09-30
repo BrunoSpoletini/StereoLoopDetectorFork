@@ -65,7 +65,10 @@ def sensor_heading(poses_csv):
     g = poses_csv.with_name(f'gt_{seq}.csv')
     if g.exists():
         q = np.loadtxt(g, delimiter=',', ndmin=2)[:, 5:9]           # qx qy qz qw
-        return Rotation.from_quat(q).as_euler('zyx')[:, 0]
+        # el GT de Rosario es la orientacion de la camara (z = eje optico, ~19 grados hacia abajo):
+        # el yaw es la direccion del eje optico proyectado en el plano
+        R = Rotation.from_quat(q).as_matrix()
+        return np.arctan2(R[:, 1, 2], R[:, 0, 2])
     return None
 
 

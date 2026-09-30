@@ -277,3 +277,18 @@ arriba quedan superadas por esta tabla**:
 - Con el GT bien sincronizado **el 96 % de los loops de p5_aliked tiene pose correcta** y ninguno está a > 10 m.
 - La rareza de Fase 1 ("K rectificada empeora e_vec en movimiento") era un artefacto de la sincronización.
 - Los arreglos de Fase 1 bajan el error del SLD original de 0.20 m a 0.05 m.
+
+---
+
+## 2026-09-30 — Validación en Rosario (parcial: 4 secuencias cortas)
+
+Fix del GT: el cuaternión de Rosario es la orientación **de la cámara** (eje z = óptico, ~19° hacia abajo); el
+yaw se toma como la dirección del eje óptico en el plano (antes se usaba Euler zyx → errores de 20–40°).
+
+| Config (Rosario, 4 sec., sin reajuste) | Loops | TP | Triviales | FP | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|
+| baseline (SLD original) | 3643 | 3441 | 202 | 0 | 32.7 % | 3364 | 0.035 m | 0.8° |
+| p3_salad_c5 | 4001 | 3959 | 42 | 0 | 32.0 % | 3691 | 0.047 m | 1.9° |
+
+- Con ORB en la verificación, SALAD suma +15 % de TP en Rosario pero no cambia la cobertura (la secuencia
+  12-22 13:14 domina; 16:31 sigue en 0 loops). En curso: re-verificación con ALIKED+LightGlue (~45 k candidatos).
