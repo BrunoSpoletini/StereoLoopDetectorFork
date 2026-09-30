@@ -301,6 +301,15 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   params.geom_candidates = cfg(c, "geom_candidates", 1);
   params.strong_inliers = cfg(c, "strong_inliers", 0);
   params.global_retrieval = cfg(c, "global_retrieval", false);
+  params.max_depth_rel_error = cfg(c, "max_depth_rel_error", 0.0);
+  // static mask of the left image (0 = ignore, e.g. the ego vehicle)
+  cv::Mat left_mask;
+  const std::string mask_path = cfg(c, "left_mask", std::string());
+  if (!mask_path.empty())
+  {
+    left_mask = cv::imread(mask_path, cv::IMREAD_GRAYSCALE);
+    if (left_mask.empty()) throw std::string("could not read mask ") + mask_path;
+  }
   // global descriptors (one row per image), written by evaluation/export_global.py
   cv::Mat global_descs;
   if (params.global_retrieval)
@@ -486,6 +495,22 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
       }
     }
     profiler.stop();
+    if (!left_mask.empty())
+    {
+      size_t k = 0;
+      for (size_t j = 0; j < keys1.size(); ++j)
+      {
+        const cv::Point2f &pt = keys1[j].pt;
+        if (left_mask.at<uchar>(std::min((int)pt.y, left_mask.rows - 1),
+                                std::min((int)pt.x, left_mask.cols - 1)) == 0)
+          continue;
+        keys1[k] = keys1[j];
+        descriptors1[k] = descriptors1[j];
+        ++k;
+      }
+      keys1.resize(k);
+      descriptors1.resize(k);
+    }
     std::cout << "[StereoMatcher] found " << keys1.size() << " and " <<
       keys2.size() << " keypoints" << std::endl;
 

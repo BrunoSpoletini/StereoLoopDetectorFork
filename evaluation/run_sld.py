@@ -44,6 +44,12 @@ def run_one(session, config_path, config, outdir, force, binary):
            '--poses-file', str(session.poses), '--type', 'ORB', '--voc', str(VOC),
            '--frequency', str(freq), '--config', str(config_path), '--output', str(prefix),
            '--cache', str(cache_path(session, config))]
+    # configs con claves por dataset (p. ej. left_mask_fieldsafe): se pasan en un yaml derivado
+    per_ds = {k[:-len(session.dataset) - 1]: v for k, v in config.items() if k.endswith('_' + session.dataset)}
+    if per_ds:
+        derived = outdir / f'{session.name}_config.yaml'
+        derived.write_text(yaml.safe_dump({**config, **per_ds}))
+        cmd[cmd.index('--config') + 1] = str(derived)
     if config.get('global_retrieval'):
         cmd += ['--global-desc', str(CACHE / f"{session.dataset}_{session.seq}_{config['global_desc']}.f32")]
     with open(f'{prefix}.log', 'w') as log:
@@ -71,7 +77,9 @@ def main():
 
     # copia congelada del binario (se puede recompilar mientras corre) + commit usado
     binary = outdir / 'demo_stereo'
-    shutil.copy2(BIN, binary)
+    tmp = outdir / 'demo_stereo.tmp'
+    shutil.copy2(BIN, tmp)
+    os.replace(tmp, binary)  # atomico: no falla si otra corrida esta usando el binario viejo
     commit = subprocess.run(['git', 'describe', '--always', '--dirty'], cwd=REPO,
                             capture_output=True, text=True).stdout.strip()
     (outdir / 'info.txt').write_text(f'commit: {commit}\nconfig: {config_path.name}\n{config_path.read_text()}')

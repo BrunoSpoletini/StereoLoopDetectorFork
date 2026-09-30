@@ -1,0 +1,18 @@
+PCA ajustada con 5072 descriptores de FieldSAFE -> salad_pca256_fieldsafe.npz
+fs_static1: (9475, 256) -> fieldsafe_2016-10-25-11-09-42_salad_pca256.f32
+fs_11-34: (3305, 256) -> fieldsafe_2016-10-25-11-34-25_salad_pca256.f32
+fs_dynamic1: (11363, 256) -> fieldsafe_2016-10-25-11-41-21_salad_pca256.f32
+fs_dynamic2: (12182, 256) -> fieldsafe_2016-10-25-12-07-22_salad_pca256.f32
+fs_12-37: (14361, 256) -> fieldsafe_2016-10-25-12-37-57_salad_pca256.f32
+Traceback (most recent call last):
+  File "/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/run_sld.py", line 102, in <module>
+    main()
+  File "/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/run_sld.py", line 74, in main
+    shutil.copy2(BIN, binary)
+  File "/usr/lib/python3.12/shutil.py", line 475, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/usr/lib/python3.12/shutil.py", line 262, in copyfile
+    with open(dst, 'wb') as fdst:
+         ^^^^^^^^^^^^^^^
+OSError: [Errno 26] Text file busy: '/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/runs/baseline/demo_stereo'
+TOTAL_fieldsafe   2613  40     2573   0      1.000   0.001     0.007   32.000      0.140      0.289      5.513

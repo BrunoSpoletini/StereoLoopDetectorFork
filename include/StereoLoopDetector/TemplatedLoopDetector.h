@@ -209,6 +209,10 @@ public:
     /// Retrieve candidates by cosine similarity of a global image descriptor
     /// (given to detectLoop) instead of the BoW database query
     bool global_retrieval = false;
+    /// If > 0, discard triangulated points whose expected relative depth
+    /// error (for 0.5 px of disparity noise) exceeds this value, i.e.
+    /// z > max_depth_rel_error * f * B / 0.5
+    double max_depth_rel_error = 0;
   
     /**
      * Creates parameters by default
@@ -1607,10 +1611,19 @@ bool TemplatedLoopDetector<TDescriptor, F>::
     cv::Mat good_3d_points, good_cur_points;
     std::vector<float> distances;
     stereo_3d_points.convertTo(stereo_3d_points, CV_64F);
+    double max_depth = 0;
+    if (m_params.max_depth_rel_error > 0) {
+      cv::Mat P2;
+      m_params.stereo_params.right_projection.convertTo(P2, CV_64F);
+      const double fB = -P2.at<double>(0, 3);
+      max_depth = m_params.max_depth_rel_error * fB / 0.5;
+    }
     for (int row = 0; row < stereo_3d_points.rows; row++) {
       float dist = cv::norm(stereo_3d_points.row(row));
       if (m_params.require_positive_depth &&
           stereo_3d_points.at<double>(row, 2) <= 0)
+        continue;
+      if (max_depth > 0 && stereo_3d_points.at<double>(row, 2) > max_depth)
         continue;
       if ((dist > this->m_params.near_distance) && 
           (dist < this->m_params.far_distance))

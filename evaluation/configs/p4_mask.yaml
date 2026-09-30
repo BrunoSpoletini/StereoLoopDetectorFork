@@ -1,6 +1,4 @@
-commit: 51fc95a-dirty
-config: p2_excl.yaml
-# Fase 2: p1_all + motion_step: 0.25 exclusion_distance: 20.0
+# Fase 4: p2_excl + mascara del tractor (FieldSAFE)
 near_distance: 0.4
 pnp_rectified_intrinsics: true
 pnp_ransac: true
@@ -10,3 +8,4 @@ stereo_min_disparity: 0.5
 require_positive_depth: true
 motion_step: 0.25
 exclusion_distance: 20.0
+left_mask_fieldsafe: /home/bruno/Desktop/tesina/StereoLoopDetectorFork/resources/fs_left_mask.png

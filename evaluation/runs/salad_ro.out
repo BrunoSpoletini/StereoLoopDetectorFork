@@ -1,0 +1,71 @@
+Using cache found in /home/bruno/.cache/torch/hub/serizba_salad_main
+Using cache found in /home/bruno/.cache/torch/hub/facebookresearch_dinov2_main
+/home/bruno/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/home/bruno/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/home/bruno/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/global_desc.py:47: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  ims.append(torch.from_numpy(np.asarray(im)).permute(2, 0, 1).float() / 255)
+  ro_1222_1314: 0/13745
+  ro_1222_1314: 1600/13745
+  ro_1222_1314: 3200/13745
+  ro_1222_1314: 4800/13745
+  ro_1222_1314: 6400/13745
+  ro_1222_1314: 8000/13745
+  ro_1222_1314: 9600/13745
+  ro_1222_1314: 11200/13745
+  ro_1222_1314: 12800/13745
+ro_1222_1314: /home/bruno/Desktop/tesina/sld_cache/rosario_2023-12-22-13-14-16_salad.npy
+  ro_1222_1429: 0/14844
+  ro_1222_1429: 1600/14844
+  ro_1222_1429: 3200/14844
+  ro_1222_1429: 4800/14844
+  ro_1222_1429: 6400/14844
+  ro_1222_1429: 8000/14844
+  ro_1222_1429: 9600/14844
+  ro_1222_1429: 11200/14844
+  ro_1222_1429: 12800/14844
+  ro_1222_1429: 14400/14844
+ro_1222_1429: /home/bruno/Desktop/tesina/sld_cache/rosario_2023-12-22-14-29-43_salad.npy
+  ro_1222_1631: 0/13432
+  ro_1222_1631: 1600/13432
+  ro_1222_1631: 3200/13432
+  ro_1222_1631: 4800/13432
+  ro_1222_1631: 6400/13432
+  ro_1222_1631: 8000/13432
+  ro_1222_1631: 9600/13432
+  ro_1222_1631: 11200/13432
+  ro_1222_1631: 12800/13432
+ro_1222_1631: /home/bruno/Desktop/tesina/sld_cache/rosario_2023-12-22-16-31-08_salad.npy
+  ro_1226_1339: 0/36708
+  ro_1226_1339: 1600/36708
+  ro_1226_1339: 3200/36708
+  ro_1226_1339: 4800/36708
+  ro_1226_1339: 6400/36708
+  ro_1226_1339: 8000/36708
+  ro_1226_1339: 9600/36708
+  ro_1226_1339: 11200/36708
+  ro_1226_1339: 12800/36708
+  ro_1226_1339: 14400/36708
+  ro_1226_1339: 16000/36708
+  ro_1226_1339: 17600/36708
+  ro_1226_1339: 19200/36708
+  ro_1226_1339: 20800/36708
+  ro_1226_1339: 22400/36708
+  ro_1226_1339: 24000/36708
+  ro_1226_1339: 25600/36708
+  ro_1226_1339: 27200/36708
+  ro_1226_1339: 28800/36708
+  ro_1226_1339: 30400/36708
+  ro_1226_1339: 32000/36708
+  ro_1226_1339: 33600/36708
+  ro_1226_1339: 35200/36708
+ro_1226_1339: /home/bruno/Desktop/tesina/sld_cache/rosario_2023-12-26-13-39-43_salad.npy
+  ro_1226_1510: 0/11476
+  ro_1226_1510: 1600/11476
+  ro_1226_1510: 3200/11476
+  ro_1226_1510: 4800/11476
+  ro_1226_1510: 6400/11476
+  ro_1226_1510: 8000/11476
