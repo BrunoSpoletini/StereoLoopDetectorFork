@@ -86,3 +86,41 @@ Rosario es muy desparejo: 12-22 13:14 da 3375 TP (cobertura 80 %); las otras 3 d
 
 **Próximo paso**: Fase 2 sobre `p1_all`: exclusión por distancia con odometría visual, verificación sin
 chequeo cruzado L-L/R-R, ratio test 0.8, 3 candidatos, bypass temporal con ≥ 60 inliers.
+
+---
+
+## 2026-09-30 — Fase 2: gating por distancia y verificación más permisiva (FieldSAFE, 3 sesiones)
+
+| Config (sobre p1_all) | Loops | TP | Triviales | FP | Precisión | Cobertura | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|
+| baseline (original) | 517 | 61 | 456 | 0 | 1.00 | 1.7 % | 0.50 m | 8.5° |
+| p1_all | 494 | 40 | 454 | 0 | 1.00 | 1.1 % | 0.29 m | 4.8° |
+| **p2_excl** (exclusión 20 m por odometría visual) | 39 | 39 | **0** | 0 | 1.00 | 1.2 % | 0.27 m | 4.8° |
+| p2_nocross (sin chequeo L-L ∧ R-R) | 565 | 93 | 472 | 0 | 1.00 | 1.8 % | 0.55 m | 7.0° |
+| p2_ratio08 (ratio test 0.8) | 562 | 90 | 472 | 0 | 1.00 | 1.8 % | 0.56 m | 7.1° |
+| p2_cands3 (3 candidatos) | 497 | 43 | 454 | 0 | 1.00 | 1.1 % | 0.31 m | 4.8° |
+| p2_bypass (≥ 60 inliers sin consistencia temporal) | 505 | 40 | 465 | 0 | 1.00 | 1.1 % | 0.29 m | 4.8° |
+| p2_combo (todo) | 165 | **160** | 0 | 5 | 0.97 | 3.2 % | 0.65 m | 8.7° |
+
+- La **odometría visual estéreo elimina el 100 % de los loops triviales** sin perder TP y sin GPS.
+- Relajar la geometría da ~2.3× más TP pero empeora la pose y el recall sigue < 1 %.
+
+**Embudo sobre los frames revisita GT** (`funnel.py`): en qué etapa se pierde cada revisita y si el mejor
+candidato de BoW estaba a < 3 m.
+
+| | FieldSAFE (p2_combo) | Rosario (baseline) |
+|---|---|---|
+| Frames revisita | 22 000 | 22 800 |
+| Candidato BoW correcto | **~8 %** | ~36 % |
+| Perdidos por consistencia temporal | 71 % | 44 % |
+| Perdidos por geometría | 25 % | 35 % |
+
+→ **En FieldSAFE el cuello de botella es la recuperación**: el 92 % de los candidatos de BoW son de otro
+lugar (aliasing), y ningún ajuste posterior puede recuperar esos loops.
+
+**Datos**: extraídas y preparadas Rosario 12-26 13:39 (2.2 km) y 15:48 (1.7 km), FieldSAFE 11:34 (110 m, poco
+útil) y 12:37 (4.7 km).
+
+**Próximo paso (Fase 3)**: recuperación con descriptores globales aprendidos (DINOv2-SALAD) y medir recall@K
+offline contra BoW; si mejora, integrarlo en el detector (reemplazo o fusión con BoW) manteniendo la
+verificación estéreo.

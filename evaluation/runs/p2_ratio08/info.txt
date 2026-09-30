@@ -1,0 +1,11 @@
+commit: 0339a23
+config: p2_ratio08.yaml
+# Fase 2: p1_all + max_neighbor_ratio: 0.8
+near_distance: 0.4
+pnp_rectified_intrinsics: true
+pnp_ransac: true
+pnp_reprojection_error: 3.0
+min_pnp_inliers: 20
+stereo_min_disparity: 0.5
+require_positive_depth: true
+max_neighbor_ratio: 0.8

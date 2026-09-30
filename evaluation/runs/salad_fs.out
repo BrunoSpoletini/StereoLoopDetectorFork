@@ -1,0 +1,12 @@
+Using cache found in /home/bruno/.cache/torch/hub/serizba_salad_main
+Using cache found in /home/bruno/.cache/torch/hub/facebookresearch_dinov2_main
+/home/bruno/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/home/bruno/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/home/bruno/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/global_desc.py:47: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  ims.append(torch.from_numpy(np.asarray(im)).permute(2, 0, 1).float() / 255)
+  fs_static1: 0/9475
+  fs_static1: 1600/9475

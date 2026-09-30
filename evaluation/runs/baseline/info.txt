@@ -1,0 +1,4 @@
+commit: 0339a23
+config: baseline.yaml
+# Configuracion original del paper (todos los defaults del demo)
+{}
