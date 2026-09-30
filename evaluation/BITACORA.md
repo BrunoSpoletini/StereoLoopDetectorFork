@@ -146,3 +146,25 @@ más similares está a < 3 m). PCA 256-D ajustada **solo con FieldSAFE**; en Ros
 **Incidente**: un reinicio de la sesión mató los procesos en segundo plano; se relanzaron con `setsid`
 (`evaluation/queue.sh`). En cola: p3_salad, p3_salad_c5, p3_salad_combo, p4_mask, p4_depth, p4_hybrid,
 baseline en Rosario completo. En paralelo: extracción de Rosario a 1280×720 en el disco raíz.
+
+---
+
+## 2026-09-30 — Fase 3: SALAD integrado → el cuello de botella pasa a la verificación
+
+p3_salad (p2_excl + recuperación SALAD) en FieldSAFE (5 ses.): **33 TP** (p2_excl: 39), 0 FP.
+Embudo: candidato correcto 26 % (BoW: 7 %), la consistencia temporal ya no frena (pasa 81 %), pero la
+**verificación ORB rechaza 7581 candidatos correctos** (mediana de 7 matches L-L en pares correctos).
+
+**Experimento offline** (`verify_offline.py`, 150 pares correctos rechazados por ORB vs 150 pares a > 10 m;
+inliers de matriz esencial RANSAC a 1 px, máscara del tractor):
+
+| Método | Inliers med (correctos) | Inliers med (incorrectos) | Recall @ 0 FP | Recall @ 1 % FP |
+|---|---|---|---|---|
+| ORB (2000, ratio 0.8) | 76 | 32 | 0.11 | 0.15 |
+| SuperPoint + LightGlue | 219 | 118 | 0.77 | 0.79 |
+| DISK + LightGlue | 312 | 41 | 0.86 | 0.86 |
+| **ALIKED + LightGlue** | **384** | 86 | **0.95** | **0.95** |
+
+→ Features aprendidas + LightGlue recuperan el 95 % de los loops que ORB descartaba, sin falsos positivos
+en la muestra. Próximo paso: etapa de verificación ALIKED+LightGlue con pose métrica (estéreo + PnP) sobre
+los candidatos de SLD+SALAD, y evaluación completa.
