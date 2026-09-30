@@ -82,7 +82,8 @@ public:
     StereoParameters &stereoparams, bool show, float frequency,
     const YAML::Node &config = YAML::Node(),
     const std::string &output_prefix = "",
-    const std::string &cache_path = "");
+    const std::string &cache_path = "",
+    const std::string &global_desc_path = "");
     
   ~demoDetectorStereo(){}
 
@@ -121,6 +122,7 @@ protected:
   YAML::Node m_config;
   std::string m_output_prefix;
   std::string m_cache_path;
+  std::string m_global_desc_path;
 };
 
 // ---------------------------------------------------------------------------
@@ -131,11 +133,12 @@ demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::demoDetectorStereo
    const std::string &imagedir1, const std::string &imagedir2,
    const std::string &posefile, StereoParameters &stereoparams, 
    bool show, float frequency, const YAML::Node &config,
-   const std::string &output_prefix, const std::string &cache_path)
+   const std::string &output_prefix, const std::string &cache_path,
+   const std::string &global_desc_path)
   : m_vocfile(vocfile), m_imagedir1(imagedir1), m_imagedir2(imagedir2),
     m_posefile(posefile), m_stereoparams(stereoparams), m_show(show),
     m_frequency(frequency), m_config(config), m_output_prefix(output_prefix),
-    m_cache_path(cache_path)
+    m_cache_path(cache_path), m_global_desc_path(global_desc_path)
 {
 }
 
@@ -297,6 +300,20 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   params.exclusion_distance = cfg(c, "exclusion_distance", 0.0);
   params.geom_candidates = cfg(c, "geom_candidates", 1);
   params.strong_inliers = cfg(c, "strong_inliers", 0);
+  params.global_retrieval = cfg(c, "global_retrieval", false);
+  // global descriptors (one row per image), written by evaluation/export_global.py
+  cv::Mat global_descs;
+  if (params.global_retrieval)
+  {
+    std::ifstream gd(m_global_desc_path, std::ios::binary);
+    if (!gd.is_open())
+      throw std::string("global_retrieval needs --global-desc");
+    int32_t shape[2];
+    gd.read((char*)shape, sizeof(shape));
+    global_descs.create(shape[0], shape[1], CV_32F);
+    gd.read((char*)global_descs.data, (size_t)shape[0] * shape[1] * sizeof(float));
+    cout << "Loaded " << shape[0] << " global descriptors of dim " << shape[1] << endl;
+  }
   // motion gating with stereo visual odometry (0 disables it)
   const double motion_step = cfg(c, "motion_step", 0.0);
   const bool keyframes_only = cfg(c, "keyframes_only", false);
@@ -520,7 +537,8 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
     
     profiler.profile("detection");
     detector.detectLoop(
-        s_keys1, s_descriptors1, result, s_keys2, s_descriptors2, odometer);
+        s_keys1, s_descriptors1, result, s_keys2, s_descriptors2, odometer,
+        params.global_retrieval ? global_descs.row(i) : cv::Mat());
     profiler.stop();
     entry_image.push_back((int)i);
     if (result.status >= NO_GROUPS || result.status == LOOP_DETECTED)

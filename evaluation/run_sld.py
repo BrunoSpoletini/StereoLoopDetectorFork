@@ -44,6 +44,8 @@ def run_one(session, config_path, config, outdir, force, binary):
            '--poses-file', str(session.poses), '--type', 'ORB', '--voc', str(VOC),
            '--frequency', str(freq), '--config', str(config_path), '--output', str(prefix),
            '--cache', str(cache_path(session, config))]
+    if config.get('global_retrieval'):
+        cmd += ['--global-desc', str(CACHE / f"{session.dataset}_{session.seq}_{config['global_desc']}.f32")]
     with open(f'{prefix}.log', 'w') as log:
         p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=ENV, text=True)
         # el log completo es enorme (varias lineas por imagen): guardar solo la cola
@@ -90,7 +92,7 @@ def main():
         rows.append(dict(config=name, session=f'TOTAL_{ds}', dataset=ds, **summarize(g.to_dict('records'))))
     df = pd.DataFrame(rows)
     df.to_csv(outdir / 'metrics.csv', index=False)
-    cols = ['session', 'loops', 'tp', 'trivial', 'fp', 'precision', 'recall', 'coverage',
+    cols = ['session', 'loops', 'tp', 'trivial', 'fp', 'precision', 'recall', 'coverage', 'pose_ok',
             'e_mag_med', 'e_vec_med', 'e_yaw_med']
     with pd.option_context('display.width', 200, 'display.float_format', '{:.3f}'.format):
         print(df[[c for c in cols if c in df]].to_string(index=False))

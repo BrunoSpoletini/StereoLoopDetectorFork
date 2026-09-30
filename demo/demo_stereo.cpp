@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
     std::string path_calibration;
     std::string poses_path;
     std::string type, voc_path;
-    std::string config_path, output_prefix, cache_path;
+    std::string config_path, output_prefix, cache_path, global_desc_path;
     float frequency;
     // Program Options (BOOST library w/special compilation needed)
     po::options_description options_desc(
@@ -132,6 +132,9 @@ int main(int argc, char* argv[])
         ("cache", po::value(&cache_path), 
             "binary feature cache file (ORB only): read if it exists, "
             "written otherwise")
+        ("global-desc", po::value(&global_desc_path),
+            "binary file with one global descriptor per image (for "
+            "global_retrieval)")
     ;
 
     // Parse program options
@@ -172,14 +175,16 @@ int main(int argc, char* argv[])
         vocabulary = options_vm.count("voc")? voc_path : BRIEF_VOC_FILE;
         demoDetectorStereo<BriefVocabulary, BriefLoopDetector, FBrief::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show, frequency, config, output_prefix, cache_path);
+                 sparams, show, frequency, config, output_prefix, cache_path,
+                 global_desc_path);
         BriefExtractor extractor(BRIEF_PATTERN_FILE);
         demo.run(type, extractor);
         } else if (type == "ORB") {
         vocabulary = options_vm.count("voc")? voc_path : ORB_VOC_FILE;
         demoDetectorStereo<OrbVocabulary, OrbLoopDetector, FORB::TDescriptor>
             demo(vocabulary, path_left, path_right, poses_path,
-                 sparams, show, frequency, config, output_prefix, cache_path);
+                 sparams, show, frequency, config, output_prefix, cache_path,
+                 global_desc_path);
         OrbExtractor extractor(cfg(config, "orb_nfeatures", ORB_NFEATURES),
             ORB_SCALEFACTOR, ORB_NLEVELS);
         demo.run(type, extractor);

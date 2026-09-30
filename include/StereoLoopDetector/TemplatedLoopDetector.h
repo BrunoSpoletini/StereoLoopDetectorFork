@@ -206,6 +206,9 @@ public:
     /// If > 0, accept loops without temporal consistency when the RANSAC
     /// PnP has at least this many inliers
     int strong_inliers = 0;
+    /// Retrieve candidates by cosine similarity of a global image descriptor
+    /// (given to detectLoop) instead of the BoW database query
+    bool global_retrieval = false;
   
     /**
      * Creates parameters by default
@@ -326,7 +329,8 @@ public:
     DetectionResult &match,
     const std::vector<cv::KeyPoint> &keys2 = std::vector<cv::KeyPoint>(),
     const std::vector<TDescriptor> &descriptors2 = std::vector<TDescriptor>(),
-    double odometer = -1);
+    double odometer = -1,
+    const cv::Mat &global_desc = cv::Mat());
 
   /**
    * Resets the detector and clears the database, such that the next entry
@@ -609,6 +613,9 @@ protected:
 
   /// Odometer (m) of every entry, for the distance based exclusion window
   vector<double> m_odometers;
+
+  /// Global descriptor of every entry (one row each), for global retrieval
+  cv::Mat m_global_descs;
   
   /// Temporal consistency window
   tTemporalWindow m_window;
@@ -817,7 +824,8 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   DetectionResult &match,
   const std::vector<cv::KeyPoint> &keys2,
   const std::vector<TDescriptor> &descriptors2,
-  double odometer)
+  double odometer,
+  const cv::Mat &global_desc)
 {
   // assert(keys.size() == descriptors.size())
   // assert(keys2.size() == descriptors2.size());
@@ -852,6 +860,11 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
       odometer - m_params.exclusion_distance) - m_odometers.begin()) - 1;
   }
   m_odometers.push_back(odometer);
+  if (m_params.global_retrieval)
+  {
+    CV_Assert(global_desc.rows == 1 && global_desc.type() == CV_32F);
+    m_global_descs.push_back(global_desc);
+  }
 
   if((!by_distance && (int)entry_id <= m_params.dislocal) ||
      (by_distance && max_id < 0))
@@ -865,7 +878,20 @@ bool TemplatedLoopDetector<TDescriptor, F>::detectLoop(
   else
   {
     QueryResults qret;
-    m_database->query(bowvec, qret, m_params.max_db_results, max_id);
+    if (m_params.global_retrieval)
+    {
+      // cosine similarity against all the entries up to max_id
+      cv::Mat sims = m_global_descs.rowRange(0, max_id + 1) * global_desc.t();
+      std::vector<int> order(sims.rows);
+      std::iota(order.begin(), order.end(), 0);
+      const int n = std::min((int)order.size(), m_params.max_db_results);
+      std::partial_sort(order.begin(), order.begin() + n, order.end(),
+        [&](int a, int b) { return sims.at<float>(a) > sims.at<float>(b); });
+      for (int r = 0; r < n; ++r)
+        qret.push_back(Result(order[r], sims.at<float>(order[r])));
+    }
+    else
+      m_database->query(bowvec, qret, m_params.max_db_results, max_id);
 
     // update database
     m_database->add(bowvec, featvec); // returns entry_id

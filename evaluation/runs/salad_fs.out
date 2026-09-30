@@ -10,3 +10,16 @@ Using cache found in /home/bruno/.cache/torch/hub/facebookresearch_dinov2_main
   ims.append(torch.from_numpy(np.asarray(im)).permute(2, 0, 1).float() / 255)
   fs_static1: 0/9475
   fs_static1: 1600/9475
+  fs_static1: 3200/9475
+  fs_static1: 4800/9475
+  fs_static1: 6400/9475
+  fs_static1: 8000/9475
+fs_static1: /home/bruno/Desktop/tesina/sld_cache/fieldsafe_2016-10-25-11-09-42_salad.npy
+  fs_11-34: 0/3305
+  fs_11-34: 1600/3305
+  fs_11-34: 3200/3305
+fs_11-34: /home/bruno/Desktop/tesina/sld_cache/fieldsafe_2016-10-25-11-34-25_salad.npy
+  fs_dynamic1: 0/11363
+  fs_dynamic1: 1600/11363
+  fs_dynamic1: 3200/11363
+  fs_dynamic1: 4800/11363
