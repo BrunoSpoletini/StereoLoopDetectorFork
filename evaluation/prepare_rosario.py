@@ -21,9 +21,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('seq')
     ap.add_argument('--outdir', default=str(ROOT / 'prepared'))
+    ap.add_argument('--extracted', default=str(ROOT / 'sequences_extracted'),
+                    help='raiz de las imagenes extraidas (p. ej. la version a resolucion completa)')
     a = ap.parse_args()
 
-    ext = ROOT / 'sequences_extracted' / a.seq
+    ext = Path(a.extracted) / a.seq
     t_img = np.loadtxt(ext / 'times_image_0.txt')
     gt = np.loadtxt(ROOT / 'sequences_plain' / 'mins_tum' / f'{a.seq}_mins_tum.csv')
     gt = gt[np.argsort(gt[:, 0])]

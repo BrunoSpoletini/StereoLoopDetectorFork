@@ -1,0 +1,16 @@
+commit: 521728f-dirty
+config: p4_hybrid.yaml
+# Fase 4: p2_excl + verificacion hibrida cerca/lejos (lejanos como rayos) + filtro de profundidad 10 %
+near_distance: 0.4
+pnp_rectified_intrinsics: true
+pnp_ransac: true
+pnp_reprojection_error: 3.0
+min_pnp_inliers: 20
+stereo_min_disparity: 0.5
+require_positive_depth: true
+motion_step: 0.25
+exclusion_distance: 20.0
+max_depth_rel_error: 0.1
+hybrid_far: true
+far_inlier_px: 2.0
+min_near_inliers: 8

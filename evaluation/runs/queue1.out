@@ -7,3 +7,7 @@ TOTAL_fieldsafe    418 374        1  43      0.897   0.011     0.042   95.000   
 == p4_mask (fieldsafe) 16:54
 TOTAL_fieldsafe     36  36        0   0      1.000   0.001     0.009   21.000      0.341      0.436      7.319
 == p4_depth (fieldsafe) 17:09
+TOTAL_fieldsafe     19  19        0   0      1.000   0.001     0.005   18.000      0.149      0.221      4.275
+== p4_hybrid (fieldsafe) 17:26
+TOTAL_fieldsafe     53  53        0   0      1.000   0.002     0.010   32.000      0.237      0.415      6.878
+== baseline (rosario) 17:42

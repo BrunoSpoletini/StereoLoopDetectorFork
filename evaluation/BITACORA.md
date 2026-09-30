@@ -183,3 +183,19 @@ de los ~37 k candidatos de p3_salad_c5 con ALIKED+LightGlue + PnP estéreo + ray
 
 - Con ORB, aflojar la verificación sube TP (374) pero la precisión cae a 0.90 y la pose se degrada: ORB no
   alcanza para verificar en pasto. La máscara no cambia nada con BoW+ORB (se re-evaluará con SALAD/ALIKED).
+
+---
+
+## 2026-09-30 — Fase 4: features lejanos (FieldSAFE, 5 ses., sobre p2_excl)
+
+| Config | TP | FP | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|
+| p2_excl (referencia) | 39 | 0 | 0.8 % | 30 | 0.28 m | 5.5° |
+| p4_depth (descartar puntos con error de profundidad > 10 %) | 19 | 0 | 0.5 % | 18 | **0.22 m** | **4.3°** |
+| **p4_hybrid** (p4_depth + lejanos como rayos de profundidad desconocida) | **53** | 0 | 1.0 % | **32** | 0.42 m | 6.9° |
+
+- Tirar los puntos lejanos mejora la pose pero pierde la mitad de los loops; usarlos como **rayos** los
+  recupera y suma: +36 % de TP respecto de la referencia, con precisión 1.00. Confirma que los lejanos
+  sirven para verificar (rotación / soporte) aunque su profundidad estéreo no sirva.
+- Rosario a 1280×720: extraída 12-22 13:14 (mismos 13 745 frames que la versión reducida);
+  calibración `resources/rosario_fullres_stereo_parameters.yaml` (intrínsecos ×2, del `camera_info`).

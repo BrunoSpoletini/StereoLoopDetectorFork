@@ -5,6 +5,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 FS = Path('/mnt/datalake/datasets/fieldsafe/prepared')
 RO = Path('/mnt/datalake/datasets/rosariov2/prepared')
+ROF = Path('/home/bruno/Desktop/tesina/datasets/rosariov2_fullres/prepared')  # 1280x720
 CACHE = Path('/home/bruno/Desktop/tesina/sld_cache')
 
 
@@ -41,6 +42,10 @@ def _ro(name, seq):
     return Session(name, 'rosario', seq, RO, REPO / 'resources/rosario_stereo_parameters.yaml', 15.0)
 
 
+def _rof(name, seq):
+    return Session(name, 'rosariofr', seq, ROF, REPO / 'resources/rosario_fullres_stereo_parameters.yaml', 15.0)
+
+
 SESSIONS = [
     _fs('fs_static1', '2016-10-25-11-09-42'),
     _fs('fs_11-34', '2016-10-25-11-34-25'),
@@ -53,12 +58,18 @@ SESSIONS = [
     _ro('ro_1226_1339', '2023-12-26-13-39-43'),
     _ro('ro_1226_1510', '2023-12-26-15-10-15'),
     _ro('ro_1226_1548', '2023-12-26-15-48-38'),
+    _rof('rof_1222_1314', '2023-12-22-13-14-16'),
+    _rof('rof_1222_1429', '2023-12-22-14-29-43'),
+    _rof('rof_1222_1631', '2023-12-22-16-31-08'),
+    _rof('rof_1226_1339', '2023-12-26-13-39-43'),
+    _rof('rof_1226_1510', '2023-12-26-15-10-15'),
+    _rof('rof_1226_1548', '2023-12-26-15-48-38'),
 ]
 
 
 def select(which):
     """which: 'fieldsafe', 'rosario', 'all' o lista de nombres separados por coma."""
-    if which in ('fieldsafe', 'rosario'):
+    if which in ('fieldsafe', 'rosario', 'rosariofr'):
         out = [s for s in SESSIONS if s.dataset == which]
     elif which == 'all':
         out = list(SESSIONS)
