@@ -168,3 +168,7 @@ inliers de matriz esencial RANSAC a 1 px, máscara del tractor):
 → Features aprendidas + LightGlue recuperan el 95 % de los loops que ORB descartaba, sin falsos positivos
 en la muestra. Próximo paso: etapa de verificación ALIKED+LightGlue con pose métrica (estéreo + PnP) sobre
 los candidatos de SLD+SALAD, y evaluación completa.
+
+**p3_salad_c5** (SALAD + verificar 5 candidatos, ORB): 56 TP, 1 FP (p2_excl: 39 TP). En curso: re-verificación
+de los ~37 k candidatos de p3_salad_c5 con ALIKED+LightGlue + PnP estéreo + rayos lejanos
+(`learned_verify.py`, guarda puntajes por candidato para barrer umbrales / curvas PR).
