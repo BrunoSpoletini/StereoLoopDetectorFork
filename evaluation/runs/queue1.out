@@ -3,3 +3,7 @@ TOTAL_fieldsafe     33  33        0   0      1.000   0.001     0.009   15.000   
 == p3_salad_c5 (fieldsafe) 16:11
 TOTAL_fieldsafe     57  56        0   1      0.982   0.002     0.013   22.000      0.520      0.629     10.672
 == p3_salad_combo (fieldsafe) 16:34
+TOTAL_fieldsafe    418 374        1  43      0.897   0.011     0.042   95.000      0.591      1.065     11.618
+== p4_mask (fieldsafe) 16:54
+TOTAL_fieldsafe     36  36        0   0      1.000   0.001     0.009   21.000      0.341      0.436      7.319
+== p4_depth (fieldsafe) 17:09

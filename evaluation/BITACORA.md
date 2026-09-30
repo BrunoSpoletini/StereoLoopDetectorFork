@@ -172,3 +172,14 @@ los candidatos de SLD+SALAD, y evaluación completa.
 **p3_salad_c5** (SALAD + verificar 5 candidatos, ORB): 56 TP, 1 FP (p2_excl: 39 TP). En curso: re-verificación
 de los ~37 k candidatos de p3_salad_c5 con ALIKED+LightGlue + PnP estéreo + rayos lejanos
 (`learned_verify.py`, guarda puntajes por candidato para barrer umbrales / curvas PR).
+
+| Config (FieldSAFE, 5 ses.) | Loops | TP | FP | Precisión | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|
+| p2_excl | 39 | 39 | 0 | 1.00 | 0.8 % | 30 | 0.28 m | 5.5° |
+| p3_salad | 33 | 33 | 0 | 1.00 | 0.9 % | 15 | 0.67 m | 8.5° |
+| p3_salad_c5 | 57 | 56 | 1 | 0.98 | 1.3 % | 22 | 0.63 m | 10.7° |
+| p3_salad_combo (+ verificación ORB permisiva) | 418 | 374 | 43 | 0.90 | 4.2 % | 95 | 1.07 m | 11.6° |
+| p4_mask (p2_excl + máscara del tractor) | 36 | 36 | 0 | 1.00 | 0.9 % | 21 | 0.44 m | 7.3° |
+
+- Con ORB, aflojar la verificación sube TP (374) pero la precisión cae a 0.90 y la pose se degrada: ORB no
+  alcanza para verificar en pasto. La máscara no cambia nada con BoW+ORB (se re-evaluará con SALAD/ALIKED).

@@ -1,0 +1,13 @@
+commit: a167437-dirty
+config: p4_depth.yaml
+# Fase 4: p2_excl + filtro de profundidad por error relativo (10 % con 0.5 px)
+near_distance: 0.4
+pnp_rectified_intrinsics: true
+pnp_ransac: true
+pnp_reprojection_error: 3.0
+min_pnp_inliers: 20
+stereo_min_disparity: 0.5
+require_positive_depth: true
+motion_step: 0.25
+exclusion_distance: 20.0
+max_depth_rel_error: 0.1
