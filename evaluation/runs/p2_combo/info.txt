@@ -1,4 +1,4 @@
-commit: 0339a23
+commit: 8041489-dirty
 config: p2_combo.yaml
 # Fase 2: p1_all + motion_step: 0.25 exclusion_distance: 20.0 stereo_cross_check: false max_neighbor_ratio: 0.8 geom_candidates: 3 strong_inliers: 60
 near_distance: 0.4

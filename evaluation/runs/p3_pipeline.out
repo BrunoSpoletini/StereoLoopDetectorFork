@@ -16,3 +16,4 @@ Traceback (most recent call last):
          ^^^^^^^^^^^^^^^
 OSError: [Errno 26] Text file busy: '/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/runs/baseline/demo_stereo'
 TOTAL_fieldsafe   2613  40     2573   0      1.000   0.001     0.007   32.000      0.140      0.289      5.513
+TOTAL_fieldsafe     39  39        0   0      1.000   0.001     0.008   30.000      0.135      0.275      5.469

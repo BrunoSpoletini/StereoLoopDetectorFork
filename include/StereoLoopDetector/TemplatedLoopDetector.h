@@ -213,6 +213,14 @@ public:
     /// error (for 0.5 px of disparity noise) exceeds this value, i.e.
     /// z > max_depth_rel_error * f * B / 0.5
     double max_depth_rel_error = 0;
+    /// Hybrid verification: points beyond the reliable stereo range are not
+    /// dropped but used as bearings with unknown depth (> reliable range);
+    /// they add support (inliers) and constrain the rotation
+    bool hybrid_far = false;
+    /// Inlier threshold (px) for far points in hybrid mode
+    double far_inlier_px = 2.0;
+    /// Minimum number of near (metric) PnP inliers in hybrid mode
+    int min_near_inliers = 8;
   
     /**
      * Creates parameters by default
@@ -578,6 +586,15 @@ protected:
     const std::vector<TDescriptor> &cur_descriptors2,
     cv::Vec3d &transform, cv::Vec3d &rotation,
     int &n_matches, int &n_inliers) const;
+
+  /**
+   * Counts far points (bearing only, depth unknown but >= zmin) consistent
+   * with the pose (rvec, tvec): the residual of each point is the minimum
+   * reprojection error over all depths in [zmin, inf).
+   */
+  static int countFarInliers(const std::vector<cv::Point2f> &old_pts,
+    const std::vector<cv::Point2f> &cur_pts, const cv::Mat &K,
+    const cv::Mat &rvec, const cv::Mat &tvec, double zmin, double thr);
 
   /**
    * Calculate the matches between the descriptors A[i_A] and the descriptors
@@ -1609,6 +1626,7 @@ bool TemplatedLoopDetector<TDescriptor, F>::
     // NOTE: we assume the left camera set at the (0,0,0) and
     //  the triangulated points are expressed in the left camera frame
     cv::Mat good_3d_points, good_cur_points;
+    std::vector<cv::Point2f> far_old_pts, far_cur_pts;
     std::vector<float> distances;
     stereo_3d_points.convertTo(stereo_3d_points, CV_64F);
     double max_depth = 0;
@@ -1623,8 +1641,16 @@ bool TemplatedLoopDetector<TDescriptor, F>::
       if (m_params.require_positive_depth &&
           stereo_3d_points.at<double>(row, 2) <= 0)
         continue;
-      if (max_depth > 0 && stereo_3d_points.at<double>(row, 2) > max_depth)
+      const bool beyond = (max_depth > 0 &&
+          stereo_3d_points.at<double>(row, 2) > max_depth) ||
+        dist >= this->m_params.far_distance;
+      if (beyond || stereo_3d_points.at<double>(row, 2) <= 0)
+      {
+        // far or badly triangulated point: keep only its bearing
+        far_old_pts.push_back(left_matches[row].pt);
+        far_cur_pts.push_back(cur_matches[row].pt);
         continue;
+      }
       if ((dist > this->m_params.near_distance) && 
           (dist < this->m_params.far_distance))
       {
@@ -1635,7 +1661,9 @@ bool TemplatedLoopDetector<TDescriptor, F>::
     }
 
     // Check enough 3D points to perform PnP
-    if (!(good_3d_points.rows >= (m_params.min_Fpoints)))
+    const int min_3d = m_params.hybrid_far ? m_params.min_near_inliers
+                                           : m_params.min_Fpoints;
+    if (!(good_3d_points.rows >= min_3d))
     {
       return false;
     }
@@ -1652,7 +1680,29 @@ bool TemplatedLoopDetector<TDescriptor, F>::
         dist = m_params.stereo_params.left_dist_coeffs;
       }
       cv::Mat rvec, tvec;
-      if (m_params.pnp_ransac) {
+      if (m_params.hybrid_far && m_params.pnp_ransac) {
+        std::vector<int> inliers;
+        bool ok = cv::solvePnPRansac(
+          good_3d_points, good_cur_points, K, dist, rvec, tvec, false,
+          200, (float)m_params.pnp_reprojection_error, 0.999, inliers,
+          cv::SOLVEPNP_EPNP);
+        if (!ok || (int)inliers.size() < m_params.min_near_inliers) {
+          n_inliers = (int)inliers.size();
+          return false;
+        }
+        cv::Mat in3d, in2d;
+        for (int idx : inliers) {
+          in3d.push_back(good_3d_points.row(idx));
+          in2d.push_back(good_cur_points.row(idx));
+        }
+        cv::solvePnPRefineLM(in3d, in2d, K, dist, rvec, tvec);
+        const double zmin = max_depth > 0 ? max_depth : m_params.far_distance;
+        const int n_far = countFarInliers(far_old_pts, far_cur_pts, K, rvec,
+          tvec, zmin, m_params.far_inlier_px);
+        n_inliers = (int)inliers.size() + n_far;
+        if (n_inliers < m_params.min_pnp_inliers) return false;
+      }
+      else if (m_params.pnp_ransac) {
         std::vector<int> inliers;
         bool ok = cv::solvePnPRansac(
           good_3d_points, good_cur_points, K, dist, rvec, tvec, false,
@@ -1684,6 +1734,45 @@ bool TemplatedLoopDetector<TDescriptor, F>::
   }
 
   return false;
+}
+
+// --------------------------------------------------------------------------
+
+template<class TDescriptor, class F>
+int TemplatedLoopDetector<TDescriptor, F>::countFarInliers(
+  const std::vector<cv::Point2f> &old_pts,
+  const std::vector<cv::Point2f> &cur_pts, const cv::Mat &K_,
+  const cv::Mat &rvec, const cv::Mat &tvec, double zmin, double thr)
+{
+  cv::Mat K, R, t;
+  K_.convertTo(K, CV_64F);
+  cv::Rodrigues(rvec, R);
+  tvec.convertTo(t, CV_64F);
+  const double fx = K.at<double>(0, 0), fy = K.at<double>(1, 1);
+  const double cx = K.at<double>(0, 2), cy = K.at<double>(1, 2);
+  const cv::Matx33d Rm(R);
+  const cv::Vec3d tv(t.at<double>(0), t.at<double>(1), t.at<double>(2));
+  const int n_samples = 12;
+  int count = 0;
+  for (size_t i = 0; i < old_pts.size(); ++i)
+  {
+    // bearing of the old point, projected with inverse depth rho:
+    // x_cur ~ R b + rho t, rho in [0, 1/zmin]
+    const cv::Vec3d b((old_pts[i].x - cx) / fx, (old_pts[i].y - cy) / fy, 1.0);
+    const cv::Vec3d Rb = Rm * b;
+    double best = 1e9;
+    for (int k = 0; k <= n_samples; ++k)
+    {
+      const double rho = (double)k / n_samples / zmin;
+      const cv::Vec3d x = Rb + rho * tv;
+      if (x[2] <= 0) continue;
+      const double du = fx * x[0] / x[2] + cx - cur_pts[i].x;
+      const double dv = fy * x[1] / x[2] + cy - cur_pts[i].y;
+      best = std::min(best, du * du + dv * dv);
+    }
+    if (best < thr * thr) ++count;
+  }
+  return count;
 }
 
 // --------------------------------------------------------------------------

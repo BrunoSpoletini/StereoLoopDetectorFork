@@ -302,6 +302,9 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   params.strong_inliers = cfg(c, "strong_inliers", 0);
   params.global_retrieval = cfg(c, "global_retrieval", false);
   params.max_depth_rel_error = cfg(c, "max_depth_rel_error", 0.0);
+  params.hybrid_far = cfg(c, "hybrid_far", false);
+  params.far_inlier_px = cfg(c, "far_inlier_px", 2.0);
+  params.min_near_inliers = cfg(c, "min_near_inliers", 8);
   // static mask of the left image (0 = ignore, e.g. the ego vehicle)
   cv::Mat left_mask;
   const std::string mask_path = cfg(c, "left_mask", std::string());
