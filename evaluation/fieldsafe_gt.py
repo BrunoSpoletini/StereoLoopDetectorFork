@@ -1,4 +1,11 @@
-"""Heading GT de FieldSAFE desde el GPS de doble antena ($GPHDT), interpolado a cada par estereo.
+"""GT de FieldSAFE (posicion y heading) re-sincronizado, interpolado a cada par estereo.
+
+Posicion: $GPGGA; heading: GPS de doble antena ($GPHDT).
+Los pares (y por lo tanto los ids de imagen y las caches) se eligen exactamente como en prepare_session.py
+con --time-offset 19.25; la pose de cada par se evalua en t + time_offset + extra_offset. El extra de
++1.5 s sale de dos estimaciones independientes: el retardo de la velocidad GPS respecto de la odometria
+visual (1.4-1.7 s en 3 de 4 sesiones) y el maximo de loops con pose correcta (lag de 15 frames en las 4).
+Las poses viejas se guardan como poses_<sesion>_offset19.25.csv.
 
 Recalcula los mismos pares y tiempos que prepare_session.py y escribe
 <prepared>/heading_<sesion>.csv con 'id,yaw' (yaw ENU en radianes, antihorario desde el este).
@@ -41,6 +48,7 @@ def main():
     ap.add_argument('session')
     ap.add_argument('--max-dt', type=float, default=0.02)
     ap.add_argument('--time-offset', type=float, default=19.25)
+    ap.add_argument('--extra-offset', type=float, default=1.5)
     a = ap.parse_args()
     ext = os.path.join(FS, 'extracted', a.session)
     ts_l = np.loadtxt(os.path.join(ext, 'timestamps_left.txt'))
@@ -50,14 +58,28 @@ def main():
     pairs = pair_stereo(ts_l, ts_r, a.max_dt)
     t_pair = np.array([ts_l[i] for i, _, _ in pairs]) + a.time_offset
     # mismo recorte que prepare_session (rango del GPS GGA ~ rango del HDT)
-    t_pair = t_pair[(t_pair >= hdt[0, 0]) & (t_pair <= hdt[-1, 0])]
+    sys.path.insert(0, FS)
+    from prepare_session import latlon_to_local, parse_gpgga
+    gps = parse_gpgga(os.path.join(ext, 'gps_raw.txt'), date)
+    t_pair = t_pair[(t_pair >= gps[0, 0]) & (t_pair <= gps[-1, 0])]   # mismos pares que prepare_session
+    t_q = t_pair + a.extra_offset
+    gx, gy = latlon_to_local(gps[:, 1], gps[:, 2], gps[0][1], gps[0][2])
+    px, py = np.interp(t_q, gps[:, 0], gx), np.interp(t_q, gps[:, 0], gy)
     yaw_enu = np.unwrap(np.radians(90.0 - hdt[:, 1]))
-    yaw = np.interp(t_pair, hdt[:, 0], yaw_enu)
-    n_poses = sum(1 for _ in open(os.path.join(FS, 'prepared', f'poses_{a.session}.csv')))
-    assert len(yaw) == n_poses, f'{len(yaw)} headings vs {n_poses} poses'
+    yaw = np.interp(t_q, hdt[:, 0], yaw_enu)
+    poses = os.path.join(FS, 'prepared', f'poses_{a.session}.csv')
+    backup = os.path.join(FS, 'prepared', f'poses_{a.session}_offset19.25.csv')
+    if not os.path.exists(backup):
+        os.rename(poses, backup)
+    old = np.loadtxt(backup, delimiter=',', ndmin=2)
+    assert len(old) == len(yaw), f'{len(yaw)} pares vs {len(old)} poses'
+    ids = np.arange(len(yaw))
+    np.savetxt(poses, np.column_stack([ids, px, py, np.zeros((len(ids), 4))]), delimiter=',',
+               fmt=['%d', '%.6f', '%.6f', '%d', '%d', '%d', '%d'])
     out = os.path.join(FS, 'prepared', f'heading_{a.session}.csv')
-    np.savetxt(out, np.column_stack([np.arange(len(yaw)), yaw]), delimiter=',', fmt=['%d', '%.6f'])
-    print(f'{a.session}: {len(yaw)} headings -> {out}')
+    np.savetxt(out, np.column_stack([ids, yaw]), delimiter=',', fmt=['%d', '%.6f'])
+    print(f'{a.session}: {len(yaw)} pares, extra offset {a.extra_offset:+.2f} s, '
+          f'desplazamiento medio vs GT viejo {np.linalg.norm(np.column_stack([px, py]) - old[:, 1:3], axis=1).mean():.2f} m')
 
 
 if __name__ == '__main__':

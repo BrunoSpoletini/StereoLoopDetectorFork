@@ -249,3 +249,31 @@ en el 10 % de los frames (giros) y en Rosario hasta 140° (marcha atrás).
   Ángulo de montaje cámara–vehículo estimado: ~3° (mejora poco: 0.45 → 0.38 m).
   **Pendiente**: verificar la sincronización GPS–cámara (offset de 19.25 s estimado a mano; 0.1 s = 0.25 m)
   comparando la velocidad de la odometría visual con la del GPS.
+
+---
+
+## 2026-09-30 — Corrección del GT de FieldSAFE: desfase GPS–cámara de +1.5 s
+
+Dos estimaciones independientes coinciden en que el GPS estaba asociado a la imagen equivocada:
+1. La velocidad GPS está retrasada 1.4–1.7 s respecto de la de la odometría visual estéreo (3 de 4 sesiones).
+2. El % de loops de p5_aliked con pose correcta es máximo con el GT corrido 15 frames (1.5 s) en las 4 sesiones
+   (76→90 %, 66→84 %, 59→85 %, 73→85 %).
+
+→ `fieldsafe_gt.py` regenera poses y heading con desfase 19.25 + 1.5 = 20.75 s, **manteniendo exactamente los
+mismos pares/ids** (las cachés siguen valiendo). El GT se mueve 3–4.7 m en promedio; el retardo contra la
+odometría queda en 0. Poses viejas: `poses_<sesion>_offset19.25.csv`. **Todas las métricas de FieldSAFE de
+arriba quedan superadas por esta tabla**:
+
+| Config (FieldSAFE, 5 ses.) | Loops no triviales | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|
+| baseline (SLD original) | 65 (+ 2651 triviales) | 1.3 % | 65 | 0.20 m | 1.3° |
+| p1_all (arreglos) | 40 | 0.6 % | 40 | 0.06 m | 1.1° |
+| p2_excl (+ exclusión por distancia) | 39 | 0.7 % | 39 | **0.05 m** | 1.2° |
+| p2_combo | 179 | 2.6 % | 177 | 0.13 m | 1.4° |
+| p3_salad_combo | 417 | 4.7 % | 404 | 0.15 m | 1.8° |
+| p4_hybrid | 53 | 0.9 % | 53 | 0.08 m | 1.3° |
+| **p5_aliked** | **16 919** | **74.0 %** | **16 270 (96 %)** | **0.14 m** | **1.2°** |
+
+- Con el GT bien sincronizado **el 96 % de los loops de p5_aliked tiene pose correcta** y ninguno está a > 10 m.
+- La rareza de Fase 1 ("K rectificada empeora e_vec en movimiento") era un artefacto de la sincronización.
+- Los arreglos de Fase 1 bajan el error del SLD original de 0.20 m a 0.05 m.
