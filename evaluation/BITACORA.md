@@ -222,3 +222,30 @@ cercanos y ≥ 60 totales, incluyendo rayos lejanos).
   cabeceras, donde el heading GT derivado de la trayectoria es malo) ; > 6 m → degrada.
 - pose_ok (e_vec < 1 m ∧ e_yaw < 10°) ≈ 70 % de los aceptados; el umbral de inliers casi no lo cambia
   → el techo parece estar en la GT de heading, a revisar con el heading del GPS dual (GPHDT) de FieldSAFE.
+
+---
+
+## 2026-09-30 — Fase 5 completa en FieldSAFE + GT de orientación del sensor
+
+**GT de yaw**: ahora se usa el heading del GPS de doble antena (`$GPHDT`, `fieldsafe_heading.py`) en FieldSAFE y
+el cuaternión 6DoF en Rosario, con el offset de montaje estimado como la mediana contra la trayectoria en
+movimiento (FieldSAFE: ~84°, antena transversal). El heading derivado de la trayectoria se desviaba > 8–12°
+en el 10 % de los frames (giros) y en Rosario hasta 140° (marcha atrás).
+
+| Config (FieldSAFE, 5 ses.) | Loops | TP < 3 m | Cobertura | **pose_ok** | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|
+| baseline (original) | 2716 | 65 | 1.3 % | 47 | 0.57 m | 5.8° |
+| p2_excl | 39 | 39 | 0.8 % | 33 | 0.27 m | 4.2° |
+| p4_hybrid | 53 | 53 | 1.0 % | 39 | 0.41 m | 5.7° |
+| p3_salad_c5 | 57 | 56 | 1.3 % | 33 | 0.63 m | 8.3° |
+| **p5_aliked** (SALAD + ALIKED/LightGlue + estéreo + rayos) | **16 948** | **7125** | **72.1 %** | **11 644** | **0.33 m** | **2.0°** |
+
+(pose_ok = loops no triviales con e_vec < 1 m y e_yaw < 10°, a cualquier distancia; el baseline incluye los
+2651 loops triviales en "Loops".)
+
+- **× 250 loops con pose correcta y cobertura de 1.3 % → 72 %** respecto del SLD original.
+- 69 % de los loops aceptados tienen pose correcta; el resto falla sobre todo por traslación (92 %), con el
+  error correlacionado negativamente con el desplazamiento GT (−0.69) y sesgo lateral por sesión.
+  Ángulo de montaje cámara–vehículo estimado: ~3° (mejora poco: 0.45 → 0.38 m).
+  **Pendiente**: verificar la sincronización GPS–cámara (offset de 19.25 s estimado a mano; 0.1 s = 0.25 m)
+  comparando la velocidad de la odometría visual con la del GPS.

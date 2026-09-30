@@ -66,11 +66,16 @@ def main():
     ap.add_argument('--jobs', type=int, default=3)
     ap.add_argument('--name', help='nombre de la corrida (default: nombre del yaml)')
     ap.add_argument('--force', action='store_true')
+    ap.add_argument('--eval-only', action='store_true',
+                    help='solo evaluar los _results.yml existentes (p. ej. de learned_verify.py)')
     a = ap.parse_args()
 
     config_path = Path(a.config).resolve()
     config = yaml.safe_load(config_path.read_text()) or {}
     name = a.name or config_path.stem
+    if a.eval_only:
+        evaluate_run(name, select(a.sessions))
+        return
     outdir = REPO / 'evaluation/runs' / name
     outdir.mkdir(parents=True, exist_ok=True)
     sessions = select(a.sessions)
@@ -88,6 +93,11 @@ def main():
         for s, status in ex.map(lambda s: run_one(s, config_path, config, outdir, a.force, binary), sessions):
             print(f'  {s}: {status}', flush=True)
 
+    evaluate_run(name, sessions)
+
+
+def evaluate_run(name, sessions):
+    outdir = REPO / 'evaluation/runs' / name
     rows = []
     for s in sessions:
         yml = outdir / f'{s.name}_results.yml'

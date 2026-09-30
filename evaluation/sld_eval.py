@@ -54,6 +54,21 @@ def trajectory_heading(xy, cum, half_window=2.0):
     return np.arctan2(d[:, 1], d[:, 0])
 
 
+def sensor_heading(poses_csv):
+    """Yaw GT de un sensor de orientacion si existe junto al csv de poses: heading_<seq>.csv (FieldSAFE,
+    GPS de doble antena) o gt_<seq>.csv (Rosario, cuaternion 6DoF). Solo se usan diferencias de yaw,
+    El offset constante de montaje se estima en load_gt."""
+    seq = poses_csv.stem.replace('poses_', '')
+    h = poses_csv.with_name(f'heading_{seq}.csv')
+    if h.exists():
+        return np.loadtxt(h, delimiter=',', ndmin=2)[:, 1]
+    g = poses_csv.with_name(f'gt_{seq}.csv')
+    if g.exists():
+        q = np.loadtxt(g, delimiter=',', ndmin=2)[:, 5:9]           # qx qy qz qw
+        return Rotation.from_quat(q).as_euler('zyx')[:, 0]
+    return None
+
+
 def wrap(a):
     return (a + np.pi) % (2 * np.pi) - np.pi
 
@@ -63,6 +78,12 @@ def load_gt(poses_csv, r=R_M, s=S_M):
     xy = poses[:, 1:3]
     cum = np.concatenate([[0], np.cumsum(np.linalg.norm(np.diff(xy, axis=0), axis=1))])
     yaw = trajectory_heading(xy, cum)
+    sensor = sensor_heading(Path(poses_csv))
+    if sensor is not None and len(sensor) == len(xy):
+        # offset de montaje del sensor: mediana de la diferencia con el heading de la trayectoria en movimiento
+        moving = np.gradient(cum) > 0.02
+        offset = np.median(wrap(sensor - yaw)[moving]) if moving.any() else 0.0
+        yaw = wrap(sensor - offset)
     tree = cKDTree(xy)
     revisit = np.zeros(len(xy), bool)
     revisit_any = np.zeros(len(xy), bool)
