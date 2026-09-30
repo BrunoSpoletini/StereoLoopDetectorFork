@@ -199,3 +199,26 @@ de los ~37 k candidatos de p3_salad_c5 con ALIKED+LightGlue + PnP estéreo + ray
   sirven para verificar (rotación / soporte) aunque su profundidad estéreo no sirva.
 - Rosario a 1280×720: extraída 12-22 13:14 (mismos 13 745 frames que la versión reducida);
   calibración `resources/rosario_fullres_stereo_parameters.yaml` (intrínsecos ×2, del `camera_info`).
+
+---
+
+## 2026-09-30 — Fase 5: verificación ALIKED + LightGlue (parcial: FieldSAFE estática #1 y dinámica #1)
+
+Candidatos de p3_salad_c5 re-verificados con `learned_verify.py` (umbral por defecto: ≥ 15 inliers
+cercanos y ≥ 60 totales, incluyendo rayos lejanos).
+
+| Sesión | Config | TP (< 3 m) | "FP" (≥ 3 m) | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|
+| estática #1 | p2_excl (ORB) | 0 | 0 | 0 % | 0 | — | — |
+| estática #1 | **p5_aliked** | 1853 | 2565 | **93.5 %** | 3189 | 0.30 m | 1.9° |
+| dinámica #1 | p2_excl (ORB) | 39 | 0 | 3.5 % | 30 | 0.27 m | 5.5° |
+| dinámica #1 | **p5_aliked** | 2167 | 2733 | **79.7 %** | 3069 | 0.28 m | 1.7° |
+
+- Los "FP" del criterio de 3 m **no son falsos**: con cualquier umbral, el 100 % de los loops aceptados está a
+  < 10 m, y la distancia estimada coincide con la GT (mediana 3.38 m vs 3.38 m en el tramo 3–4 m). Son loops
+  con la pasada vecina, con pose relativa correcta → restricciones válidas para SLAM. El criterio de 3 m
+  queda chico; hay que evaluar por pose (propuesta #2 del agente).
+- Error por distancia GT: 2–5 m → e_vec 0.24–0.37 m, yaw ~1.5°; < 2 m → yaw 8–11° (sospecha: giros en
+  cabeceras, donde el heading GT derivado de la trayectoria es malo) ; > 6 m → degrada.
+- pose_ok (e_vec < 1 m ∧ e_yaw < 10°) ≈ 70 % de los aceptados; el umbral de inliers casi no lo cambia
+  → el techo parece estar en la GT de heading, a revisar con el heading del GPS dual (GPHDT) de FieldSAFE.
