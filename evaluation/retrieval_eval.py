@@ -32,7 +32,7 @@ def recall_at_k(desc, gt, ks=KS, stride=1):
         ok = np.linalg.norm(gt.xy[top] - gt.xy[i], axis=1) < R_M
         for k in ks:
             hits[k] += ok[:k].any()
-    return {k: hits[k] / len(queries) for k in ks}, len(queries)
+    return {k: hits[k] / max(len(queries), 1) for k in ks}, len(queries)
 
 
 def main():

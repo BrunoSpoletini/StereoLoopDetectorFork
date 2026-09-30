@@ -124,3 +124,25 @@ lugar (aliasing), y ningún ajuste posterior puede recuperar esos loops.
 **Próximo paso (Fase 3)**: recuperación con descriptores globales aprendidos (DINOv2-SALAD) y medir recall@K
 offline contra BoW; si mejora, integrarlo en el detector (reemplazo o fusión con BoW) manteniendo la
 verificación estéreo.
+
+---
+
+## 2026-09-30 — Fase 3: recuperación con DINOv2-SALAD (offline)
+
+Recall@K sobre frames revisita GT (base = frames con ≥ 20 m de camino detrás; acierto si alguno de los K
+más similares está a < 3 m). PCA 256-D ajustada **solo con FieldSAFE**; en Rosario se aplica sin reajuste.
+
+| | R@1 | R@5 | R@10 | R@25 | Candidato BoW correcto (SLD) |
+|---|---|---|---|---|---|
+| FieldSAFE (5 sesiones) | 0.34 | 0.61 | 0.72 | 0.83 | ~0.08 |
+| Rosario (6 secuencias) | 0.63 | 0.73 | 0.77 | 0.83 | ~0.36 |
+
+- SALAD multiplica ×4 (FieldSAFE) y ×1.8 (Rosario) el acierto del primer candidato.
+- En FieldSAFE el top-1 "incorrecto" es casi siempre la pasada vecina: está a < 5 m el 80 % de las veces.
+- p2_combo sobre las 5 sesiones de FieldSAFE: 165 TP, 14 FP (precisión 0.92), cobertura 2.4 %.
+- Las sesiones nuevas agregan muchos loops triviales (p1_all: 2573 triviales sobre 5 sesiones), lo que
+  refuerza el valor de la exclusión por distancia.
+
+**Incidente**: un reinicio de la sesión mató los procesos en segundo plano; se relanzaron con `setsid`
+(`evaluation/queue.sh`). En cola: p3_salad, p3_salad_c5, p3_salad_combo, p4_mask, p4_depth, p4_hybrid,
+baseline en Rosario completo. En paralelo: extracción de Rosario a 1280×720 en el disco raíz.
