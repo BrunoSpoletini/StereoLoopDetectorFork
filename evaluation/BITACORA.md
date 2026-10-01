@@ -381,3 +381,7 @@ esta secuencia (mediana 8.7° también en el baseline) — revisar el GT de orie
 | 15:10 | baseline | 11 | 11 | 0 | 1.00 | 19 % | 10 | 0.085 m | 1.5° |
 | 15:10 | p5_aliked | 2624 | 2052 | 545 | 0.79 | 100 % | 1834 | 0.059 m | 3.3° |
 | 15:10 | **p6_odo** | 2100 | 2052 | **46** | **0.98** | **100 %** | 1834 | 0.059 m | 3.3° |
+
+**Rosario 12-26 13:39** (2.2 km): baseline 534 TP / cobertura 16.9 % / 0 FP; p5_aliked 1961 TP / 42.4 % / 1604 FP;
+**p6_odo** 1961 TP / 42.4 % / 883 FP (precisión 0.69). El filtro saca 45 % de los FP; el resto es aliasing
+entre surcos a largo camino, como en 16:31.
