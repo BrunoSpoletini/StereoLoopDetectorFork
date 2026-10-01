@@ -370,3 +370,14 @@ esta secuencia (mediana 8.7° también en el baseline) — revisar el GT de orie
   secuencia degenerada para la verificación geométrica (sin estructura cercana distintiva).
 - Limitación a reportar; posible solución: test de ambigüedad por desplazamiento de ±k espaciados de hilera
   (propuesta R2-6 del agente) o un prior de trayectoria con covarianza (ROVER).
+
+**Rosario 12-22 13:14 y 12-26 15:10 con filtro de odometría**:
+
+| Secuencia | Config | Loops | TP | ≥ 3 m | Precisión | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|---|
+| 13:14 | baseline | 3490 | 3375 | 0 | 1.00 | 82 % | 3350 | 0.032 m | 0.6° |
+| 13:14 | p5_aliked | 6775 | 6646 | 84 | 0.99 | 92 % | 6606 | 0.037 m | 1.1° |
+| 13:14 | **p6_odo** | 6691 | 6646 | **2** | **1.00** | **92 %** | 6606 | 0.037 m | 1.1° |
+| 15:10 | baseline | 11 | 11 | 0 | 1.00 | 19 % | 10 | 0.085 m | 1.5° |
+| 15:10 | p5_aliked | 2624 | 2052 | 545 | 0.79 | 100 % | 1834 | 0.059 m | 3.3° |
+| 15:10 | **p6_odo** | 2100 | 2052 | **46** | **0.98** | **100 %** | 1834 | 0.059 m | 3.3° |
