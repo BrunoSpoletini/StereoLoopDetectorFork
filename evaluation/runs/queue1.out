@@ -11,3 +11,5 @@ TOTAL_fieldsafe     19  19        0   0      1.000   0.001     0.005   18.000   
 == p4_hybrid (fieldsafe) 17:26
 TOTAL_fieldsafe     53  53        0   0      1.000   0.002     0.010   32.000      0.237      0.415      6.878
 == baseline (rosario) 17:42
+TOTAL_rosario   4607 3975      632   0      1.000   0.127     0.274 2773.000      0.026      0.049      2.825
+QUEUE_DONE

@@ -1,4 +1,4 @@
-commit: bf5e6bb-dirty
+commit: 55d90da-dirty
 config: p3_salad_c5.yaml
 # Fase 3: p3_salad + verificar 5 candidatos
 near_distance: 0.4

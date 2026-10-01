@@ -1,0 +1,12 @@
+  fs_static1: exit 0
+  fs_11-34: exit 0
+  fs_dynamic1: exit 0
+  fs_dynamic2: exit 0
+  fs_12-37: exit 0
+        session  loops  tp  trivial  fp  precision  recall  coverage  pose_ok  e_mag_med  e_vec_med  e_yaw_med
+     fs_static1      0   0        0   0        NaN   0.000     0.000      NaN        NaN        NaN        NaN
+       fs_11-34      0   0        0   0        NaN   0.000     0.000      NaN        NaN        NaN        NaN
+    fs_dynamic1     44  44        0   0      1.000   0.005     0.034   44.000      0.055      0.077      1.686
+    fs_dynamic2      6   6        0   0      1.000   0.001     0.011    6.000      0.065      0.070      2.518
+       fs_12-37      7   7        0   0      1.000   0.001     0.008    7.000      0.064      0.092      2.182
+TOTAL_fieldsafe     57  57        0   0      1.000   0.002     0.014   57.000      0.057      0.078      1.834
