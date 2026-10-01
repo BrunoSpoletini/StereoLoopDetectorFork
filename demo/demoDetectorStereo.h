@@ -443,7 +443,8 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
   // one row per query with the diagnostics of the detection
   std::ofstream qlog(prefix + "_queries.csv");
   qlog << "query,status,candidate,ns_factor,best_score,consistent,"
-          "geom_matches,geom_inliers,n_stereo,tx,ty,tz,rx,ry,rz,odometer\n";
+          "geom_matches,geom_inliers,n_stereo,tx,ty,tz,rx,ry,rz,odometer,"
+          "vo_x,vo_y,vo_z,vo_yaw\n";
   std::vector<float> loop_rotation_x, loop_rotation_y, loop_rotation_z;
 
   // feature cache (ORB only): read it if it exists, write it otherwise
@@ -546,12 +547,16 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
     // motion gating: travelled distance and keyframe selection
     double odometer = -1;
     bool process = true;
+    // odometry pose (camera axes of the first frame: x right, y down, z forward)
+    double vo[4] = {0, 0, 0, 0};
     if (motion_step > 0)
     {
       StereoOdometry::Result mo =
         odometry.update(s_keys1, s_keys2, toMat(s_descriptors1));
       odometer = mo.odometer;
       process = mo.keyframe || !keyframes_only;
+      vo[0] = mo.position(0); vo[1] = mo.position(1); vo[2] = mo.position(2);
+      vo[3] = std::atan2(mo.rotation(0, 2), mo.rotation(2, 2));  // heading of the optical axis
     }
 
     // add image to the collection and check if there is some loop
@@ -559,7 +564,8 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
     if (!process)
     {
       qlog << i << ",-1,-1,-1,-1,0,-1,-1," << s_keys1.size()
-        << ",0,0,0,0,0,0," << odometer << "\n";
+        << ",0,0,0,0,0,0," << odometer << "," << vo[0] << "," << vo[1] << ","
+        << vo[2] << "," << vo[3] << "\n";
       continue;
     }
     
@@ -642,7 +648,8 @@ void demoDetectorStereo<TVocabulary, TDetector, TDescriptor>::run
       << result.transform[0] << "," << result.transform[1] << ","
       << result.transform[2] << "," << result.rotation[0] << ","
       << result.rotation[1] << "," << result.rotation[2] << ","
-      << odometer << "\n";
+      << odometer << "," << vo[0] << "," << vo[1] << "," << vo[2] << ","
+      << vo[3] << "\n";
     
     // show trajectory
     if(m_show && i > 0)

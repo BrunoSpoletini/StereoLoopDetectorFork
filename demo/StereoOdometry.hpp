@@ -30,6 +30,10 @@ public:
     bool tracked = false;
     /// travelled distance (m) accumulated over keyframes, including this one
     double odometer = 0;
+    /// pose of the current frame in the odometry frame (camera axes of the
+    /// first frame): camera center and rotation (world <- camera)
+    cv::Matx31d position = cv::Matx31d(0, 0, 0);
+    cv::Matx33d rotation = cv::Matx33d::eye();
   };
 
   /**
@@ -65,8 +69,13 @@ public:
       setAnchor(keys1, keys2, descs1);
       r.keyframe = true;
       r.odometer = m_odometer;
+      r.position = m_anchor_c;
+      r.rotation = m_anchor_R;
       return r;
     }
+    // pose of the current frame relative to the anchor (identity if lost)
+    cv::Matx33d R_ac = cv::Matx33d::eye();   // anchor <- current
+    cv::Matx31d c_a(0, 0, 0);                // current center in anchor frame
 
     std::vector<cv::DMatch> matches;
     if (!descs1.empty())
@@ -93,14 +102,23 @@ public:
         cv::Mat c = -R.t() * tvec;  // current camera center in the anchor frame
         r.displacement = cv::norm(c);
         r.tracked = true;
+        R_ac = cv::Matx33d(cv::Mat(R.t()));
+        c_a = cv::Matx31d(c);
       }
     }
 
-    // lost tracking: assume we moved enough to start over from this frame
+    // lost tracking: assume we moved one step forward (camera z)
+    if (!r.tracked)
+      c_a = cv::Matx31d(0, 0, m_step);
+    r.position = m_anchor_c + m_anchor_R * c_a;
+    r.rotation = m_anchor_R * R_ac;
+
     if (!r.tracked || r.displacement >= m_step)
     {
       m_odometer += r.tracked ? r.displacement : m_step;
       setAnchor(keys1, keys2, descs1);
+      m_anchor_c = r.position;
+      m_anchor_R = r.rotation;
       r.keyframe = true;
     }
     r.odometer = m_odometer;
@@ -138,4 +156,6 @@ private:
   std::vector<cv::Point3f> m_anchor_points;
   cv::Mat m_anchor_descs;
   double m_odometer = 0;
+  cv::Matx31d m_anchor_c = cv::Matx31d(0, 0, 0);
+  cv::Matx33d m_anchor_R = cv::Matx33d::eye();
 };
