@@ -292,3 +292,7 @@ yaw se toma como la dirección del eje óptico en el plano (antes se usaba Euler
 
 - Con ORB en la verificación, SALAD suma +15 % de TP en Rosario pero no cambia la cobertura (la secuencia
   12-22 13:14 domina; 16:31 sigue en 0 loops). En curso: re-verificación con ALIKED+LightGlue (~45 k candidatos).
+
+**p5_aliked en Rosario 12-22 13:14** (validación, sin reajuste): 6775 loops, 6646 TP (baseline 3375), recall 0.79
+(0.40), cobertura 92 % (82 %), pose_ok 6606 (3350), e_vec 0.037 m, e_yaw 1.1°; 84 loops a > 3 m (precisión por
+distancia 0.988). La mejora de FieldSAFE se traslada a Rosario.

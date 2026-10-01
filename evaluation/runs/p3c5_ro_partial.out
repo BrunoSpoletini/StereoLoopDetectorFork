@@ -2,3 +2,11 @@
   ro_1222_1429: exit 0
   ro_1222_1631: exit 0
   ro_1226_1510: exit 0
+  ro_1226_1548: exit 0
+      session  loops   tp  trivial  fp  precision  recall  coverage  pose_ok  e_mag_med  e_vec_med  e_yaw_med
+ ro_1222_1314   3748 3706       42   0      1.000   0.446     0.820 3233.000      0.021      0.037      4.536
+ ro_1222_1429    234  234        0   0      1.000   0.053     0.115   13.000      0.110      0.331     22.063
+ ro_1222_1631      0    0        0   0        NaN   0.000     0.000      NaN        NaN        NaN        NaN
+ ro_1226_1510     19   19        0   0      1.000   0.006     0.143    9.000      0.134      0.162     11.190
+ ro_1226_1548      0    0        0   0        NaN   0.000     0.000      NaN        NaN        NaN        NaN
+TOTAL_rosario   4001 3959       42   0      1.000   0.164     0.311 3255.000      0.027      0.055      5.604
