@@ -5,3 +5,37 @@
   ro_1226_1548: exit 0
 TOTAL_rosario   4993 4930       63   0      1.000   0.154     0.281 4594.000      0.032      0.052      1.902
 == learned_verify 15:57
+ro_1226_1339: 23656 candidatos verificados, 3641 aceptados
+ro_1226_1548: 18104 candidatos verificados, 1496 aceptados
+      session  loops    tp  trivial   fp  precision  recall  coverage  pose_ok  e_mag_med  e_vec_med  e_yaw_med
+ ro_1222_1314   6775  6646       45   84      0.988   0.790     0.920     6606      0.019      0.037      1.116
+ ro_1222_1429    999   941        2   56      0.944   0.213     0.846      524      0.058      0.133      8.661
+ ro_1222_1631    672   137        1  534      0.204   0.020     0.160        0      1.289      1.293      1.968
+ ro_1226_1339   3641  1961       76 1604      0.550   0.257     0.424     1870      0.049      0.071      1.914
+ ro_1226_1510   2624  2052       27  545      0.790   0.617     1.000     1834      0.042      0.059      3.312
+ ro_1226_1548   1496   729       12  755      0.491   0.575     0.750      722      0.030      0.051      0.807
+TOTAL_rosario  16207 12466      163 3578      0.777   0.391     0.595    11556      0.045      0.068      2.164
+== odo_filter 18:26
+ro_1222_1314: 6775 aceptados por geometria, 6691 consistentes con la odometria
+ro_1222_1429: 999 aceptados por geometria, 941 consistentes con la odometria
+ro_1222_1631: 672 aceptados por geometria, 228 consistentes con la odometria
+ro_1226_1339: 3641 aceptados por geometria, 2866 consistentes con la odometria
+ro_1226_1510: 2624 aceptados por geometria, 2100 consistentes con la odometria
+ro_1226_1548: 1496 aceptados por geometria, 914 consistentes con la odometria
+      session  loops    tp  trivial   fp  precision  recall  coverage  pose_ok  e_mag_med  e_vec_med  e_yaw_med
+ ro_1222_1314   6691  6646       43    2      1.000   0.790     0.920     6606      0.019      0.037      1.116
+ ro_1222_1429    941   941        0    0      1.000   0.213     0.846      524      0.058      0.133      8.661
+ ro_1222_1631    228   137        0   91      0.601   0.020     0.160        0      1.289      1.293      1.968
+ ro_1226_1339   2866  1961       22  883      0.690   0.257     0.424     1870      0.049      0.071      1.914
+ ro_1226_1510   2100  2052        2   46      0.978   0.617     1.000     1834      0.042      0.059      3.312
+ ro_1226_1548    914   729        0  185      0.798   0.575     0.750      722      0.030      0.051      0.807
+TOTAL_rosario  13740 12466       67 1207      0.912   0.391     0.595    11556      0.045      0.068      2.164
+      session  loops   tp  trivial  fp  precision  recall  coverage  pose_ok  e_mag_med  e_vec_med  e_yaw_med
+ ro_1222_1314   3490 3375      115   0      1.000   0.401     0.820 3350.000      0.019      0.032      0.592
+ ro_1222_1429    142   55       87   0      1.000   0.012     0.115    4.000      0.167      0.195     11.867
+ ro_1222_1631      0    0        0   0        NaN   0.000     0.000      NaN        NaN        NaN        NaN
+ ro_1226_1339    933  534      399   0      1.000   0.070     0.169  528.000      0.051      0.077      0.439
+ ro_1226_1510     11   11        0   0      1.000   0.003     0.190   10.000      0.067      0.085      1.455
+ ro_1226_1548     31    0       31   0        NaN   0.000     0.000      NaN        NaN        NaN        NaN
+TOTAL_rosario   4607 3975      632   0      1.000   0.125     0.276 3892.000      0.026      0.041      0.730
+CHAIN_DONE

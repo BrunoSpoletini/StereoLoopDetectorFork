@@ -385,3 +385,39 @@ esta secuencia (mediana 8.7° también en el baseline) — revisar el GT de orie
 **Rosario 12-26 13:39** (2.2 km): baseline 534 TP / cobertura 16.9 % / 0 FP; p5_aliked 1961 TP / 42.4 % / 1604 FP;
 **p6_odo** 1961 TP / 42.4 % / 883 FP (precisión 0.69). El filtro saca 45 % de los FP; el resto es aliasing
 entre surcos a largo camino, como en 16:31.
+
+---
+
+## 2026-10-01 — RESUMEN: train (FieldSAFE) y validación (Rosario, sin reajuste)
+
+Pipeline final **p6_odo** = SLD con arreglos (K rectificada, disparidad > 0, exclusión de 20 m por odometría
+visual estéreo) + recuperación DINOv2-SALAD (PCA ajustada en FieldSAFE) + verificación ALIKED + LightGlue con
+PnP estéreo y rayos lejanos + filtro de consistencia con la odometría (caminos < 100 m).
+Figuras: `figs/final_fieldsafe.png`, `figs/final_rosario.png`.
+
+| Dataset | Config | Loops | TP (< 3 m) | Triviales | FP (≥ 3 m) | Precisión | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|---|---|
+| FieldSAFE (5 ses.) | SLD original | 2716 | 65 | 2651 | 0 | 1.00 | 1.3 % | 65 | 0.20 m | 1.3° |
+| FieldSAFE (5 ses.) | **p6_odo** | 16 878 | 7556 | 0 | 9322* | 0.45* | **74.0 %** | **16 270** | 0.14 m | 1.2° |
+| Rosario (6 sec.) | SLD original | 4607 | 3975 | 632 | 0 | 1.00 | 27.6 % | 3892 | 0.04 m | 0.7° |
+| Rosario (6 sec.) | **p6_odo** | 13 740 | **12 466** | 67 | 1207 | 0.91 | **59.5 %** | **11 556** | 0.07 m | 2.2° |
+
+\* En FieldSAFE los loops a ≥ 3 m son la pasada vecina (3–10 m) con pose relativa correcta: 96 % de los loops
+no triviales tienen e_vec < 1 m y e_yaw < 10°, ninguno está a > 10 m. Son restricciones válidas para SLAM.
+
+Por secuencia de Rosario (cobertura SLD original → p6_odo): 13:14 82 → 92 %, 14:29 12 → 85 %, 15:10 19 → 100 %,
+15:48 0 → 75 %, 13:39 17 → 42 %, 16:31 0 → 16 %.
+
+**Conclusiones**
+1. Las mejoras logradas en FieldSAFE se trasladan a Rosario sin reajuste: ×3.1 TP, ×3.0 loops con pose
+   correcta y cobertura 28 % → 60 %.
+2. Cambio de mayor impacto: verificación con features aprendidas (ALIKED + LightGlue). Recuperación con SALAD
+   es condición necesaria (candidato correcto 7 % → 26 % en FieldSAFE).
+3. Odometría visual estéreo, sin GPS: elimina los loops triviales (robot detenido) y, como filtro de
+   consistencia, la mayoría del aliasing a lo largo del surco.
+4. Limitación: aliasing entre surcos a largo camino en Rosario (16:31, 13:39; 1207 FP en total). Línea futura:
+   test de ambigüedad por desplazamiento de hilera o prior de trayectoria con covarianza (ROVER).
+5. Hallazgos colaterales: bug de intrínsecos en el PnP original (sesgo de 0.16 m), GT de FieldSAFE
+   desincronizado 1.5 s, y el "15 cm" del paper original dominado por loops con el robot detenido.
+
+**Pendiente**: Rosario a 1280×720 (5 de 6 extraídas); evaluar si la resolución completa mejora 16:31/13:39.
