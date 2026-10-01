@@ -315,3 +315,24 @@ distancia 0.988). La mejora de FieldSAFE se traslada a Rosario.
   ‖Δ_VO − Δ_loop‖ > α·camino(m, q) + β (tolerancia que crece con el drift, no afecta revisitas lejanas).
   Se agregó la pose integrada de la odometría al CSV por query y se re-corre p3_salad_c5 (`p3c5vo`) para
   tenerla; el filtro se aplica sobre las verificaciones ALIKED ya calculadas.
+
+---
+
+## 2026-09-30 23:30 — Pausa (PC apagada). Estado y cómo retomar
+
+Resultados del filtro de odometría en FieldSAFE (`odo_filter.py`, solo para caminos < 100 m, tolerancia
+0.2·camino + 1 m): no pierde ningún loop con pose correcta (16 270) y elimina 70 dudosos (todos los triviales).
+Sin límite de camino descartaba vueltas completas de ~700 m (drift de la odometría ~25 %).
+
+**Pendiente, en orden** (todo se cortó a mitad; las corridas incompletas se rehacen solas porque su
+`_results.yml` quedó vacío):
+1. `run_sld.py --config configs/p3_salad_c5.yaml --name p3c5vo --sessions rosario --jobs 5`
+   (detección idéntica a p3_salad_c5 + pose de la odometría en el CSV; incluye 12-26 13:39).
+2. `lg_venv/bin/python learned_verify.py p3c5vo --out p5_aliked --sessions ro_1226_1548,ro_1226_1339`
+   (las otras 4 secuencias ya están verificadas en `runs/p5_aliked/*_verify.csv`).
+3. `lg_venv/bin/python odo_filter.py p5_aliked --vo-run p3c5vo --out p6_odo --sessions rosario` y evaluar con
+   `run_sld.py ... --name p6_odo --sessions rosario --eval-only` → ver si limpia el aliasing de 16:31.
+4. Tabla final de validación Rosario (6 sec.): baseline vs p5_aliked vs p6_odo.
+5. Extracción a 1280×720 (`pytorch-NetVlad-GPS/extract_rosario_fullres.sh`): hechas 13:14, 14:29, 16:31, 15:10;
+   faltan 13:39 (se borró la parcial) y 15:48 — sacar del script las ya hechas antes de relanzar.
+Lanzar con `setsid nohup ... &` (sobrevive a reinicios de la sesión).
