@@ -353,3 +353,20 @@ servicios de usuario: `systemd-run --user --unit=<nombre> ...` (seguimiento con 
 
 El filtro saca exactamente los 56 loops a ≥ 3 m (y 2 triviales) sin perder ningún TP. Pendiente: el yaw de
 esta secuencia (mediana 8.7° también en el baseline) — revisar el GT de orientación de 14:29.
+
+**Rosario 12-22 16:31 con filtro de odometría**:
+
+| Config | Loops | TP | ≥ 3 m | Precisión | Cobertura | pose_ok |
+|---|---|---|---|---|---|---|
+| baseline | 0 | 0 | 0 | — | 0 % | 0 |
+| p5_aliked | 672 | 137 | 534 | 0.20 | 16 % | 0 |
+| p6_odo | 228 | 137 | 91 | 0.60 | 16 % | 0 |
+
+- El filtro saca 443 de 534 FP (los de camino corto, aliasing en el mismo surco) sin perder TP.
+- Los 91 FP restantes están a ~450 m de camino (fuera del alcance del filtro: drift de la odometría) y
+  estiman ‖t‖ ≈ 0.2 m. Se descartó que sea algo fijo a la cámara (p. ej. el emisor IR de la RealSense): en los
+  pares falsos los matches se desplazan 5–27 px y < 6 % queda a < 2 px. Es **aliasing entre surcos**: otra
+  hilera, misma imagen. Los TP de esta secuencia también tienen pose mala (e_vec 1.29 m): 16:31 es una
+  secuencia degenerada para la verificación geométrica (sin estructura cercana distintiva).
+- Limitación a reportar; posible solución: test de ambigüedad por desplazamiento de ±k espaciados de hilera
+  (propuesta R2-6 del agente) o un prior de trayectoria con covarianza (ROVER).
