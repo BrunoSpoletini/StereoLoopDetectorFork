@@ -342,3 +342,14 @@ Lanzar con `setsid nohup ... &` (sobrevive a reinicios de la sesión).
 Validación de Rosario encadenada en `evaluation/chain_validation.sh`. Los reinicios de la sesión de Claude
 matan también los procesos lanzados con `setsid` (cgroup), así que ahora las corridas largas se lanzan como
 servicios de usuario: `systemd-run --user --unit=<nombre> ...` (seguimiento con `systemctl --user status`).
+
+**Filtro de odometría en Rosario 12-22 14:29** (validación, parámetros fijados en FieldSAFE):
+
+| Config | Loops | TP | ≥ 3 m | Precisión | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|
+| baseline | 142 | 55 | 0 | 1.00 | 11.5 % | 4 | 0.20 m | 11.9° |
+| p5_aliked | 999 | 941 | 56 | 0.94 | 84.6 % | 524 | 0.13 m | 8.7° |
+| **p6_odo** | 941 | 941 | **0** | **1.00** | **84.6 %** | 524 | 0.13 m | 8.7° |
+
+El filtro saca exactamente los 56 loops a ≥ 3 m (y 2 triviales) sin perder ningún TP. Pendiente: el yaw de
+esta secuencia (mediana 8.7° también en el baseline) — revisar el GT de orientación de 14:29.
