@@ -296,3 +296,22 @@ yaw se toma como la dirección del eje óptico en el plano (antes se usaba Euler
 **p5_aliked en Rosario 12-22 13:14** (validación, sin reajuste): 6775 loops, 6646 TP (baseline 3375), recall 0.79
 (0.40), cobertura 92 % (82 %), pose_ok 6606 (3350), e_vec 0.037 m, e_yaw 1.1°; 84 loops a > 3 m (precisión por
 distancia 0.988). La mejora de FieldSAFE se traslada a Rosario.
+
+**p5_aliked en Rosario 12-22 14:29 y 16:31** (validación):
+
+| Secuencia | Config | Loops | TP | ≥ 3 m | Cobertura | pose_ok | e_vec med (TP) | e_yaw med |
+|---|---|---|---|---|---|---|---|---|
+| 14:29 | baseline | 142 | 55 | 0 | 11.5 % | 4 | 0.20 m | 11.9° |
+| 14:29 | p5_aliked | 999 | 941 | 56 | **84.6 %** | 524 | 0.13 m | 8.7° |
+| 16:31 | baseline | 0 | 0 | 0 | 0 % | 0 | — | — |
+| 16:31 | p5_aliked | 672 | 137 | **534** | 16 % | **0** | 1.29 m | 2.0° |
+
+- La sincronización de Rosario está bien (barrido de desfase: óptimo en 0).
+- **16:31: aliasing a lo largo del surco.** Los loops falsos unen frames del mismo surco a 20–35 m (justo
+  pasada la exclusión de 20 m): el horizonte no cambia y las hileras cercanas se repiten, así que el PnP
+  estima ‖t‖ ≈ 0.2 m cuando la verdad es ≈ 22 m (inliers cercanos: mediana 24; lejanos: 58).
+- **Remedio (propuesta #1 del agente, consistencia con odometría)**: la odometría visual sabe que entre m y q
+  el robot avanzó ~22 m en línea recta; un loop que dice 0.2 m es incompatible. Rechazar si
+  ‖Δ_VO − Δ_loop‖ > α·camino(m, q) + β (tolerancia que crece con el drift, no afecta revisitas lejanas).
+  Se agregó la pose integrada de la odometría al CSV por query y se re-corre p3_salad_c5 (`p3c5vo`) para
+  tenerla; el filtro se aplica sobre las verificaciones ALIKED ya calculadas.
