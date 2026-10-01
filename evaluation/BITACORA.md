@@ -336,3 +336,9 @@ Sin límite de camino descartaba vueltas completas de ~700 m (drift de la odomet
 5. Extracción a 1280×720 (`pytorch-NetVlad-GPS/extract_rosario_fullres.sh`): hechas 13:14, 14:29, 16:31, 15:10;
    faltan 13:39 (se borró la parcial) y 15:48 — sacar del script las ya hechas antes de relanzar.
 Lanzar con `setsid nohup ... &` (sobrevive a reinicios de la sesión).
+
+## 2026-10-01 — Retomado
+
+Validación de Rosario encadenada en `evaluation/chain_validation.sh`. Los reinicios de la sesión de Claude
+matan también los procesos lanzados con `setsid` (cgroup), así que ahora las corridas largas se lanzan como
+servicios de usuario: `systemd-run --user --unit=<nombre> ...` (seguimiento con `systemctl --user status`).
