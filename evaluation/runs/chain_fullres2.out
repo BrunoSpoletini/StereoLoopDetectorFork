@@ -1,0 +1,23 @@
+== p3c5vo rof_1222_1314,rof_1222_1429;rof_1226_1510,rof_1226_1548 00:11
+  rof_1222_1314: exit 0
+  rof_1222_1429: exit 0
+  rof_1226_1510: exit 0
+  rof_1226_1548: exit 0
+== learned_verify 02:59
+rof_1222_1314: 11963 candidatos verificados, 7066 aceptados
+rof_1222_1429: 12207 candidatos verificados, 1265 aceptados
+rof_1226_1510: 9818 candidatos verificados, 2320 aceptados
+rof_1226_1548: 18127 candidatos verificados, 771 aceptados
+rof_1222_1314: 7066 aceptados por geometria, 7064 consistentes con la odometria
+rof_1222_1429: 1265 aceptados por geometria, 1265 consistentes con la odometria
+rof_1226_1510: 2320 aceptados por geometria, 2284 consistentes con la odometria
+rof_1226_1548: 771 aceptados por geometria, 741 consistentes con la odometria
+  rof_1222_1314   7066  6924      132  10      0.999   0.824     0.920     6897      0.019      0.037      1.099
+  rof_1222_1429   1265  1257        0   8      0.994   0.285     0.846      824      0.048      0.121      7.572
+  rof_1226_1510   2320  2284        0  36      0.984   0.687     1.000     2070      0.040      0.060      3.333
+  rof_1226_1548    771   737        8  26      0.966   0.582     1.000      730      0.028      0.047      0.881
+  rof_1222_1314   7064  6924      132   8      0.999   0.824     0.920     6897      0.019      0.037      1.099
+  rof_1222_1429   1265  1257        0   8      0.994   0.285     0.846      824      0.048      0.121      7.572
+  rof_1226_1510   2284  2284        0   0      1.000   0.687     1.000     2070      0.040      0.060      3.333
+  rof_1226_1548    741   737        0   4      0.995   0.582     1.000      730      0.028      0.047      0.881
+CHAIN_DONE

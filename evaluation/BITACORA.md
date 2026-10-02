@@ -444,3 +444,18 @@ pero la pose de esta secuencia sigue siendo mala (e_vec ~1.2 m).
 → A resolución nativa el aliasing entre surcos de 13:39 prácticamente desaparece (883 → 15 FP), con más TP y
 más loops con pose correcta; la cobertura baja (42 → 32 %). Se corre la resolución nativa en las 4 secuencias
 restantes para la validación completa.
+
+**Rosario completo a 1280×720** (p6_odo, sin reajuste):
+
+| Secuencia | Loops | TP | FP | Precisión | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|
+| 13:14 | 7064 | 6924 | 8 | 0.999 | 92 % | 6897 | 0.037 m | 1.1° |
+| 14:29 | 1265 | 1257 | 8 | 0.994 | 85 % | 824 | 0.12 m | 7.6° |
+| 16:31 | 198 | 155 | 43 | 0.78 | 28 % | 32 | 1.21 m | 2.2° |
+| 13:39 | 2115 | 2067 | 15 | 0.993 | 32 % | 2062 | 0.07 m | 2.0° |
+| 15:10 | 2284 | 2284 | 0 | 1.000 | 100 % | 2070 | 0.06 m | 3.3° |
+| 15:48 | 741 | 737 | 4 | 0.995 | 100 % | 730 | 0.05 m | 0.9° |
+| **Total** | 13 667 | **13 424** | **78** | **0.994** | **60.0 %** | **12 615** | 0.07 m | 2.2° |
+
+vs 640×360: 12 466 TP / 1207 FP / precisión 0.91 / cobertura 59.5 %. La resolución nativa elimina el 94 % de
+los FP manteniendo la cobertura. En curso: SLD original a 1280×720 (comparación justa).
