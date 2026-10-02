@@ -421,3 +421,17 @@ Por secuencia de Rosario (cobertura SLD original → p6_odo): 13:14 82 → 92 %,
    desincronizado 1.5 s, y el "15 cm" del paper original dominado por loops con el robot detenido.
 
 **Pendiente**: Rosario a 1280×720 (5 de 6 extraídas); evaluar si la resolución completa mejora 16:31/13:39.
+
+---
+
+## 2026-10-01 — Rosario a 1280×720 (resolución nativa de las IR)
+
+SALAD reutilizado (mismos frames; SALAD redimensiona igual). ALIKED a 1280×720: 0.19 s por candidato.
+
+| Secuencia | Resolución | Loops | TP | FP | Precisión | Cobertura | pose_ok | e_vec med |
+|---|---|---|---|---|---|---|---|---|
+| 16:31 | 640×360 (p6_odo) | 228 | 137 | 91 | 0.60 | 16 % | 0 | 1.29 m |
+| 16:31 | **1280×720** (p6_odo) | 198 | **155** | **43** | **0.78** | **28 %** | **32** | 1.21 m |
+
+Con el doble de focal×baseline (16 → 32 px·m) baja a la mitad el aliasing que sobrevive y sube la cobertura,
+pero la pose de esta secuencia sigue siendo mala (e_vec ~1.2 m).
