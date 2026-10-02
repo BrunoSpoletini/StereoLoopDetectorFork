@@ -518,3 +518,27 @@ peor a 1280×720 que a 640×360 (2819 vs 3975 TP): con 2000 ORB la imagen grande
 - Con loops del pipeline nuevo el ATE baja en todas las secuencias (10–88 %); los del original solo ayudan en
   14:29. En 13:39 y 15:48 la corrección es menor: el drift es tan grande que el grafo L2 con odometría muy
   sesgada no alcanza a corregirlo (y la cobertura es parcial en 13:39).
+
+---
+
+## 2026-10-02 — Capítulo nuevo: loops en el interior del campo
+
+A partir de ahora Rosario se evalúa a 1280×720 (`rof_*`). Objetivo nuevo: loops en el **medio** del campo,
+no solo en las cabeceras. Cobertura por zona (borde = 15 m desde cada extremo del surco), p6_odo:
+
+| Secuencia | Largo surco | TP borde / interior | Cobertura borde / interior |
+|---|---|---|---|
+| 13:14 | 148 m | 3067 / 3857 | 86 % / 100 % |
+| 14:29 | 214 m | 589 / 668 | 88 % / 85 % |
+| 16:31 | 221 m | 128 / 27 | 50 % / **24 %** |
+| 13:39 | 165 m | 2066 / 1 | 44 % / **5 %** |
+| 15:10 | 165 m | 833 / 1451 | 100 % / 100 % |
+| 15:48 | 162 m | 737 / 0 | 100 % / (sin revisitas en el interior) |
+
+**Test de unicidad** (`uniqueness.py`, 16:31): la mejor alternativa de otra pasada verifica con razón
+alt/match mediana 0.00 en los reales y 0.54 en los falsos; rechazando razón ≥ 0.5 quedan 17/43 FP y 150/155 TP.
+En curso en 13:39 y 13:14 (control de pérdida de TP).
+
+**Idea del usuario en investigación**: usar los huecos de cultivo (plantas muertas/faltantes) como codificación
+de la hilera — firma 1D/2D de ocupación a lo largo del surco, matcheable entre pasadas y que rompe la
+periodicidad. Encargada al agente investigador (`INVESTIGACION.md`, scripts en `evaluation/research/`).
