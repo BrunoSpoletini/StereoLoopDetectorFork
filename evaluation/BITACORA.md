@@ -435,3 +435,12 @@ SALAD reutilizado (mismos frames; SALAD redimensiona igual). ALIKED a 1280×720:
 
 Con el doble de focal×baseline (16 → 32 px·m) baja a la mitad el aliasing que sobrevive y sube la cobertura,
 pero la pose de esta secuencia sigue siendo mala (e_vec ~1.2 m).
+
+| Secuencia | Resolución | Loops | TP | FP | Precisión | Cobertura | pose_ok | e_vec med |
+|---|---|---|---|---|---|---|---|---|
+| 13:39 | 640×360 (p6_odo) | 2866 | 1961 | 883 | 0.69 | 42 % | 1870 | 0.07 m |
+| 13:39 | **1280×720** (p6_odo) | 2115 | **2067** | **15** | **0.99** | 32 % | **2062** | 0.07 m |
+
+→ A resolución nativa el aliasing entre surcos de 13:39 prácticamente desaparece (883 → 15 FP), con más TP y
+más loops con pose correcta; la cobertura baja (42 → 32 %). Se corre la resolución nativa en las 4 secuencias
+restantes para la validación completa.

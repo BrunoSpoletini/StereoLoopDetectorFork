@@ -2,3 +2,12 @@
   rof_1222_1631: exit 0
   rof_1226_1339: exit 0
 == learned_verify 21:38
+rof_1222_1631: 11573 candidatos verificados, 315 aceptados
+rof_1226_1339: 23623 candidatos verificados, 2129 aceptados
+rof_1222_1631: 315 aceptados por geometria, 198 consistentes con la odometria
+rof_1226_1339: 2129 aceptados por geometria, 2115 consistentes con la odometria
+  rof_1222_1631    315  155        0 160      0.492   0.023     0.280       32      1.236      1.214      2.170
+  rof_1226_1339   2129 2067       33  29      0.986   0.271     0.322     2062      0.049      0.069      1.982
+  rof_1222_1631    198  155        0  43      0.783   0.023     0.280       32      1.236      1.214      2.170
+  rof_1226_1339   2115 2067       33  15      0.993   0.271     0.322     2062      0.049      0.069      1.982
+CHAIN_DONE
