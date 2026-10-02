@@ -491,3 +491,15 @@ nuevo lo reducen entre 54 y 84 %.
 - p6_odo reduce el ATE 23–67 % respecto del original en 5 de 6 secuencias (13:14 empata: el original ya
   cubría 82 %). La odometría a 640×360 deriva mucho (30–85 m en < 1 km: baseline estéreo de 5 cm) → repetir
   con la odometría a 1280×720.
+
+---
+
+## 2026-10-02 — Comparación justa en Rosario a 1280×720 (SLD original también a resolución nativa)
+
+| Rosario 1280×720 (6 sec.) | Loops | TP | Triviales | FP | Precisión | Cobertura | pose_ok | e_vec med | e_yaw med |
+|---|---|---|---|---|---|---|---|---|---|
+| SLD original | 3480 | 2819 | 661 | 0 | 1.000 | 23.8 % | 2764 | 0.05 m | 1.0° |
+| **p6_odo** | 13 667 | **13 424** | 165 | 78 | 0.994 | **60.0 %** | **12 615** | 0.07 m | 2.2° |
+
+×4.8 TP, ×4.6 loops con pose correcta, cobertura ×2.5, con 78 FP sobre 13 667 loops. El SLD original rinde
+peor a 1280×720 que a 640×360 (2819 vs 3975 TP): con 2000 ORB la imagen grande queda menos cubierta.
