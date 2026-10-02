@@ -1,0 +1,11 @@
+{'session': 'fs_static1', 'path_m': 2098.8, 'odom': 84.36, 'baseline': 84.35, 'baseline_loops': 198, 'p6_odo': 38.9, 'p6_odo_loops': 3000}
+{'session': 'fs_11-34', 'path_m': 110.23, 'odom': 0.46, 'baseline': 0.64, 'baseline_loops': 2195, 'p6_odo': 0.46, 'p6_odo_loops': 0}
+{'session': 'fs_dynamic1', 'path_m': 3131.65, 'odom': 24.63, 'baseline': 23.73, 'baseline_loops': 197, 'p6_odo': 11.06, 'p6_odo_loops': 3000}
+{'session': 'fs_dynamic2', 'path_m': 4175.41, 'odom': 44.18, 'baseline': 44.18, 'baseline_loops': 122, 'p6_odo': 8.14, 'p6_odo_loops': 3000}
+{'session': 'fs_12-37', 'path_m': 4689.61, 'odom': 46.69, 'baseline': 46.41, 'baseline_loops': 4, 'p6_odo': 7.69, 'p6_odo_loops': 3000}
+    session  path_m  odom  baseline  baseline_loops  p6_odo  p6_odo_loops
+ fs_static1 2098.80 84.36     84.35             198   38.90          3000
+   fs_11-34  110.23  0.46      0.64            2195    0.46             0
+fs_dynamic1 3131.65 24.63     23.73             197   11.06          3000
+fs_dynamic2 4175.41 44.18     44.18             122    8.14          3000
+   fs_12-37 4689.61 46.69     46.41               4    7.69          3000

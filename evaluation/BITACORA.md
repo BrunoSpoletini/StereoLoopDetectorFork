@@ -459,3 +459,22 @@ restantes para la validación completa.
 
 vs 640×360: 12 466 TP / 1207 FP / precisión 0.91 / cobertura 59.5 %. La resolución nativa elimina el 94 % de
 los FP manteniendo la cobertura. En curso: SLD original a 1280×720 (comparación justa).
+
+---
+
+## 2026-10-02 — Evaluación por ATE (grafo de poses SE(2))
+
+`ate_eval.py`: nodos = 1 de cada 5 frames; aristas de odometría = odometría visual estéreo (sin GPS); aristas de
+loop = pose relativa estimada por cada loop (≤ 3000 por sesión, submuestreo uniforme); mínimos cuadrados L2
+(una pérdida robusta descarta todos los loops cuando el drift es de decenas de metros); ATE = RMSE de
+posición tras alinear con una transformación rígida 2D.
+
+| FieldSAFE | Recorrido | Solo odometría | + loops SLD original | **+ loops p6_odo** |
+|---|---|---|---|---|
+| estática #1 | 2.1 km | 84.4 m | 84.4 m | **38.9 m (−54 %)** |
+| dinámica #1 | 3.1 km | 24.6 m | 23.7 m | **11.1 m (−55 %)** |
+| dinámica #2 | 4.2 km | 44.2 m | 44.2 m | **8.1 m (−82 %)** |
+| 12:37 | 4.7 km | 46.7 m | 46.4 m | **7.7 m (−84 %)** |
+
+Los loops del SLD original no cambian el ATE (triviales o concentrados en pocos lugares); los del pipeline
+nuevo lo reducen entre 54 y 84 %.
