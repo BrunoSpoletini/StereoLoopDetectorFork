@@ -503,3 +503,18 @@ nuevo lo reducen entre 54 y 84 %.
 
 ×4.8 TP, ×4.6 loops con pose correcta, cobertura ×2.5, con 78 FP sobre 13 667 loops. El SLD original rinde
 peor a 1280×720 que a 640×360 (2819 vs 3975 TP): con 2000 ORB la imagen grande queda menos cubierta.
+
+| Rosario 1280×720 | Recorrido | Solo odometría | + loops SLD original | **+ loops p6_odo** |
+|---|---|---|---|---|
+| 13:14 | 0.8 km | 80.2 m | 79.4 m | **9.5 m (−88 %)** |
+| 14:29 | 0.9 km | 36.0 m | 10.7 m | **9.2 m** |
+| 16:31 | 0.9 km | 47.4 m | 47.4 m | **16.7 m (−65 %)** |
+| 13:39 | 2.2 km | 101.0 m | 101.5 m | **72.5 m (−28 %)** |
+| 15:10 | 0.7 km | 65.8 m | 58.5 m | **38.5 m (−42 %)** |
+| 15:48 | 1.7 km | 107.7 m | 107.7 m | **96.7 m (−10 %)** |
+
+- La odometría visual a 1280×720 deriva más que a 640×360 (con 2000 ORB la imagen grande queda poco
+  cubierta; mismo efecto que en el SLD original). Pendiente: odometría con más features o con ALIKED.
+- Con loops del pipeline nuevo el ATE baja en todas las secuencias (10–88 %); los del original solo ayudan en
+  14:29. En 13:39 y 15:48 la corrección es menor: el drift es tan grande que el grafo L2 con odometría muy
+  sesgada no alcanza a corregirlo (y la cobertura es parcial en 13:39).
