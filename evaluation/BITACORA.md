@@ -478,3 +478,16 @@ posición tras alinear con una transformación rígida 2D.
 
 Los loops del SLD original no cambian el ATE (triviales o concentrados en pocos lugares); los del pipeline
 nuevo lo reducen entre 54 y 84 %.
+
+| Rosario (640×360) | Recorrido | Solo odometría | + loops SLD original | **+ loops p6_odo** |
+|---|---|---|---|---|
+| 13:14 | 0.8 km | 30.3 m | 16.3 m | 16.8 m |
+| 14:29 | 0.9 km | 51.3 m | 31.8 m | **26.2 m** |
+| 16:31 | 0.9 km | 55.7 m | 55.7 m | **39.3 m** |
+| 13:39 | 2.2 km | 75.1 m | 73.3 m | **39.5 m** |
+| 15:10 | 0.7 km | 85.3 m | 85.5 m | **27.8 m** |
+| 15:48 | 1.7 km | 83.6 m | 83.6 m | **41.7 m** |
+
+- p6_odo reduce el ATE 23–67 % respecto del original en 5 de 6 secuencias (13:14 empata: el original ya
+  cubría 82 %). La odometría a 640×360 deriva mucho (30–85 m en < 1 km: baseline estéreo de 5 cm) → repetir
+  con la odometría a 1280×720.

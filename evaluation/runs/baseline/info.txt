@@ -1,4 +1,4 @@
-commit: 7a54741-dirty
+commit: ed0cdac-dirty
 config: baseline.yaml
 # Configuracion original del paper (todos los defaults del demo)
 {}

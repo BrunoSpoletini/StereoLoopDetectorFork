@@ -1,0 +1,13 @@
+{'session': 'ro_1222_1314', 'path_m': 785.46, 'odom': 30.25, 'baseline': 16.33, 'baseline_loops': 3000, 'p6_odo': 16.8, 'p6_odo_loops': 3000}
+{'session': 'ro_1222_1429', 'path_m': 904.84, 'odom': 51.32, 'baseline': 31.79, 'baseline_loops': 142, 'p6_odo': 26.24, 'p6_odo_loops': 941}
+{'session': 'ro_1222_1631', 'path_m': 948.18, 'odom': 55.68, 'baseline': 55.68, 'baseline_loops': 0, 'p6_odo': 39.28, 'p6_odo_loops': 228}
+{'session': 'ro_1226_1339', 'path_m': 2249.38, 'odom': 75.12, 'baseline': 73.27, 'baseline_loops': 933, 'p6_odo': 39.47, 'p6_odo_loops': 2866}
+{'session': 'ro_1226_1510', 'path_m': 705.3, 'odom': 85.33, 'baseline': 85.45, 'baseline_loops': 11, 'p6_odo': 27.75, 'p6_odo_loops': 2100}
+{'session': 'ro_1226_1548', 'path_m': 1744.39, 'odom': 83.6, 'baseline': 83.6, 'baseline_loops': 31, 'p6_odo': 41.7, 'p6_odo_loops': 914}
+     session  path_m  odom  baseline  baseline_loops  p6_odo  p6_odo_loops
+ro_1222_1314  785.46 30.25     16.33            3000   16.80          3000
+ro_1222_1429  904.84 51.32     31.79             142   26.24           941
+ro_1222_1631  948.18 55.68     55.68               0   39.28           228
+ro_1226_1339 2249.38 75.12     73.27             933   39.47          2866
+ro_1226_1510  705.30 85.33     85.45              11   27.75          2100
+ro_1226_1548 1744.39 83.60     83.60              31   41.70           914
