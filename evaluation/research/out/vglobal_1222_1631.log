@@ -1,0 +1,4 @@
+2023-12-22-16-31-08: 198 loops (TP 155, FP 43); firma con ubicacion propia en 8
+  TAU=0.3: veta TP 0/155, FP 0/43
+  TAU=0.4: veta TP 0/155, FP 0/43
+  TAU=0.5: veta TP 0/155, FP 0/43

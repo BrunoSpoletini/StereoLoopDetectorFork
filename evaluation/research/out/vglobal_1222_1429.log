@@ -1,0 +1,4 @@
+2023-12-22-14-29-43: 1265 loops (TP 1257, FP 8); firma con ubicacion propia en 355
+  TAU=0.3: veta TP 0/1257, FP 0/8
+  TAU=0.4: veta TP 0/1257, FP 0/8
+  TAU=0.5: veta TP 0/1257, FP 0/8

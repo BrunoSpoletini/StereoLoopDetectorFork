@@ -940,3 +940,159 @@ firma no compara apariencia: verifica si **el patrón de plantas/huecos de los �
   compara invertida.
 - **Escala del odómetro**: error ≈ 0.5-3 %; en 10-15 m son 5-45 cm, absorbidos por la NCC. Para ventanas más
   largas, búsqueda de escala o DTW.
+
+## C.6 Ronda 3: diagnóstico del veto en secuencias completas y reglas que no destruyen loops reales
+
+### C.6.1 Por qué los reales no dan margen (`research/diag_veto.py`; GT sólo para analizar)
+Sobre las decisiones de `runs/p8_sig/rof_*_veto.csv` (firma evaluada en 13:39: 708 TP / 15 FP; 14:29: 143 TP;
+16:31: 1 TP / 26 FP):
+
+| | 13:39 (708 reales) | 14:29 (143 reales) | 16:31 (1 real) |
+|---|---|---|---|
+| distancia del q a la **cabecera** (mediana) | **3.8 m** (100 % a < 15 m) | **1.6 m** (100 % a < 15 m) | 19.8 m |
+| robot siguiendo hileras según GT (rumbo ±14° de las hileras) | 74 % | **0 %** | 100 % |
+| separación lateral GT \|gw\| (mediana) | 0.05 m | 0.22 m | 1.37 m |
+| margen de la firma (mediana) | 0.05 | 0.15 | 0.12 |
+| pose de la firma correcta | 0 % | 0 % | 0 % |
+
+**Causa principal: la firma se evaluó donde no hay firma.**
+- Todos los reales evaluados están en la cabecera o en los primeros/últimos metros del surco. Ahí la ventana
+  "últimos 10 m antes de q" cae en el giro o fuera del lote.
+- El filtro de "recta" por rumbo de la odometría (±6° en ±2 m) no lo detecta: en 14:29 deja pasar tramos rectos
+  de la cabecera, **perpendiculares** a las hileras (0 % siguiendo hileras según GT).
+- La separación lateral no es el problema para estos reales (son la misma hilera, |gw| ≈ 0.05-0.22 m), y la
+  polaridad tampoco (la coherencia normalizada es invariante a invertir la máscara).
+- En 14:29 se suma el estadio (V8).
+
+**Corrección**: el criterio de aplicabilidad tiene que ser **intrínseco a la firma**, no al rumbo de la VO:
+- calidad de hileras por frame: coherencia de fase normalizada ≥ umbral y |ψ| < 8°;
+- la ventana de consulta completa (L m) **dentro de un segmento continuo de seguimiento de hileras**;
+- el candidato también dentro de un segmento.
+
+Fuera de eso, la firma no opina.
+
+### C.6.2 Infraestructura nueva (secuencia completa, sin GT en las decisiones)
+- `research/rowstate.py`: estado de hileras para **todos** los frames (cada 2) de cada secuencia: máscara (en
+  bits), ψ, fase y **calidad intrínseca** = coherencia de fase normalizada en [0, 1], que es invariante a la
+  polaridad de la máscara. Corre a ~10 frames/s por proceso.
+  - Espaciados estimados: 13:14 0.49, 14:29 0.49, 16:31 0.57, 13:39 0.475, 15:10 0.50, 15:48 0.465 m.
+- `research/segsig.py`: **segmentos de seguimiento de hileras** = corridas de calidad (mediana de 9) ≥
+  0.7 × p75 de la sesión y |ψ| < 8°, de ≥ 12 m, tolerando huecos < 0.6 m. Contra el GT, ese umbral da una tasa de
+  verdaderos positivos de 0.71-0.86 y de falsos positivos de 0.13-0.36 por frame. Cada segmento tiene su BEV y sus
+  firmas por fila; el matching de una ventana contra un segmento entero se hace por FFT (NCC exacta con sumas
+  acumuladas).
+- `research/eval_rows.py` (generador + reglas de veto), `analyze_rows.py`, `analyze_loose.py`,
+  `veto_global.py`.
+- **Convención PnP ↔ firma** (medida en 15:10 sobre 830 loops con margen ≥ 0.4): lateral = t_x (|pw − t_x|
+  mediana 0.04 m) y a lo largo = −t_z (|pu + t_z| 0.12 m). La regla anterior ("|pu| < 2 y |pw| < 0.6", que
+  asumía q ≈ m) vetaba reales a 0.6 m laterales que la firma ubicaba bien: **la consistencia hay que medirla
+  contra la pose del PnP**, no contra cero.
+
+### C.6.3 Reglas de veto sobre TODOS los loops (runs/p6_odo, 6 secuencias rof, 13 589 TP / 78 FP; real = < 3 m GT)
+
+| Regla | TP conservados | FP conservados | precisión |
+|---|---|---|---|
+| sin veto | 13 589 | 78 | 0.9943 |
+| confirmar si aplicable (segmentos estrictos, 0.7·p75) y PnP < 0.8 | 13 253 (−336) | 63 (−15) | 0.9953 |
+| confirmar si aplicable (segmentos laxos, 0.45·p75) | 12 041 (−1548) | 46 (−32) | 0.9962 |
+| confirmar si aplicable (laxos) y PnP < 0.8 | 12 527 (−1062) | 46 (−32) | 0.9963 |
+| vetar si contradice al PnP (aplicable, margen ≥ 0.3) | 13 494-13 588 | 77-78 | 0.9943 |
+
+Por secuencia (segmentos laxos, "confirmar"):
+
+| Secuencia | Efecto |
+|---|---|
+| 13:39 | **0/15 FP conservados, 2099/2100 TP** (funciona) |
+| 16:31 | 29/43 FP, 145/155 TP |
+| 13:14 | −592 TP (0 FP en la secuencia) |
+| 14:29 | −476 TP |
+| 15:10 | −469 TP |
+
+**Por qué no hay regla de veto general**:
+- **Los FP viven en el régimen donde la firma no tiene información**: pasada vecina a 1.3-2.6 m (16:31) o
+  2.6 m (13:39). Ahí su margen es ≈ 0.04, igual que el de un real en la cabecera. "Contradecir" nunca dispara
+  (FP con margen ≥ 0.3: 1 de 78).
+- **"Exigir confirmación" vetea por ausencia de señal**, y la ausencia es igual de frecuente en los TP: en
+  14:29 el margen mediano de los TP aplicables es 0.11, por estadio V8 y canopeo.
+- Donde la firma sí tiene señal (TP de 13:14 y 15:10 aplicables: margen mediano 1.60 y 0.76) **confirma al PnP**
+  (86 % y 78 % consistentes). En los inconsistentes con margen ≥ 0.3 (95 de 5011), **el PnP tenía razón y la
+  firma no** (0/95 mejor): alias a lo largo con margen alto, error de la firma 1.2-13 m.
+
+  O sea, la firma tampoco sirve para **corregir** la pose del PnP; el PnP de los TP tiene error mediano 0.03-0.11 m
+  y el de la firma 0.13-0.21 m.
+
+**Conclusión de veto**: la firma **no debe usarse como veto general**. El único uso de veto defendible es en
+secuencias con la geometría de 13:39 (cada pasada con su vuelta a < 1 m). Para eso se probó un veto "por
+ubicación confiable" (`veto_global.py`): la firma de q se busca contra todos los segmentos anteriores y sólo
+se veta si ubica a q con confianza en otro lugar. Resultado en C.6.4.
+
+### C.6.4 Veto por ubicación confiable (`veto_global.py`)
+La firma de los últimos 10 m antes de q se busca contra todos los segmentos anteriores. Se veta si la mejor
+ubicación tiene margen ≥ τ y no es consistente con (m, pose del PnP).
+
+| τ | TP vetados (de 13 589) | FP vetados (de 78) |
+|---|---|---|
+| 0.3 | 43 (13:14 4, 15:10 39) | 4 (13:39) |
+| 0.4 | 27 | 1 |
+| 0.5 | 27 | 1 |
+
+Es seguro, pero **inútil**: la firma sólo ubica a q en el 15/2115 de los loops de 13:39 y en 8/198 de 16:31. Los
+FP ocurren donde no hay una vuelta cercana con firma. **Descartado como veto.**
+
+### C.6.5 Generador de loops del interior en secuencias completas (`eval_rows.py`, consulta cada 2 m)
+Consultas: ventanas de 10 m dentro de segmentos de seguimiento de hileras contra todos los segmentos anteriores
+(sin prior de posición). Aceptación por margen de Stouffer. Correcto = |e_u| < 1 m y |e_w| < 0.3 m contra GT. La
+pose relativa es la de la firma.
+
+| Secuencia | consultas | aceptados (m ≥ 0.4) | correctos | sentido opuesto | tramos interior cubiertos (gen.) | tramos interior: pipeline → unión |
+|---|---|---|---|---|---|---|
+| 13:14 | 100 | 61 | 61 | 0 | 15 | 25 → 25 |
+| 14:29 | 116 | 3 | 3 | 0 | 2 | 16 → 16 |
+| 16:31 | 142 | 0 | — | — | 0 | 8 → 8 |
+| **13:39** | 518 | **13** | **13** | **13** | **8** | **1 → 9** |
+| 15:10 | 157 | 37 | 37 | 0 | 9 | 15 → 15 |
+| 15:48 | 263 | 0 | — | — | 0 | 0 → 0 |
+| **Total** | 1296 | **114** | **114 (100 %)** | 13 | 34 | 65 → 73 |
+
+Con margen ≥ 0.3: 131/131 correctos (13:39: 24, cubren 12 tramos). Con ≥ 0.5: 102/102.
+
+"Tramos" = bins de 10 m de odómetro de la consulta en el interior. No es la métrica de cobertura de revisitas de
+`sld_eval` (que exige mismo sentido): son tramos del recorrido del robot con al menos un loop correcto.
+
+**Lectura**:
+- **Precisión 100 % sin GT y sin prior** en 114-131 loops, en las 6 secuencias.
+- Agrega cobertura **sólo en 13:39**: de 1 a 9-13 tramos del interior, de 117 consultados. Todos los loops nuevos
+  son ida-vuelta en sentido opuesto, que el pipeline no puede producir.
+- En 13:14, 14:29 y 15:10 encuentra loops correctos donde el pipeline ya cubría. Son redundantes, pero confirman
+  la precisión.
+- En 16:31 y 15:48 no hay pasadas a < 1.5 m: 0 aceptados (y 0 falsos).
+- Recall: 13/518 consultas en 13:39. Está limitado por la geometría (sólo las vueltas a < 1 m) y por el umbral.
+
+### C.6.6 Qué implementar
+1. **No integrar la firma como veto** (ni "confirmar" ni "contradecir"). Revertir o desactivar `sig_veto.py`
+   salvo como experimento. La mejor variante (confirmar en segmentos estrictos con PnP < 0.8) sube la precisión
+   global de 0.9943 a 0.9953 a costa de 336 TP; el veto global por ubicación no cambia nada.
+   - Si se quiere conservar algo para 13:39: la variante con segmentos laxos elimina 15/15 FP perdiendo 1 TP
+     ahí, pero en otras secuencias destruye cientos de TP. No es generalizable.
+2. **Integrar el generador** como fuente adicional de loops, pasos en `evaluation/` (Python, offline, como
+   `sig_veto.py`):
+   1. `rowstate` por sesión (cache npz) → segmentos → para cada frame del interior cada 2 m, consulta contra los
+      segmentos anteriores.
+   2. Aceptar con **margen ≥ 0.4**, ≥ 2 filas emparejadas y ventana de 10 m.
+   3. Escribir los loops (q, c, pose de la firma: t_x = pw, t_z = −pu, yaw relativo = Δψ (+π si el sentido es
+      opuesto)) en `<run>_results.yml` **sumados** a los del pipeline. Marcarlos (p. ej. `loop_source`) para que
+      `sld_eval` los reporte aparte.
+   - Costo: rowstate ~10 frames/s por proceso (13:39: ~30 min en CPU; vectorizable en GPU) y matching ~2 min por
+     sesión.
+3. **Métrica**: para que la ganancia se vea, `sld_eval` tiene que aceptar loops en sentido opuesto con pose
+   correcta (cobertura "por pose", R2.4 #2), o evaluar por ATE tras la PGO. Con la métrica actual (mismo
+   sentido), los 13 loops nuevos de 13:39 no cuentan.
+4. **Usar la firma como señal positiva** en el grafo. Si un loop del pipeline es consistente con la firma
+   (margen ≥ 0.3), se le puede dar más peso (más inliers efectivos o menor covarianza lateral). Si no hay firma,
+   se queda como está. Nunca reduce recall.
+5. Pendiente para subir el recall del generador:
+   - prior de posición por VO para restringir los segmentos candidatos (hoy compite contra todos, lo que
+     infla el "segundo mejor" y baja el margen);
+   - ventanas de 15 m;
+   - umbral 0.3 cuando el prior lateral ubica el candidato a < 2 m (en 13:39, 0.3 pasa de 13 a 24 loops
+     correctos).

@@ -1,0 +1,50 @@
+== 1222_1314: 7064 loops (TP 7056, FP 8); aplicable 3934 (TP 3934, FP 0)
+   sin veto                                      : TP 7056/7056  FP 8/8
+   confirmar si aplicable (m>=0.2, consistente)  : TP 6464/7056  FP 8/8
+   confirmar si aplicable y PnP<0.8              : TP 6464/7056  FP 8/8
+   contradice (aplicable, m>=0.3)                : TP 6996/7056  FP 8/8
+   contradice (aplicable, m>=0.2)                : TP 6985/7056  FP 8/8
+   aplicables TP: margen mediano 1.60; margen>=0.3 86%; consistente con PnP 86%; m>=0.3 y NO consistente 60
+== 1222_1429: 1265 loops (TP 1257, FP 8); aplicable 720 (TP 720, FP 0)
+   sin veto                                      : TP 1257/1257  FP 8/8
+   confirmar si aplicable (m>=0.2, consistente)  : TP 781/1257  FP 8/8
+   confirmar si aplicable y PnP<0.8              : TP 1257/1257  FP 8/8
+   contradice (aplicable, m>=0.3)                : TP 1252/1257  FP 8/8
+   contradice (aplicable, m>=0.2)                : TP 1251/1257  FP 8/8
+   aplicables TP: margen mediano 0.11; margen>=0.3 23%; consistente con PnP 56%; m>=0.3 y NO consistente 5
+== 1222_1631: 198 loops (TP 155, FP 43); aplicable 25 (TP 11, FP 14)
+   sin veto                                      : TP 155/155  FP 43/43
+   confirmar si aplicable (m>=0.2, consistente)  : TP 145/155  FP 29/43
+   confirmar si aplicable y PnP<0.8              : TP 155/155  FP 29/43
+   contradice (aplicable, m>=0.3)                : TP 155/155  FP 43/43
+   contradice (aplicable, m>=0.2)                : TP 155/155  FP 43/43
+   aplicables TP: margen mediano 0.04; margen>=0.3 0%; consistente con PnP 9%; m>=0.3 y NO consistente 0
+   aplicables FP: margen mediano 0.04; margen>=0.3 0%; consistente con PnP 0%; m>=0.3 y NO consistente 0
+== 1226_1339: 2115 loops (TP 2100, FP 15); aplicable 16 (TP 1, FP 15)
+   sin veto                                      : TP 2100/2100  FP 15/15
+   confirmar si aplicable (m>=0.2, consistente)  : TP 2099/2100  FP 0/15
+   confirmar si aplicable y PnP<0.8              : TP 2099/2100  FP 0/15
+   contradice (aplicable, m>=0.3)                : TP 2100/2100  FP 14/15
+   contradice (aplicable, m>=0.2)                : TP 2100/2100  FP 14/15
+   aplicables TP: margen mediano 0.06; margen>=0.3 0%; consistente con PnP 0%; m>=0.3 y NO consistente 0
+   aplicables FP: margen mediano 0.04; margen>=0.3 7%; consistente con PnP 0%; m>=0.3 y NO consistente 1
+== 1226_1510: 2284 loops (TP 2284, FP 0); aplicable 1936 (TP 1936, FP 0)
+   sin veto                                      : TP 2284/2284  FP 0/0
+   confirmar si aplicable (m>=0.2, consistente)  : TP 1815/2284  FP 0/0
+   confirmar si aplicable y PnP<0.8              : TP 1815/2284  FP 0/0
+   contradice (aplicable, m>=0.3)                : TP 2254/2284  FP 0/0
+   contradice (aplicable, m>=0.2)                : TP 2232/2284  FP 0/0
+   aplicables TP: margen mediano 0.76; margen>=0.3 76%; consistente con PnP 78%; m>=0.3 y NO consistente 30
+== 1226_1548: 741 loops (TP 737, FP 4); aplicable 3 (TP 0, FP 3)
+   sin veto                                      : TP 737/737  FP 4/4
+   confirmar si aplicable (m>=0.2, consistente)  : TP 737/737  FP 1/4
+   confirmar si aplicable y PnP<0.8              : TP 737/737  FP 1/4
+   contradice (aplicable, m>=0.3)                : TP 737/737  FP 4/4
+   contradice (aplicable, m>=0.2)                : TP 737/737  FP 4/4
+   aplicables FP: margen mediano 0.04; margen>=0.3 0%; consistente con PnP 0%; m>=0.3 y NO consistente 0
+== TOTAL
+   sin veto                                      : TP 13589/13589  FP 78/78  precision 0.9943
+   confirmar si aplicable (m>=0.2, consistente)  : TP 12041/13589  FP 46/78  precision 0.9962
+   confirmar si aplicable y PnP<0.8              : TP 12527/13589  FP 46/78  precision 0.9963
+   contradice (aplicable, m>=0.3)                : TP 13494/13589  FP 77/78  precision 0.9943
+   contradice (aplicable, m>=0.2)                : TP 13460/13589  FP 77/78  precision 0.9943

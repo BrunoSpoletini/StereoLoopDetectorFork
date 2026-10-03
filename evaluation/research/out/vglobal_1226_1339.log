@@ -1,0 +1,4 @@
+2023-12-26-13-39-43: 2115 loops (TP 2100, FP 15); firma con ubicacion propia en 15
+  TAU=0.3: veta TP 0/2100, FP 4/15
+  TAU=0.4: veta TP 0/2100, FP 1/15
+  TAU=0.5: veta TP 0/2100, FP 1/15

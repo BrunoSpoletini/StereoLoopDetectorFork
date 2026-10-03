@@ -1,0 +1,76 @@
+== 1222_1314: loops 7064 (TP<3m 7056, FP 8); firma aplicable (intrinseca) en 2252 (TP 2252, FP 0)
+   sin veto                          : conserva TP 7056/7056, FP 8/8, precision 0.999
+   confirmar si PnP<0.8 y aplicable  : conserva TP 6906/7056, FP 8/8, precision 0.999
+   confirmar (consistencia PnP) m>=0.2: conserva TP 6912/7056, FP 8/8, precision 0.999
+   vetar si contradice al PnP m>=0.3 : conserva TP 7056/7056, FP 8/8, precision 0.999
+   vetar si contradice al PnP m>=0.4 : conserva TP 7056/7056, FP 8/8, precision 0.999
+   generador margen>=0.3: aceptados 62 (interior 57), correctos 62 (100%), interior correctos 57/57, sentido opuesto 0; tramos de 10 m del interior cubiertos: 15
+   generador margen>=0.4: aceptados 61 (interior 56), correctos 61 (100%), interior correctos 56/56, sentido opuesto 0; tramos de 10 m del interior cubiertos: 15
+   generador margen>=0.5: aceptados 61 (interior 56), correctos 61 (100%), interior correctos 56/56, sentido opuesto 0; tramos de 10 m del interior cubiertos: 15
+   tramos interior cubiertos: pipeline 25, generador 15, union 25 (nuevos 0)
+   (consultas del generador: 100; tramos de 10 m del interior consultados 24)
+== 1222_1429: loops 1265 (TP<3m 1257, FP 8); firma aplicable (intrinseca) en 176 (TP 176, FP 0)
+   sin veto                          : conserva TP 1257/1257, FP 8/8, precision 0.994
+   confirmar si PnP<0.8 y aplicable  : conserva TP 1257/1257, FP 8/8, precision 0.994
+   confirmar (consistencia PnP) m>=0.2: conserva TP 1157/1257, FP 8/8, precision 0.993
+   vetar si contradice al PnP m>=0.3 : conserva TP 1257/1257, FP 8/8, precision 0.994
+   vetar si contradice al PnP m>=0.4 : conserva TP 1257/1257, FP 8/8, precision 0.994
+   generador margen>=0.3: aceptados 6 (interior 6), correctos 6 (100%), interior correctos 6/6, sentido opuesto 0; tramos de 10 m del interior cubiertos: 3
+   generador margen>=0.4: aceptados 3 (interior 3), correctos 3 (100%), interior correctos 3/3, sentido opuesto 0; tramos de 10 m del interior cubiertos: 2
+   generador margen>=0.5: aceptados 0 (interior 0), correctos 0 (0%), interior correctos 0/0, sentido opuesto 0; tramos de 10 m del interior cubiertos: 0
+   tramos interior cubiertos: pipeline 16, generador 2, union 16 (nuevos 0)
+   (consultas del generador: 116; tramos de 10 m del interior consultados 33)
+== 1222_1631: loops 198 (TP<3m 155, FP 43); firma aplicable (intrinseca) en 3 (TP 1, FP 2)
+   sin veto                          : conserva TP 155/155, FP 43/43, precision 0.783
+   confirmar si PnP<0.8 y aplicable  : conserva TP 155/155, FP 41/43, precision 0.791
+   confirmar (consistencia PnP) m>=0.2: conserva TP 154/155, FP 41/43, precision 0.790
+   vetar si contradice al PnP m>=0.3 : conserva TP 155/155, FP 43/43, precision 0.783
+   vetar si contradice al PnP m>=0.4 : conserva TP 155/155, FP 43/43, precision 0.783
+   generador margen>=0.3: aceptados 0 (interior 0), correctos 0 (0%), interior correctos 0/0, sentido opuesto 0; tramos de 10 m del interior cubiertos: 0
+   generador margen>=0.4: aceptados 0 (interior 0), correctos 0 (0%), interior correctos 0/0, sentido opuesto 0; tramos de 10 m del interior cubiertos: 0
+   generador margen>=0.5: aceptados 0 (interior 0), correctos 0 (0%), interior correctos 0/0, sentido opuesto 0; tramos de 10 m del interior cubiertos: 0
+   tramos interior cubiertos: pipeline 8, generador 0, union 8 (nuevos 0)
+   (consultas del generador: 142; tramos de 10 m del interior consultados 33)
+== 1226_1339: loops 2115 (TP<3m 2100, FP 15); firma aplicable (intrinseca) en 12 (TP 1, FP 11)
+   sin veto                          : conserva TP 2100/2100, FP 15/15, precision 0.993
+   confirmar si PnP<0.8 y aplicable  : conserva TP 2099/2100, FP 4/15, precision 0.998
+   confirmar (consistencia PnP) m>=0.2: conserva TP 2099/2100, FP 4/15, precision 0.998
+   vetar si contradice al PnP m>=0.3 : conserva TP 2100/2100, FP 15/15, precision 0.993
+   vetar si contradice al PnP m>=0.4 : conserva TP 2100/2100, FP 15/15, precision 0.993
+   generador margen>=0.3: aceptados 24 (interior 24), correctos 24 (100%), interior correctos 24/24, sentido opuesto 24; tramos de 10 m del interior cubiertos: 12
+   generador margen>=0.4: aceptados 13 (interior 13), correctos 13 (100%), interior correctos 13/13, sentido opuesto 13; tramos de 10 m del interior cubiertos: 8
+   generador margen>=0.5: aceptados 4 (interior 4), correctos 4 (100%), interior correctos 4/4, sentido opuesto 4; tramos de 10 m del interior cubiertos: 4
+   tramos interior cubiertos: pipeline 1, generador 8, union 9 (nuevos 8)
+   (consultas del generador: 518; tramos de 10 m del interior consultados 117)
+== 1226_1510: loops 2284 (TP<3m 2284, FP 0); firma aplicable (intrinseca) en 1173 (TP 1173, FP 0)
+   sin veto                          : conserva TP 2284/2284, FP 0/0, precision 1.000
+   confirmar si PnP<0.8 y aplicable  : conserva TP 2099/2284, FP 0/0, precision 1.000
+   confirmar (consistencia PnP) m>=0.2: conserva TP 2165/2284, FP 0/0, precision 1.000
+   vetar si contradice al PnP m>=0.3 : conserva TP 2283/2284, FP 0/0, precision 1.000
+   vetar si contradice al PnP m>=0.4 : conserva TP 2283/2284, FP 0/0, precision 1.000
+   generador margen>=0.3: aceptados 39 (interior 39), correctos 39 (100%), interior correctos 39/39, sentido opuesto 0; tramos de 10 m del interior cubiertos: 9
+   generador margen>=0.4: aceptados 37 (interior 37), correctos 37 (100%), interior correctos 37/37, sentido opuesto 0; tramos de 10 m del interior cubiertos: 9
+   generador margen>=0.5: aceptados 37 (interior 37), correctos 37 (100%), interior correctos 37/37, sentido opuesto 0; tramos de 10 m del interior cubiertos: 9
+   tramos interior cubiertos: pipeline 15, generador 9, union 15 (nuevos 0)
+   (consultas del generador: 157; tramos de 10 m del interior consultados 39)
+== 1226_1548: loops 741 (TP<3m 737, FP 4); firma aplicable (intrinseca) en 2 (TP 0, FP 2)
+   sin veto                          : conserva TP 737/737, FP 4/4, precision 0.995
+   confirmar si PnP<0.8 y aplicable  : conserva TP 737/737, FP 2/4, precision 0.997
+   confirmar (consistencia PnP) m>=0.2: conserva TP 737/737, FP 2/4, precision 0.997
+   vetar si contradice al PnP m>=0.3 : conserva TP 737/737, FP 4/4, precision 0.995
+   vetar si contradice al PnP m>=0.4 : conserva TP 737/737, FP 4/4, precision 0.995
+   generador margen>=0.3: aceptados 0 (interior 0), correctos 0 (0%), interior correctos 0/0, sentido opuesto 0; tramos de 10 m del interior cubiertos: 0
+   generador margen>=0.4: aceptados 0 (interior 0), correctos 0 (0%), interior correctos 0/0, sentido opuesto 0; tramos de 10 m del interior cubiertos: 0
+   generador margen>=0.5: aceptados 0 (interior 0), correctos 0 (0%), interior correctos 0/0, sentido opuesto 0; tramos de 10 m del interior cubiertos: 0
+   tramos interior cubiertos: pipeline 0, generador 0, union 0 (nuevos 0)
+   (consultas del generador: 263; tramos de 10 m del interior consultados 64)
+== TOTAL
+   sin veto                          : TP 13589/13589  FP 78/78  precision 0.994
+   confirmar si PnP<0.8 y aplicable  : TP 13253/13589  FP 63/78  precision 0.995
+   confirmar (consistencia PnP) m>=0.2: TP 13224/13589  FP 63/78  precision 0.995
+   vetar si contradice al PnP m>=0.3 : TP 13588/13589  FP 78/78  precision 0.994
+   vetar si contradice al PnP m>=0.4 : TP 13588/13589  FP 78/78  precision 0.994
+   gen0.3: aceptados 131, correctos 131 (100%), tramos interior cubiertos 39
+   gen0.4: aceptados 114, correctos 114 (100%), tramos interior cubiertos 34
+   gen0.5: aceptados 102, correctos 102 (100%), tramos interior cubiertos 28
+   tramos interior: pipeline 65, nuevos por el generador 8, union 73

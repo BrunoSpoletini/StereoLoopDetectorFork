@@ -1,0 +1,4 @@
+2023-12-26-15-10-15: 2284 loops (TP 2284, FP 0); firma con ubicacion propia en 1266
+  TAU=0.3: veta TP 39/2284, FP 0/0
+  TAU=0.4: veta TP 23/2284, FP 0/0
+  TAU=0.5: veta TP 23/2284, FP 0/0

@@ -1,0 +1,4 @@
+2023-12-26-15-48-38: 741 loops (TP 737, FP 4); firma con ubicacion propia en 2
+  TAU=0.3: veta TP 0/737, FP 0/4
+  TAU=0.4: veta TP 0/737, FP 0/4
+  TAU=0.5: veta TP 0/737, FP 0/4

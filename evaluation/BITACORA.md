@@ -585,3 +585,18 @@ En los loops reales la firma casi nunca alcanza margen (mediana 0.05 en 13:39): 
 dice nada, y una contradicción confiable casi nunca ocurre. La validación del agente se hizo sobre una muestra del
 interior con pasadas a < 1.5 m; la mayoría de los loops reales están en cabeceras o a 2–3 m laterales, fuera del
 rango útil de la firma. Se vuelve a encargar al agente investigador con estos datos.
+
+---
+
+## 2026-10-03 — Firma de hileras: veto descartado, generador de loops integrado
+
+Ronda del agente (INVESTIGACION.md C.6), sobre las 6 secuencias rof completas (13 589 TP / 78 FP de p6_odo):
+- **Ninguna regla de veto con la firma mejora la precisión sin destruir TP** (confirmar: −1548 TP / −32 FP;
+  contradecir al PnP: no dispara). Los FP están donde la firma no tiene información (pasada vecina a 1.3–2.6 m) y
+  donde sí la tiene, la firma coincide con el PnP. `sig_veto.py` queda como experimento.
+- **Como generador** (consultas cada 2 m, margen ≥ 0.4, sin GT): **114/114 loops correctos**, todos en pasadas de ida y
+  vuelta; agrega cobertura en el interior de 13:39 (1 → 9 tramos de 10 m).
+
+`gen_loops.py` suma los loops del generador al pipeline (`p9_gen` = p6_odo + generador), con pose desde la firma.
+Sin contar consultas que el pipeline ya tenía: 26 loops nuevos (13:14: 2, 13:39: 13, 15:10: 11), **26/26 con pose
+correcta** (e_vec mediano 0.08–0.57 m, yaw 1.9–5.3°). En curso: ATE con y sin estos loops.

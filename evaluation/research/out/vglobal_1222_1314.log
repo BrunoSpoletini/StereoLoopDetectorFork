@@ -1,0 +1,4 @@
+2023-12-22-13-14-16: 7064 loops (TP 7056, FP 8); firma con ubicacion propia en 2256
+  TAU=0.3: veta TP 4/7056, FP 0/8
+  TAU=0.4: veta TP 4/7056, FP 0/8
+  TAU=0.5: veta TP 4/7056, FP 0/8
