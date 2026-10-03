@@ -558,7 +558,7 @@ esperada), y R2-2(a) en paralelo; #3 y #5 como experimentos offline en Python an
 
 # Capítulo: interior del campo y codificación de hileras por huecos de cultivo
 
-Estado: en progreso (2026-10-02). Idea del usuario: usar los huecos del cultivo (plantas muertas/faltantes) como
+Estado: dos rondas completas (2026-10-03). Idea del usuario: usar los huecos del cultivo (plantas muertas/faltantes) como
 "código de barras" natural de cada hilera para cerrar loops en el interior del lote, donde SALAD+ALIKED+PnP falla
 por aliasing periódico (13:39: cobertura interior 5 % vs 44 % en borde; loops falsos con ~0.1 m estimado vs 5-9 m
 reales a lo largo y 2-4 m laterales).
@@ -668,3 +668,275 @@ relativo (percentil por frame).
 **Límite observado (D− vs A+, trazas a 2.7 m).** 0/30 ventanas correctas y score ≈ 0.2-0.4 (nivel impostor):
 casi no hay filas bien observadas por ambas pasadas. Con la franja cercana actual el alcance lateral útil es
 ≈ ±1.6 m alrededor de cada traza.
+
+## C.3 Ronda 2 del capítulo: sin GT (odometría + hileras), más pares, límite lateral
+
+### C.3.1 Construcción de la firma SIN GT (`level.py`, `rowodo.py`, `exp_vo.py`)
+El GT sólo se usa para elegir q/candidato y para evaluar. Todo lo demás sale de los sensores:
+1. **Orientación de la cámara respecto del suelo**: plano por RANSAC sobre puntos SGBM de la franja baja (12
+   frames por sesión) → normal, pitch y altura. En 13:39 da pitch 16.9° (GT 17.8°) y h_suelo 1.39 m. Se proyecta
+   al plano h − 0.14 m.
+2. **Odometría referida a las hileras** (sin usar el yaw de la VO):
+   - avance a lo largo: incrementos del **odómetro de SLD** (VO estéreo);
+   - rumbo relativo a las hileras ψ: ángulo que maximiza la coherencia de fase del patrón periódico en la máscara
+     proyectada, con mediana móvil de 31 frames;
+   - posición lateral: **fase de las hileras desenrollada** (posición lateral módulo el espaciado, integrada frame
+     a frame).
+
+   Motivo: **la VO de SLD tiene un sesgo de yaw** de −1.3° a −6° cada 15 m (GT: |Δyaw| ≤ 1°). Con ese yaw el
+   error lateral llega a 1.2 m en 15 m. Las hileras dan rumbo y lateral sin deriva.
+   - Precisión, 15 ventanas de ~18.7 m en 13:39 (`exp_rowodo_acc.py`): error a lo largo −0.5 % en media (escala
+     del odómetro); error lateral final mediana **8 cm** (p90 18 cm); máximo dentro de la ventana mediana 13 cm.
+   - Costo: 117 ms/frame en CPU sin optimizar (leer PNG + máscara + 81 ángulos × 25k puntos), con otros 2
+     procesos corriendo en paralelo.
+3. **Ventanas locales**:
+   - consulta: los últimos L m de odómetro que terminan en q (sólo pasado);
+   - mapa: L + 20 m alrededor del candidato c. Para simular el error de SALAD, c se corre al azar ±6 m a lo
+     largo del frame GT más cercano.
+
+   Cada ventana se proyecta a su propio BEV en el marco de las hileras, sin marco global.
+4. **Matching**: hipótesis (sentido relativo ±1, corrimiento de fila k, corrimiento a lo largo du). Score por fila
+   = NCC sobre la firma suavizada (σ = 4 cm). Las filas se combinan con **Stouffer** (Σ atanh(r)/√n), porque con
+   la media simple ganaban hipótesis con 2 filas (ruidosas) sobre la verdadera con 4.
+   - La salida es la pose de q en el marco del candidato: (u, w) más el sentido.
+   - Correcto = sentido correcto, |error lateral| < medio espaciado y |error a lo largo| < 1 m.
+
+**Nota de escala**: con la proyección nivelada por estéreo, el espaciado estimado es **0.505 m**, consistente con
+el estándar de 0.52 m en soja. Los 0.58-0.60 m del BEV con pose GT de C.2 estaban inflados por proyectar hojas de
+altura variable con h = 1.30 m. El espaciado se estima por sesión (máximo de coherencia de fase).
+
+### C.3.2 Resultado del test de realismo (sin GT) — 13:39
+Archivos: `out/vo_1226_1339.json` (todos los pares a < 3.5 m, una consulta cada 10 m) y `out/vo_1339_dense.json`
+(pares a < 1.6 m, una consulta cada 3 m). El candidato está corrido ±6 m al azar. Correcto = sentido
+correcto + |e_w| < 0.25 m + |e_u| < 1 m.
+
+| Separación entre trazas | L = 5 m | L = 10 m | L = 15 m |
+|---|---|---|---|
+| < 1.0 m (sentido opuesto) | 3/5 | **12/14** (denso) + 3/5 | **11/14** (denso) + 3/5 |
+| 1.0-1.6 m (opuesto) | 1/3 | 7/12 (denso) + 3/3 | 6/12 (denso) + 3/3 |
+| 1.6-2.6 m | 0/4 | 0/4 | 0/4 |
+| ≥ 2.6 m (incluye todos los pares de **mismo sentido** de 13:39) | 0/17 | 0/17 | 0/17 |
+
+**Error de pose de los correctos** (mediana): **|e_u| 0.25-0.37 m a lo largo, |e_w| 0.07-0.12 m lateral**. Es
+pose relativa métrica sin GT y del orden del error de los loops buenos actuales (≈0.15-0.3 m).
+
+**Score**: z de Stouffer medio ≈ 1.1-1.3 en los correctos y 0.7-1.4 en los incorrectos. **El score absoluto no
+separa; el margen sí** (z del mejor − z de la mejor hipótesis distinta): 0.33-0.53 en los correctos contra
+0.02-0.14 en los incorrectos. Con el set denso (26 consultas a < 1.6 m):
+
+| Regla de aceptación | L = 10 m | L = 15 m |
+|---|---|---|
+| margen ≥ 0.1 | 19 aceptadas, 15 OK (79 %) | 19 aceptadas, 15 OK (79 %) |
+| margen ≥ 0.2 | 12 / 10 OK (83 %) | 10 / 9 OK (90 %) |
+| **margen ≥ 0.3** | **9 / 9 OK (100 %)**, recall 47 % | **8 / 8 OK (100 %)**, recall 47 % |
+| margen ≥ 0.4 | 6 / 6 (100 %) | 6 / 6 (100 %) |
+
+En la corrida de todos los pares (87 pruebas, incluidos los de 2.6-3.5 m, donde nunca acierta), con L = 10 m y
+margen ≥ 0.4: 3 aceptadas, 3 correctas. Con margen ≥ 0.3: 5 aceptadas, 4 correctas (un FP de un par lejano).
+**El umbral debe ser ≥ 0.4, o 0.3 combinado con la exclusión de pares lejanos** (ver C.4).
+
+**L**: 5 m no alcanza (3/5, márgenes chicos); 10-15 m sí. **Usar L = 10-15 m**: a 0.8 m/s son 12-19 s de
+historia, con 50-75 frames de BEV a 4 Hz.
+
+### C.3.3 Más secuencias y el límite lateral
+- **Disposición de las pasadas en el interior** (mediana de w por pasada, marco de hileras con GT):
+  - 13:39: +6.2 −2.9 +9.3 −6.6 +14.0 −10.3 +17.7 −13.9 +23.0 −19.8 +27.9 m. Las vueltas en **sentido opuesto**
+    quedan a 0.1-1.0 m de su ida; las revisitas en el **mismo sentido**, a ≥ 2.6-3.7 m.
+  - 16:31: +0.5 −6.8 +3.1 −8.8 (mismo sentido a 2.0-2.6 m; ningún par cercano).
+  - 14:29: +(−0.4) −(−4.2) +(−1.5) −(+1.6): mismo sentido a **1.1 m**.
+  - 13:14: +0.5 repetido tres veces (misma hilera; por eso su interior da 100 %).
+- **16:31**: 0/8 correctas (todas en el mismo sentido a 1.6-2.6 m). Es el régimen donde la firma no llega.
+  - En 16:31 (tarde, nublado) **el suelo no satura en IR y es más oscuro que las plantas**: la máscara por
+    saturación queda vacía (coherencia 0). Hubo que invertir la polaridad (vegetación = por encima de la mediana;
+    coherencia 0.118, espaciado 0.56-0.57 m).
+  - **La máscara tiene que elegir la polaridad sola**, por ejemplo la que maximiza la coherencia de fase de las
+    hileras, o usar ExG en color.
+- **Ampliar la franja** (v ≥ 340 px, ~5 m adelante, ±5 m laterales, |w − traza| ≤ 3 m), `out/vo_1339_lat.json`:
+  - 0/21 en 1.6-3.3 m, en todos los L;
+  - con margen ≥ 0.2 aún acepta 2-9 falsos (L = 5-10).
+
+  Las filas lejanas se ven de costado (otra oclusión) y con el paralaje de hojas a distinta altura se emborronan.
+  **El límite de ~1.5 m es sensorial, no de alcance de la franja.** Con poses GT (C.2) tampoco funcionó a 2.7 m.
+  Usar profundidad estéreo en vez del plano no ayuda: con f·B = 32 px·m, σ_Z ≈ 0.25 m a 4 m, peor que el error de
+  la hipótesis de plano.
+- **Encadenar por conteo de hileras en las cabeceras** (`exp_headland.py`): estimé con la VO el desplazamiento
+  lateral entre el final de una pasada y el inicio de la siguiente (cabecera de ~29 m de recorrido). Con la VO
+  actual **no sirve**: error mediano 6 m en 13:39 y 0.73 m en 16:31 (índice de hilera correcto en 1/12 y 0/3). El
+  sesgo de yaw de la VO en el giro lo arruina; haría falta giróscopo o encoders.
+- **Encadenar en el grafo sí funciona**: en 13:39 cada ida tiene su vuelta a ≤ 1 m (loops de firma), y las
+  franjas de ~4 m quedan unidas entre sí por los loops de cabecera (donde SALAD+ALIKED ya cubre 44-88 %) y por la
+  VO. La firma no reemplaza los loops de mismo sentido a 3 m, pero da restricciones laterales y a lo largo
+  densas dentro de cada franja, que es justo lo que falta en el interior.
+
+## C.4 Diseño de integración
+
+### C.4.0 Estado de hilera por frame (base de todo): `RowObserver`
+Por cada frame de la VO (o por keyframe, cada 0.25 m):
+1. **Máscara de vegetación** sobre una grilla submuestreada (paso 4 px, franja v ≥ 400 px: 80 × 320 = 25.6k
+   puntos), sobre la imagen IR izquierda que el pipeline ya tiene en memoria. La polaridad (suelo
+   brillante/oscuro) se elige por sesión, o por ventana, maximizando la coherencia de fase.
+2. **Proyección** con (pitch, roll, h) calibrados una vez por sesión con el plano estéreo (`level.py`). Los rayos
+   de la grilla se precomputan, así que proyectar es un producto matricial fijo.
+3. **Ángulo ψ y fase φ de las hileras.** Hoy se buscan 81 ángulos; en línea alcanza con seguir ±1° alrededor del
+   valor anterior (≈ 9 ángulos). Fase con 1 FFT/suma compleja.
+4. **Odometría de hileras** (u por odómetro, ψ, w por fase desenrollada) y acumulación en un **BEV local
+   circular** de 20-35 m de largo × ±6 m, a 2 cm (≈ 1750 × 600 celdas) por pasada.
+
+**Costo medido** (Python/numpy, CPU, con otros 2 procesos en paralelo):
+- máscara 36 ms (dominado por decodificar el PNG; en el pipeline la imagen ya está decodificada, ~2-3 ms);
+- ángulo 89 ms con 81 ángulos (≈ 10 ms con seguimiento de 9);
+- fase 1.6 ms;
+- BEV 3.6 ms por frame.
+
+Estimado en C++: **< 10 ms por keyframe**, despreciable frente a SALAD + ALIKED/LightGlue.
+
+### C.4.1 (a) Generador de candidatos en el interior (cuando SALAD+ALIKED no da loop)
+- **Disparo**: cada 1 m de odómetro, si el robot está dentro de una pasada (|ψ| < 10°, coherencia de fase > umbral,
+  a > 15 m de la cabecera según el odómetro de la pasada).
+- **Consulta**: firma de las filas a |w − traza| ≤ 1.6 m sobre los últimos **L = 10-15 m**.
+- **Búsqueda**: contra las firmas guardadas de las pasadas anteriores, con dos alternativas:
+  - si hay un prior de posición (VO global, aunque derive), sólo las pasadas cuya traza predicha cae a ≤ 2 m
+    laterales, en una ventana de ±(10 m + deriva) a lo largo;
+  - sin prior, contra todas las pasadas con NCC por FFT. Un campo de 150 m × 30 m tiene ~60 filas × 150 m = 9 km
+    de firma a 2 cm ≈ 450k muestras; la correlación de 4-5 filas por FFT cuesta decenas de ms, viable a 1 Hz.
+- **Aceptación**: **margen de Stouffer ≥ 0.4** (o ≥ 0.3 si además el prior de VO ubica el candidato a ≤ 2 m
+  laterales), ≥ 3 filas emparejadas y L ≥ 10 m.
+- **Confirmación opcional**: ALIKED/LightGlue+PnP guiado por la pose predicha (matching restringido a ±0.3 m de
+  la predicción). Si el PnP converge a la misma hilera, se acepta. En sentido opuesto el PnP no aplica (la cámara
+  frontal ve escenas distintas) y la firma es la única evidencia.
+- **Salida**: la pose relativa de (c).
+- Rendimiento esperado en 13:39, según C.3.2: 9/9 aceptadas correctas, cubriendo ~47 % de las consultas a
+  < 1.6 m. Son exactamente los loops ida-vuelta del interior, que hoy no existen.
+- Implementación: módulo Python (`evaluation/research/` → `evaluation/rowsig.py`) que lee las imágenes IR, el CSV
+  de queries (`odometer`) y la calibración, y escribe loops extra a un YAML con el mismo formato que
+  `*_results.yml`, para que `sld_eval.py` los evalúe sin tocar el C++. El paso a C++ (`demo/RowSignature.hpp`
+  llamado desde `demoDetectorStereo.h`) queda para después de validar.
+
+### C.4.2 (b) Verificador / desambiguador de los loops que ya da el pipeline
+Para cada loop de SALAD+ALIKED+PnP en el interior:
+1. Con la pose del PnP (t_x, t_z, yaw), predecir (sentido, Δw, Δu) en el marco de hileras.
+2. Evaluar la firma **en esa hipótesis** (z_PnP) y en la mejor alternativa (z_alt: otra fila k, otro du).
+3. Decidir:
+   - si la separación lateral predicha es < 1.6 m: **aceptar sólo si la hipótesis del PnP es la mejor de la firma
+     y z_PnP − z_alt ≥ 0.3**; si la firma prefiere k ± 1 o du ± espaciado de plantas, **corregir** la pose con la
+     de la firma (o rechazar);
+   - si es ≥ 1.6 m (el caso de los falsos de 13:39: 2-4 m laterales y 5-9 m a lo largo): la firma **no puede
+     confirmar**. Se usa como **veto**: con un PnP que dice ~0.1 m (misma hilera, < 1.6 m) pero un candidato cuya
+     firma no matchea (margen < 0.1 en la hipótesis del PnP), es la "hilera vecina": rechazar.
+
+   Esto reemplaza al test de unicidad por alternativas SALAD, que en 13:39 no separa (razón 0.78 en reales).
+   La firma sí distingue la hilera vecina porque compara el patrón de huecos, no la apariencia.
+- Pendiente de medir: tasa de veto sobre los loops falsos reales de 13:39 y 16:31. Requiere cruzar
+  `rof_*_results.yml` con la firma; es el siguiente experimento.
+
+### C.4.3 (c) De (sentido, k, du) a pose relativa métrica para el grafo
+- El match da la posición de q en el marco de hileras de c: **(Δu, Δw)** con Δw = s·w_q + t_w (la fase
+  desenrollada da la parte sub-hilera y k la parte entera), más el sentido s ∈ {+1, −1}.
+- **Yaw relativo**: Δψ = ψ_q − ψ_c si s = +1, o π + ψ_q − ψ_c si s = −1, con ψ el ángulo de la cámara respecto de
+  las hileras medido en cada frame.
+- **SE(2) → SE(3)**: T_c→q = Rlevel⁻¹ · [R_z(Δψ), (Δu, Δw, 0)] · Rlevel. Pitch y roll iguales en ambos frames
+  (calibración por sesión, misma cámara) y Δz = 0 (suelo plano a escala de pasada).
+- **Covarianza** (de C.3.2): σ_u ≈ 0.3 m (más el sesgo de ±0.35 m dependiente del sentido, a calibrar), σ_w ≈ 0.1 m,
+  σ_ψ ≈ 0.5°. Es muy anisotrópica: lateral excelente (el patrón de hileras es exacto), a lo largo moderada.
+- **Sesgo sistemático a lo largo** en sentido opuesto: +0.36 m (color) / −0.34 m (IR) con GT. Probablemente
+  paralaje de proyectar hojas a altura variable sobre un plano: el punto proyectado se corre hacia adelante en la
+  dirección de marcha de cada pasada. Se corrige con un offset por sentido estimado en la secuencia de
+  entrenamiento, o eligiendo la altura del plano que anula la diferencia entre ida y vuelta.
+- En el grafo: factor entre (q, c) con esa covarianza y kernel robusto (Cauchy/GNC). Opcionalmente, varios
+  factores por ventana (uno cada 1-2 m), porque la firma da una **correspondencia densa a lo largo de toda la
+  ventana**, no un solo par.
+
+### C.3.3b Mismo sentido a corta distancia: 14:29 (día 1, soja en V8)
+Es el único par del interior en el **mismo sentido** a < 1.6 m (dos pasadas a 1.0-1.1 m), en `out/vo_1429_fixed.json`.
+- **6/23 correctas con L = 10 m y 10/23 con L = 15 m**. Los correctos tienen un error de pose excelente
+  (|e_u| 0.14-0.17 m, |e_w| 0.12-0.17 m), pero **el margen no separa** (0.25-0.27 en los correctos vs 0.16-0.22
+  en los incorrectos; precisión ≤ 56 % con cualquier umbral).
+- La nivelación por plano estéreo falló en esta sesión (pitch 13.8° vs 18.1° del GT, posiblemente por el canopeo
+  grande). La corrida usa la **orientación fija del montaje** (`level_fixed.py`: normal media; en la práctica,
+  gravedad de la IMU con el extrínseco kalibr; es una constante, no información de posición). Con la nivelación
+  mala: 4/23 y 9/23.
+- Interpretación (no concluyente): la coherencia de hileras es parecida a la de 13:39 (0.078 vs 0.083), así que
+  no es que las filas se vean peor. La hipótesis más probable es el **estadio**: en V8 (día 1, según el paper del
+  dataset) hay menos huecos y las plantas se tocan, y la densidad continua es menos distintiva que en V3-V4
+  (día 2). Además, las dos pasadas están a 1.0-1.1 m, el borde del rango útil (en 13:39, a esa distancia
+  también cae a 7/12). Habría que repetir con huecos binarios y con la cámara color antes de descartar el
+  mismo sentido.
+- 15:48: no hay pares del interior a < 1.6 m (0 pruebas).
+
+### C.3.4 La firma como verificador de los loops del pipeline actual (`exp_verify.py`, `analyze_verify.py`)
+**Datos.** Loops de `runs/p5_aliked` (SALAD + ALIKED/LightGlue + PnP) en el interior; "real" = < 3 m GT.
+- 13:39: 29 loops en el interior (1 real, 28 falsos).
+- 16:31: 159 loops en el interior (26 reales, 133 falsos).
+
+Se analizó una muestra: 13:39 con 1 real y 21 falsos; 16:31 con 16 reales y 33 falsos. Para cada loop, firma de
+los últimos 10 m antes de q contra ±15 m alrededor de c (sin GT).
+
+**Observaciones.**
+- **Ningún** loop real de la muestra es confirmable por la firma: todos están a 1.9-2.7 m laterales, fuera de su
+  rango.
+- Los falsos son de dos tipos:
+  - **alias a lo largo de la misma hilera**: en 16:31 la mediana es |gw| = 0.05 m y |gu| ≈ 20-33 m, apenas por
+    encima de la ventana de exclusión de 20 m;
+  - **hilera/pasada vecina**: en 13:39, 2.6 m laterales.
+
+  En ambos casos el **PnP dice "mismo lugar"** (|t_x| mediano 0.06-0.10 m).
+- En 13:39 el único loop "real" (2.6 m GT) **también tiene t_x = 0.04 m**: su pose es incorrecta, porque matcheó
+  la hilera equivocada.
+
+**Regla de veto condicionada al PnP**: si el PnP afirma una separación lateral < 0.8 m (régimen donde la firma es
+informativa), exigir que la firma lo confirme (margen ≥ 0.2-0.3 y pose de la firma a < 2 m / 0.6 m de q ≈ c). Si el
+PnP afirma una pasada vecina (≥ 0.8 m), no vetar.
+
+| | reales conservados | falsos conservados |
+|---|---|---|
+| 16:31 (umbral 0.8 o 1.2 m, margen 0.2 o 0.3) | **16/16** | **2/33** (veta 94 %) |
+| 13:39 | 0/1 (su pose estaba mal: t_x = 0.04 m vs 2.61 m GT) | **0/21** (veta 100 %) |
+
+Esto es lo que el test de unicidad por alternativas SALAD no lograba en 13:39 (razón 0.78 en reales). La
+firma no compara apariencia: verifica si **el patrón de plantas/huecos de los últimos 10 m está realmente ahí**.
+
+## C.5 Plan de implementación priorizado
+
+1. **Veto de firma condicionado al PnP (C.4.2)**. Es lo de mayor relación ganancia/costo: en los datos medidos
+   elimina el 94-100 % de los loops falsos del interior sin perder reales.
+   - Implementación: post-proceso offline sobre `*_results.yml` (script en `evaluation/`, sin tocar el C++), con
+     ventana de 10 m y margen ≥ 0.2.
+   - Costo: 1-2 días.
+   - Medición: precisión, FP y error de pose por sección (borde/interior) con `sld_eval.py`.
+2. **Generador de loops ida-vuelta del interior (C.4.1)**: margen ≥ 0.4 (o ≥ 0.3 con prior lateral), L = 10-15 m,
+   pares a < 1.6 m.
+   - Escribe loops extra en el mismo YAML.
+   - **Requiere cambiar la métrica**: hoy el GT exige mismo sentido de marcha. Estos loops son en sentido opuesto,
+     válidos para el grafo pero invisibles para la cobertura actual. Propuesta: cobertura "por franja" con
+     cualquier sentido cuando la pose relativa estimada es correcta (|e| < 0.5 m), y evaluación por ATE tras la PGO
+     (R2-8).
+   - Costo: 2-3 días.
+3. **Robustez de la observación de hileras**:
+   - polaridad automática de la máscara (máxima coherencia de fase);
+   - nivelación con la gravedad de la IMU + extrínseco kalibr. La estimación por plano estéreo falló en 14:29: 13.8°
+     vs 18.1° del GT;
+   - calibrar el sesgo a lo largo dependiente del sentido (±0.35 m).
+
+   Costo: 1-2 días.
+4. **Pose relativa y covarianza para el grafo (C.4.3)** y evaluación por ATE con VO + loops (borde SALAD + interior
+   firma). Costo: 1 día, más la infraestructura de R2-8.
+5. **Port a C++** (`demo/RowSignature.hpp`): máscara sobre grilla, ψ/φ con seguimiento, BEV circular, NCC por
+   FFT. Sólo después de validar 1-4 offline. Costo: 3-5 días.
+6. **Investigación abierta**: revisitas en el mismo sentido a 2-3.5 m (16:31, 13:39). La firma no llega. Opciones:
+   - otra cámara/altura con más campo lateral cercano;
+   - firma desde la cámara color (ExG, más contraste) con mayor resolución;
+   - aceptar que esas franjas se unen por cabecera + VO.
+
+### Riesgos
+- **Crecimiento del cultivo entre sesiones** (día 1: V8; día 2: V3-V4, otros lotes): la firma de densidad cambia,
+  pero los huecos (plantas muertas o faltantes) son persistentes. Para multi-sesión conviene usar la versión
+  binaria de huecos o tallos (C3), que en C.2 funcionó 7/7.
+- **Cierre del canopeo** en estadios avanzados: las filas se tocan y los huecos desaparecen. Es el límite natural
+  del método; funciona mejor en V2-V6.
+- **Iluminación**: la polaridad suelo/planta en IR cambia con el sol (13:39 suelo saturado, 16:31 suelo oscuro).
+  Sombras propias.
+- **Ancho de visión**: rango lateral útil ±1.5 m alrededor de la traza.
+- **Sentido opuesto**: el BEV en el marco de hileras lo resuelve (flip). En 1D, la firma se invierte y se
+  compara invertida.
+- **Escala del odómetro**: error ≈ 0.5-3 %; en 10-15 m son 5-45 cm, absorbidos por la NCC. Para ventanas más
+  largas, búsqueda de escala o DTW.

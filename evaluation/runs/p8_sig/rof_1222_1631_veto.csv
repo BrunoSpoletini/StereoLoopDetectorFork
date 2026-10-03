@@ -1,0 +1,199 @@
+query,match,keep,info
+6617,71,True,ventana_corta
+6650,223,True,ventana_corta
+6654,208,False,firma margen 0.04 pu 0.98 pw -0.27
+6753,244,False,firma margen 0.01 pu 6.46 pw -2.40
+6773,79,False,firma margen 0.05 pu 15.28 pw 1.62
+6775,79,False,firma margen 0.05 pu 15.28 pw 1.62
+6879,357,False,firma margen 0.04 pu -0.09 pw -2.47
+6880,357,False,firma margen 0.04 pu -0.09 pw -2.47
+6884,357,False,firma margen 0.10 pu -0.32 pw -2.41
+7064,861,False,firma margen 0.00 pu -6.79 pw 1.29
+7086,357,False,firma margen 0.18 pu 16.50 pw 2.34
+7087,357,False,firma margen 0.26 pu 16.79 pw 2.36
+7112,411,False,firma margen 0.07 pu 11.15 pw 0.91
+7140,244,False,firma margen 0.02 pu -1.44 pw 1.02
+7677,1285,False,firma margen 0.05 pu 15.04 pw -1.35
+7768,946,False,firma margen 0.02 pu 11.13 pw -1.24
+9824,3289,True,pnp_lateral
+9914,3405,True,pnp_lateral
+10127,3614,True,pnp_lateral
+10303,3824,False,firma margen 0.08 pu 4.38 pw -0.05
+10467,3849,False,firma margen 0.11 pu 4.89 pw -2.40
+10661,4139,True,pnp_lateral
+11586,5098,True,pnp_lateral
+11706,5230,True,pnp_lateral
+12087,5611,True,pnp_lateral
+12138,5660,True,pnp_lateral
+12139,5670,True,pnp_lateral
+12147,5690,True,pnp_lateral
+12151,5691,True,pnp_lateral
+12156,5691,True,pnp_lateral
+12157,5685,True,pnp_lateral
+12158,5684,True,pnp_lateral
+12159,5691,True,pnp_lateral
+12160,5691,True,pnp_lateral
+12161,5691,True,pnp_lateral
+12163,5691,True,pnp_lateral
+12164,5691,True,pnp_lateral
+12165,5691,True,pnp_lateral
+12166,5691,True,pnp_lateral
+12167,5691,True,pnp_lateral
+12168,5691,True,pnp_lateral
+12169,5691,True,pnp_lateral
+12170,5692,True,pnp_lateral
+12194,5724,True,pnp_lateral
+12198,5727,True,pnp_lateral
+12202,5727,True,pnp_lateral
+12263,5779,True,pnp_lateral
+12267,5785,True,pnp_lateral
+12273,5785,True,pnp_lateral
+12323,5852,True,pnp_lateral
+12600,6139,True,pnp_lateral
+12605,6156,True,pnp_lateral
+12615,6154,True,pnp_lateral
+12733,6257,True,pnp_lateral
+12734,6257,True,pnp_lateral
+12735,6257,True,pnp_lateral
+12739,6257,True,pnp_lateral
+12754,6280,True,pnp_lateral
+12761,6280,True,pnp_lateral
+12764,6291,True,pnp_lateral
+12765,6291,True,pnp_lateral
+12766,6291,True,pnp_lateral
+12769,6291,True,pnp_lateral
+12770,6291,True,pnp_lateral
+12776,6291,True,pnp_lateral
+12778,6317,True,pnp_lateral
+12782,6291,True,pnp_lateral
+12783,6291,True,pnp_lateral
+12788,6317,True,pnp_lateral
+12793,6317,True,pnp_lateral
+12799,6320,True,pnp_lateral
+12806,6319,True,pnp_lateral
+12810,6320,True,pnp_lateral
+12817,6350,True,pnp_lateral
+12819,6370,True,pnp_lateral
+12822,6350,True,pnp_lateral
+12824,6370,True,pnp_lateral
+12825,6350,True,pnp_lateral
+12826,6350,True,pnp_lateral
+12827,6390,True,pnp_lateral
+12828,6394,True,pnp_lateral
+12829,6394,True,pnp_lateral
+12830,6394,True,pnp_lateral
+12831,6394,True,pnp_lateral
+12832,6394,True,pnp_lateral
+12833,6394,True,pnp_lateral
+12834,6394,True,pnp_lateral
+12835,6394,True,pnp_lateral
+12836,6394,True,pnp_lateral
+12837,6397,True,pnp_lateral
+12838,6397,True,pnp_lateral
+12839,6397,True,pnp_lateral
+12840,6399,True,pnp_lateral
+12841,6399,True,pnp_lateral
+12842,6403,True,pnp_lateral
+12843,6408,True,pnp_lateral
+12844,6408,True,pnp_lateral
+12845,6408,True,pnp_lateral
+12846,6414,True,pnp_lateral
+12847,6414,True,pnp_lateral
+12848,6414,True,pnp_lateral
+12849,6414,True,pnp_lateral
+12850,6411,True,pnp_lateral
+12851,6411,True,pnp_lateral
+12852,6411,True,pnp_lateral
+12853,6408,True,pnp_lateral
+12871,6417,True,pnp_lateral
+12874,6417,True,pnp_lateral
+12875,6414,True,pnp_lateral
+12876,6417,True,pnp_lateral
+12877,6417,True,pnp_lateral
+12878,6417,True,pnp_lateral
+12879,6417,True,pnp_lateral
+12881,6414,True,pnp_lateral
+12882,6417,True,pnp_lateral
+12883,6417,True,pnp_lateral
+12885,6434,True,pnp_lateral
+12887,6434,True,pnp_lateral
+12888,6434,True,pnp_lateral
+12891,6445,True,pnp_lateral
+12894,6448,True,pnp_lateral
+12895,6448,True,pnp_lateral
+12896,6450,True,pnp_lateral
+12897,6450,True,pnp_lateral
+12898,6453,True,pnp_lateral
+12899,6453,True,pnp_lateral
+12900,6453,True,pnp_lateral
+12901,6453,True,pnp_lateral
+12902,6454,True,pnp_lateral
+12903,6454,True,pnp_lateral
+12904,6454,True,pnp_lateral
+12905,6454,True,pnp_lateral
+12906,6458,True,pnp_lateral
+12907,6458,True,pnp_lateral
+12908,6458,True,pnp_lateral
+12909,6458,True,pnp_lateral
+12910,6464,True,pnp_lateral
+12911,6465,True,pnp_lateral
+12912,6464,True,pnp_lateral
+12913,6466,True,pnp_lateral
+12914,6466,True,curva
+12915,6467,True,curva
+12916,6467,True,curva
+12917,6467,True,curva
+12918,6468,True,curva
+12919,6469,True,curva
+12920,6468,True,curva
+12921,6473,True,curva
+12922,6467,True,curva
+12923,6473,True,curva
+12924,6473,True,curva
+12925,6475,True,curva
+12926,6475,True,curva
+12927,6475,True,curva
+12928,6479,True,curva
+12929,6475,True,curva
+12930,6479,True,curva
+12931,6479,True,curva
+12932,6479,True,curva
+12933,6482,True,curva
+12934,6482,True,curva
+12935,6482,True,curva
+12936,6482,True,pnp_lateral
+12937,6482,True,pnp_lateral
+12938,6482,True,pnp_lateral
+12939,6484,True,pnp_lateral
+12940,6482,True,pnp_lateral
+12941,6487,True,pnp_lateral
+12942,6487,True,pnp_lateral
+12943,6492,True,pnp_lateral
+12944,6487,True,pnp_lateral
+12946,6492,True,pnp_lateral
+12947,6496,True,pnp_lateral
+12949,6496,True,pnp_lateral
+12950,6504,True,pnp_lateral
+12953,6504,True,pnp_lateral
+12954,6504,True,pnp_lateral
+12955,6504,True,pnp_lateral
+12959,6509,True,pnp_lateral
+13038,6768,True,ventana_corta
+13041,6777,True,curva
+13058,6850,True,ventana_corta
+13081,6850,True,ventana_corta
+13132,6828,True,curva
+13137,6828,True,ventana_corta
+13138,6828,True,ventana_corta
+13215,6850,True,pnp_lateral
+13254,6942,False,firma margen 0.18 pu -5.71 pw -1.90
+13258,6850,False,firma margen 0.12 pu 0.39 pw -1.24
+13262,6945,False,firma margen 0.01 pu -5.64 pw -1.26
+13263,6943,False,firma margen 0.01 pu -5.64 pw -1.24
+13295,7042,False,firma margen 0.05 pu 10.01 pw 0.61
+13297,7042,False,firma margen 0.05 pu 10.01 pw 0.61
+13299,7042,False,firma margen 0.16 pu 10.24 pw 0.58
+13309,7042,False,firma margen 0.04 pu 10.21 pw 0.65
+13312,7040,False,firma margen 0.04 pu 10.45 pw 0.63
+13327,7029,False,firma margen 0.07 pu 7.51 pw -0.64
+13328,7029,False,firma margen 0.07 pu 7.51 pw -0.64

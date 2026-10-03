@@ -560,3 +560,15 @@ hileras, firma 1D de ocupación por fila, NCC sobre (fila k, corrimiento du). 13
 opuestos a ~1 m: **7/7 ventanas de 10 m correctas** (fila y posición), margen 0.28–0.37; 9/9 con 5 m. Los huecos
 solos alcanzan (7/7). Límite: trazas a > 1.6 m lateral → 0/30. Siguiente: repetirlo con la pose de la
 odometría visual (sin GT) y diseñar la integración.
+
+---
+
+## 2026-10-03 — Veto por firma de huecos de cultivo (`sig_veto.py`, sin GT)
+
+Implementación como filtro de la regla del agente (INVESTIGACION.md C.3.4): si el PnP afirma separación lateral
+< 0.8 m y el robot va recto siguiendo hileras en q y en m (rumbo de la odometría estable ±6° en ±2 m), la firma de
+los últimos 10 m antes de q tiene que confirmar q ≈ m (margen ≥ 0.2, pose de la firma < 2 m / 0.6 m). Polaridad de la
+máscara IR elegida por coherencia de fase (16:31: suelo oscuro); nivelación por plano estéreo.
+
+16:31 (1280×720): veta 26 FP y 1 TP → 154 TP / 17 FP, precisión 0.78 → **0.90**. Los FP restantes: 8 con PnP
+"pasada vecina", 7 con ventana recta corta, 2 en curvas de cabecera. En curso en las otras 5 secuencias.

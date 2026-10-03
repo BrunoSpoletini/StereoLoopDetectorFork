@@ -1,0 +1,70 @@
+2023-12-26-13-39-43: pitch normal [ 0.013 -0.957 -0.29 ], h=1.39, espaciado=0.505 m, pasadas=57
+{'q': 9775, 'c': 4376, 'L': 5, 'dw': 2.66, 'same_dir': True, 'off': 1.64, 'score': 1.366, 'second': 1.111, 'ncc': 0.746, 'flip': -1, 'k': 5, 'n_rows': 2, 'err_u': 6.3, 'err_w': 4.55, 'ok': False}
+{'q': 9775, 'c': 4376, 'L': 10, 'dw': 2.66, 'same_dir': True, 'off': 1.64, 'score': 0.914, 'second': 0.821, 'ncc': 0.568, 'flip': -1, 'k': 3, 'n_rows': 2, 'err_u': 6.24, 'err_w': 4.56, 'ok': False}
+{'q': 9775, 'c': 4376, 'L': 15, 'dw': 2.66, 'same_dir': True, 'off': 1.64, 'score': 0.665, 'second': 0.575, 'ncc': 0.356, 'flip': 1, 'k': -3, 'n_rows': 3, 'err_u': 11.92, 'err_w': 1.98, 'ok': False}
+{'q': 8931, 'c': 7829, 'L': 5, 'dw': 3.26, 'same_dir': False, 'off': -2.76, 'score': 2.495, 'second': 1.173, 'ncc': 0.853, 'flip': 1, 'k': -4, 'n_rows': 2, 'err_u': -4.34, 'err_w': -1.09, 'ok': False}
+{'q': 8931, 'c': 7829, 'L': 10, 'dw': 3.26, 'same_dir': False, 'off': -2.76, 'score': 0.983, 'second': 0.787, 'ncc': 0.423, 'flip': 1, 'k': -2, 'n_rows': 4, 'err_u': 6.79, 'err_w': 2.18, 'ok': False}
+{'q': 8931, 'c': 7829, 'L': 15, 'dw': 3.26, 'same_dir': False, 'off': -2.76, 'score': 0.982, 'second': 0.773, 'ncc': 0.421, 'flip': 1, 'k': -2, 'n_rows': 4, 'err_u': 6.78, 'err_w': 2.18, 'ok': False}
+{'q': 9105, 'c': 7621, 'L': 5, 'dw': 3.26, 'same_dir': False, 'off': -5.51, 'score': 1.166, 'second': 1.152, 'ncc': 0.522, 'flip': 1, 'k': -1, 'n_rows': 4, 'err_u': 3.65, 'err_w': 2.13, 'ok': False}
+{'q': 9105, 'c': 7621, 'L': 10, 'dw': 3.26, 'same_dir': False, 'off': -5.51, 'score': 0.815, 'second': 0.807, 'ncc': 0.335, 'flip': 1, 'k': 2, 'n_rows': 5, 'err_u': 3.92, 'err_w': 3.18, 'ok': False}
+{'q': 9105, 'c': 7621, 'L': 15, 'dw': 3.26, 'same_dir': False, 'off': -5.51, 'score': 0.509, 'second': 0.497, 'ncc': 0.238, 'flip': -1, 'k': 4, 'n_rows': 4, 'err_u': -19.03, 'err_w': 5.72, 'ok': False}
+{'q': 9273, 'c': 7445, 'L': 5, 'dw': 3.26, 'same_dir': False, 'off': -5.8, 'score': 1.435, 'second': 1.083, 'ncc': 0.737, 'flip': -1, 'k': -5, 'n_rows': 2, 'err_u': -0.74, 'err_w': 1.03, 'ok': False}
+{'q': 9273, 'c': 7445, 'L': 10, 'dw': 3.26, 'same_dir': False, 'off': -5.8, 'score': 0.965, 'second': 0.868, 'ncc': 0.372, 'flip': 1, 'k': -2, 'n_rows': 6, 'err_u': 5.48, 'err_w': 2.67, 'ok': False}
+{'q': 9273, 'c': 7445, 'L': 15, 'dw': 3.26, 'same_dir': False, 'off': -5.8, 'score': 0.763, 'second': 0.677, 'ncc': 0.405, 'flip': -1, 'k': 5, 'n_rows': 3, 'err_u': -14.64, 'err_w': 4.74, 'ok': False}
+{'q': 9443, 'c': 7436, 'L': 5, 'dw': 3.26, 'same_dir': False, 'off': 3.76, 'score': 1.069, 'second': 1.031, 'ncc': 0.359, 'flip': 1, 'k': 0, 'n_rows': 7, 'err_u': 14.39, 'err_w': 3.22, 'ok': False}
+{'q': 9443, 'c': 7436, 'L': 10, 'dw': 3.26, 'same_dir': False, 'off': 3.76, 'score': 0.721, 'second': 0.666, 'ncc': 0.307, 'flip': 1, 'k': -1, 'n_rows': 5, 'err_u': 14.49, 'err_w': 2.68, 'ok': False}
+{'q': 9443, 'c': 7436, 'L': 15, 'dw': 3.26, 'same_dir': False, 'off': 3.76, 'score': 0.619, 'second': 0.522, 'ncc': 0.411, 'flip': 1, 'k': -6, 'n_rows': 2, 'err_u': -2.27, 'err_w': -0.16, 'ok': False}
+{'q': 12652, 'c': 7356, 'L': 5, 'dw': 3.1, 'same_dir': True, 'off': 4.95, 'score': 1.411, 'second': 1.058, 'ncc': 0.514, 'flip': 1, 'k': 1, 'n_rows': 6, 'err_u': 15.27, 'err_w': -3.13, 'ok': False}
+{'q': 12652, 'c': 7356, 'L': 10, 'dw': 3.1, 'same_dir': True, 'off': 4.95, 'score': 0.882, 'second': 0.799, 'ncc': 0.338, 'flip': 1, 'k': 2, 'n_rows': 6, 'err_u': 15.53, 'err_w': -3.21, 'ok': False}
+{'q': 12652, 'c': 7356, 'L': 15, 'dw': 3.1, 'same_dir': True, 'off': 4.95, 'score': 0.779, 'second': 0.703, 'ncc': 0.33, 'flip': 1, 'k': 1, 'n_rows': 5, 'err_u': 15.26, 'err_w': -3.13, 'ok': False}
+{'q': 12818, 'c': 7464, 'L': 5, 'dw': 3.1, 'same_dir': True, 'off': 1.28, 'score': 1.188, 'second': 1.108, 'ncc': 0.525, 'flip': -1, 'k': 5, 'n_rows': 3, 'err_u': 0.48, 'err_w': -0.47, 'ok': False}
+{'q': 12818, 'c': 7464, 'L': 10, 'dw': 3.1, 'same_dir': True, 'off': 1.28, 'score': 1.049, 'second': 0.81, 'ncc': 0.398, 'flip': 1, 'k': 3, 'n_rows': 5, 'err_u': 12.0, 'err_w': -1.72, 'ok': False}
+{'q': 12818, 'c': 7464, 'L': 15, 'dw': 3.1, 'same_dir': True, 'off': 1.28, 'score': 0.663, 'second': 0.549, 'ncc': 0.435, 'flip': -1, 'k': 6, 'n_rows': 2, 'err_u': -4.5, 'err_w': 0.02, 'ok': False}
+{'q': 12978, 'c': 7657, 'L': 5, 'dw': 3.1, 'same_dir': True, 'off': 2.75, 'score': 1.081, 'second': 0.994, 'ncc': 0.438, 'flip': 1, 'k': 4, 'n_rows': 5, 'err_u': 12.99, 'err_w': -2.64, 'ok': False}
+{'q': 12978, 'c': 7657, 'L': 10, 'dw': 3.1, 'same_dir': True, 'off': 2.75, 'score': 0.897, 'second': 0.811, 'ncc': 0.42, 'flip': 1, 'k': 2, 'n_rows': 4, 'err_u': 13.86, 'err_w': -3.59, 'ok': False}
+{'q': 12978, 'c': 7657, 'L': 15, 'dw': 3.1, 'same_dir': True, 'off': 2.75, 'score': 0.734, 'second': 0.684, 'ncc': 0.349, 'flip': 1, 'k': 2, 'n_rows': 4, 'err_u': 12.11, 'err_w': -2.65, 'ok': False}
+{'q': 13150, 'c': 7796, 'L': 5, 'dw': 3.1, 'same_dir': True, 'off': 0.52, 'score': 1.174, 'second': 1.1, 'ncc': 0.445, 'flip': 1, 'k': 1, 'n_rows': 5, 'err_u': 10.85, 'err_w': -3.25, 'ok': False}
+{'q': 13150, 'c': 7796, 'L': 10, 'dw': 3.1, 'same_dir': True, 'off': 0.52, 'score': 0.762, 'second': 0.665, 'ncc': 0.355, 'flip': 1, 'k': 2, 'n_rows': 4, 'err_u': 10.45, 'err_w': -2.55, 'ok': False}
+{'q': 13150, 'c': 7796, 'L': 15, 'dw': 3.1, 'same_dir': True, 'off': 0.52, 'score': 0.658, 'second': 0.626, 'ncc': 0.306, 'flip': 1, 'k': 2, 'n_rows': 4, 'err_u': 10.72, 'err_w': -2.46, 'ok': False}
+{'q': 14456, 'c': 13105, 'L': 5, 'dw': 2.7, 'same_dir': False, 'off': 3.79, 'score': 1.261, 'second': 1.165, 'ncc': 0.612, 'flip': 1, 'k': -1, 'n_rows': 3, 'err_u': 13.58, 'err_w': 2.27, 'ok': False}
+{'q': 14456, 'c': 13105, 'L': 10, 'dw': 2.7, 'same_dir': False, 'off': 3.79, 'score': 0.842, 'second': 0.835, 'ncc': 0.344, 'flip': 1, 'k': 0, 'n_rows': 5, 'err_u': 14.37, 'err_w': 2.96, 'ok': False}
+{'q': 14456, 'c': 13105, 'L': 15, 'dw': 2.7, 'same_dir': False, 'off': 3.79, 'score': 0.847, 'second': 0.785, 'ncc': 0.342, 'flip': 1, 'k': 0, 'n_rows': 5, 'err_u': 14.39, 'err_w': 2.79, 'ok': False}
+{'q': 14630, 'c': 12939, 'L': 5, 'dw': 2.69, 'same_dir': False, 'off': 4.29, 'score': 1.372, 'second': 1.26, 'ncc': 0.573, 'flip': 1, 'k': -2, 'n_rows': 4, 'err_u': 14.55, 'err_w': 1.99, 'ok': False}
+{'q': 14630, 'c': 12939, 'L': 10, 'dw': 2.69, 'same_dir': False, 'off': 4.29, 'score': 0.784, 'second': 0.751, 'ncc': 0.372, 'flip': 1, 'k': -1, 'n_rows': 4, 'err_u': 15.28, 'err_w': 2.21, 'ok': False}
+{'q': 14630, 'c': 12939, 'L': 15, 'dw': 2.69, 'same_dir': False, 'off': 4.29, 'score': 0.792, 'second': 0.739, 'ncc': 0.506, 'flip': 1, 'k': -2, 'n_rows': 2, 'err_u': 14.6, 'err_w': 1.97, 'ok': False}
+{'q': 14796, 'c': 12618, 'L': 5, 'dw': 2.69, 'same_dir': False, 'off': -5.6, 'score': 1.172, 'second': 0.971, 'ncc': 0.508, 'flip': 1, 'k': 4, 'n_rows': 4, 'err_u': 3.16, 'err_w': 3.6, 'ok': False}
+{'q': 14796, 'c': 12618, 'L': 10, 'dw': 2.69, 'same_dir': False, 'off': -5.6, 'score': 0.815, 'second': 0.674, 'ncc': 0.38, 'flip': 1, 'k': 2, 'n_rows': 4, 'err_u': 3.17, 'err_w': 3.6, 'ok': False}
+{'q': 14796, 'c': 12618, 'L': 15, 'dw': 2.69, 'same_dir': False, 'off': -5.6, 'score': 0.793, 'second': 0.742, 'ncc': 0.355, 'flip': 1, 'k': 0, 'n_rows': 4, 'err_u': 3.23, 'err_w': 3.78, 'ok': False}
+{'q': 15875, 'c': 11592, 'L': 5, 'dw': 2.75, 'same_dir': False, 'off': -3.89, 'score': 1.581, 'second': 1.504, 'ncc': 0.477, 'flip': 1, 'k': 0, 'n_rows': 4, 'err_u': 6.78, 'err_w': 2.74, 'ok': False}
+{'q': 15875, 'c': 11592, 'L': 10, 'dw': 2.75, 'same_dir': False, 'off': -3.89, 'score': 1.581, 'second': 1.504, 'ncc': 0.477, 'flip': 1, 'k': 0, 'n_rows': 4, 'err_u': 6.78, 'err_w': 2.74, 'ok': False}
+{'q': 15875, 'c': 11592, 'L': 15, 'dw': 2.75, 'same_dir': False, 'off': -3.89, 'score': 1.581, 'second': 1.504, 'ncc': 0.477, 'flip': 1, 'k': 0, 'n_rows': 4, 'err_u': 6.78, 'err_w': 2.74, 'ok': False}
+{'q': 30630, 'c': 24050, 'L': 5, 'dw': 2.11, 'same_dir': False, 'off': 4.36, 'score': 1.887, 'second': 1.679, 'ncc': 0.511, 'flip': -1, 'k': -4, 'n_rows': 2, 'err_u': -5.68, 'err_w': -5.85, 'ok': False}
+{'q': 30630, 'c': 24050, 'L': 10, 'dw': 2.11, 'same_dir': False, 'off': 4.36, 'score': 1.032, 'second': 0.89, 'ncc': 0.457, 'flip': 1, 'k': -1, 'n_rows': 4, 'err_u': 14.35, 'err_w': -2.68, 'ok': False}
+{'q': 30630, 'c': 24050, 'L': 15, 'dw': 2.11, 'same_dir': False, 'off': 4.36, 'score': 0.524, 'second': 0.522, 'ncc': 0.293, 'flip': 1, 'k': 3, 'n_rows': 3, 'err_u': 13.99, 'err_w': -2.25, 'ok': False}
+{'q': 31369, 'c': 23258, 'L': 5, 'dw': 2.14, 'same_dir': False, 'off': 0.5, 'score': 0.885, 'second': 0.885, 'ncc': 0.406, 'flip': 1, 'k': 1, 'n_rows': 3, 'err_u': 10.67, 'err_w': -2.05, 'ok': False}
+{'q': 31369, 'c': 23258, 'L': 10, 'dw': 2.14, 'same_dir': False, 'off': 0.5, 'score': 1.725, 'second': 0.782, 'ncc': 0.492, 'flip': -1, 'k': -6, 'n_rows': 2, 'err_u': -15.38, 'err_w': -6.98, 'ok': False}
+{'q': 31369, 'c': 23258, 'L': 15, 'dw': 2.14, 'same_dir': False, 'off': 0.5, 'score': 0.507, 'second': 0.489, 'ncc': 0.244, 'flip': 1, 'k': 0, 'n_rows': 4, 'err_u': 10.87, 'err_w': -2.64, 'ok': False}
+{'q': 31505, 'c': 23075, 'L': 5, 'dw': 2.14, 'same_dir': False, 'off': -2.4, 'score': 1.105, 'second': 1.082, 'ncc': 0.64, 'flip': 1, 'k': 1, 'n_rows': 2, 'err_u': 6.98, 'err_w': -3.23, 'ok': False}
+{'q': 31505, 'c': 23075, 'L': 10, 'dw': 2.14, 'same_dir': False, 'off': -2.4, 'score': 1.052, 'second': 0.74, 'ncc': 0.513, 'flip': 1, 'k': 0, 'n_rows': 2, 'err_u': 6.65, 'err_w': -1.62, 'ok': False}
+{'q': 31505, 'c': 23075, 'L': 15, 'dw': 2.14, 'same_dir': False, 'off': -2.4, 'score': 0.77, 'second': 0.556, 'ncc': 0.392, 'flip': 1, 'k': 0, 'n_rows': 3, 'err_u': 6.66, 'err_w': -1.72, 'ok': False}
+{'q': 31673, 'c': 22928, 'L': 5, 'dw': 2.14, 'same_dir': False, 'off': -0.93, 'score': 1.154, 'second': 0.922, 'ncc': 0.578, 'flip': 1, 'k': -4, 'n_rows': 3, 'err_u': 8.44, 'err_w': -2.74, 'ok': False}
+{'q': 31673, 'c': 22928, 'L': 10, 'dw': 2.14, 'same_dir': False, 'off': -0.93, 'score': 0.911, 'second': 0.86, 'ncc': 0.481, 'flip': 1, 'k': -4, 'n_rows': 3, 'err_u': 8.46, 'err_w': -2.74, 'ok': False}
+{'q': 31673, 'c': 22928, 'L': 15, 'dw': 2.14, 'same_dir': False, 'off': -0.93, 'score': 0.616, 'second': 0.547, 'ncc': 0.249, 'flip': 1, 'k': -2, 'n_rows': 4, 'err_u': -1.19, 'err_w': -2.14, 'ok': False}
+{'q': 31385, 'c': 28555, 'L': 5, 'dw': 3.19, 'same_dir': False, 'off': -5.66, 'score': 1.34, 'second': 1.139, 'ncc': 0.337, 'flip': -1, 'k': -1, 'n_rows': 3, 'err_u': -7.67, 'err_w': 2.84, 'ok': False}
+{'q': 31385, 'c': 28555, 'L': 10, 'dw': 3.19, 'same_dir': False, 'off': -5.66, 'score': 0.951, 'second': 0.904, 'ncc': 0.49, 'flip': 1, 'k': -5, 'n_rows': 3, 'err_u': 4.16, 'err_w': 2.39, 'ok': False}
+{'q': 31385, 'c': 28555, 'L': 15, 'dw': 3.19, 'same_dir': False, 'off': -5.66, 'score': 0.721, 'second': 0.675, 'ncc': 0.391, 'flip': 1, 'k': -5, 'n_rows': 3, 'err_u': 3.42, 'err_w': 2.39, 'ok': False}
+{'q': 31521, 'c': 28439, 'L': 5, 'dw': 3.19, 'same_dir': False, 'off': -4.51, 'score': 1.094, 'second': 1.084, 'ncc': 0.649, 'flip': 1, 'k': 1, 'n_rows': 2, 'err_u': 5.2, 'err_w': 3.06, 'ok': False}
+{'q': 31521, 'c': 28439, 'L': 10, 'dw': 3.19, 'same_dir': False, 'off': -4.51, 'score': 0.794, 'second': 0.691, 'ncc': 0.508, 'flip': 1, 'k': -5, 'n_rows': 2, 'err_u': 5.44, 'err_w': 2.28, 'ok': False}
+{'q': 31521, 'c': 28439, 'L': 15, 'dw': 3.19, 'same_dir': False, 'off': -4.51, 'score': 0.659, 'second': 0.572, 'ncc': 0.309, 'flip': 1, 'k': -1, 'n_rows': 4, 'err_u': 5.27, 'err_w': 2.48, 'ok': False}
+{'q': 31693, 'c': 28381, 'L': 5, 'dw': 3.19, 'same_dir': False, 'off': 2.05, 'score': 1.306, 'second': 1.137, 'ncc': 0.626, 'flip': 1, 'k': -4, 'n_rows': 3, 'err_u': 12.37, 'err_w': 2.5, 'ok': False}
+{'q': 31693, 'c': 28381, 'L': 10, 'dw': 3.19, 'same_dir': False, 'off': 2.05, 'score': 0.869, 'second': 0.768, 'ncc': 0.462, 'flip': 1, 'k': -4, 'n_rows': 3, 'err_u': 12.36, 'err_w': 2.51, 'ok': False}
+{'q': 31693, 'c': 28381, 'L': 15, 'dw': 3.19, 'same_dir': False, 'off': 2.05, 'score': 0.587, 'second': 0.499, 'ncc': 0.279, 'flip': 1, 'k': 1, 'n_rows': 4, 'err_u': 12.4, 'err_w': 2.86, 'ok': False}
+{'q': 30885, 'c': 29196, 'L': 5, 'dw': 3.06, 'same_dir': False, 'off': 1.77, 'score': 1.196, 'second': 0.981, 'ncc': 0.597, 'flip': 1, 'k': 1, 'n_rows': 3, 'err_u': 11.57, 'err_w': 2.62, 'ok': False}
+{'q': 30885, 'c': 29196, 'L': 10, 'dw': 3.06, 'same_dir': False, 'off': 1.77, 'score': 1.069, 'second': 0.994, 'ncc': 0.376, 'flip': 1, 'k': 2, 'n_rows': 4, 'err_u': 0.75, 'err_w': 3.26, 'ok': False}
+{'q': 30885, 'c': 29196, 'L': 15, 'dw': 3.06, 'same_dir': False, 'off': 1.77, 'score': 1.069, 'second': 0.994, 'ncc': 0.376, 'flip': 1, 'k': 2, 'n_rows': 4, 'err_u': 0.75, 'err_w': 3.26, 'ok': False}
+L=   5 opuesto dw[1.6,99): correctas 0/16  score 1.34  margen 0.20
+L=   5 mismo   dw[1.6,99): correctas 0/5  score 1.24  margen 0.17
+L=  10 opuesto dw[1.6,99): correctas 0/16  score 0.99  margen 0.15
+L=  10 mismo   dw[1.6,99): correctas 0/5  score 0.90  margen 0.12
+L=  15 opuesto dw[1.6,99): correctas 0/16  score 0.77  margen 0.08
+L=  15 mismo   dw[1.6,99): correctas 0/5  score 0.70  margen 0.07
