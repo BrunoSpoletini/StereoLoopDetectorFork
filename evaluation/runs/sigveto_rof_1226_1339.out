@@ -1,0 +1,16 @@
+/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/research/exp_vo.py:39: RuntimeWarning: Mean of empty slice
+  prof = np.nanmean(bev, 1)
+/home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/research/exp_vo.py:46: RuntimeWarning: Mean of empty slice
+  s = np.nanmean(bev[r0:r1], 0)
+  rof_1226_1339: 0/2115
+  rof_1226_1339: 200/2115
+  rof_1226_1339: 400/2115
+  rof_1226_1339: 600/2115
+  rof_1226_1339: 800/2115
+  rof_1226_1339: 1000/2115
+  rof_1226_1339: 1200/2115
+  rof_1226_1339: 1400/2115
+  rof_1226_1339: 1600/2115
+  rof_1226_1339: 1800/2115
+  rof_1226_1339: 2000/2115
+rof_1226_1339: polaridad -50.0, espaciado 0.480 m, 1392/2115 loops conservados

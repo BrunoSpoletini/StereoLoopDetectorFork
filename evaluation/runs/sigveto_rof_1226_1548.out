@@ -2,4 +2,6 @@
   prof = np.nanmean(bev, 1)
 /home/bruno/Desktop/tesina/StereoLoopDetectorFork/evaluation/research/exp_vo.py:46: RuntimeWarning: Mean of empty slice
   s = np.nanmean(bev[r0:r1], 0)
-  rof_1222_1314: 0/7064
+  rof_1226_1548: 0/741
+  rof_1226_1548: 200/741
+  rof_1226_1548: 400/741

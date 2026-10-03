@@ -84,6 +84,15 @@ def main():
         Rlev = level_rotation(nrm)
         sat = choose_polarity(imgs, Rlev, h - 0.14)
         obs = FrameObs(imgs, Rlev, h - 0.14, sat_pct=sat)
+        # memoizar el angulo/fase de hileras por mascara: los loops consecutivos comparten casi todos los frames
+        _rap, _memo = obs.rows_angle_phase, {}
+
+        def rows_angle_phase(mk, sp, _rap=_rap, _memo=_memo):
+            key = (id(mk), sp)
+            if key not in _memo:
+                _memo[key] = (_rap(mk, sp), mk)     # se guarda la mascara para que su id no se reutilice
+            return _memo[key][0]
+        obs.rows_angle_phase = rows_angle_phase
         spacing = estimate_spacing(obs, np.linspace(len(imgs) * .2, len(imgs) * .8, 20).astype(int))
 
         def window(k, back, fwd):

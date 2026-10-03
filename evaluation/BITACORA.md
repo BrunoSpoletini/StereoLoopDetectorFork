@@ -572,3 +572,16 @@ máscara IR elegida por coherencia de fase (16:31: suelo oscuro); nivelación po
 
 16:31 (1280×720): veta 26 FP y 1 TP → 154 TP / 17 FP, precisión 0.78 → **0.90**. Los FP restantes: 8 con PnP
 "pasada vecina", 7 con ventana recta corta, 2 en curvas de cabecera. En curso en las otras 5 secuencias.
+
+**Veto por firma en más secuencias: no generaliza.**
+
+| Secuencia | Firma evaluada en (TP / FP) | Regla "la firma tiene que confirmar" | Regla "vetar solo si la firma contradice" (margen ≥ 0.2) |
+|---|---|---|---|
+| 16:31 | 1 / 26 | veta 26 FP, 1 TP | veta 1 FP, 0 TP |
+| 13:39 | 708 / 15 | veta 15 FP, **708 TP** | veta 2 FP, 12 TP |
+| 14:29 | 143 / 0 | veta 0 FP, **143 TP** | veta 0 / 0 |
+
+En los loops reales la firma casi nunca alcanza margen (mediana 0.05 en 13:39): la ausencia de confirmación no
+dice nada, y una contradicción confiable casi nunca ocurre. La validación del agente se hizo sobre una muestra del
+interior con pasadas a < 1.5 m; la mayoría de los loops reales están en cabeceras o a 2–3 m laterales, fuera del
+rango útil de la firma. Se vuelve a encargar al agente investigador con estos datos.

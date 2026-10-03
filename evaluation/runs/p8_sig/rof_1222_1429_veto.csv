@@ -1,0 +1,1266 @@
+query,match,keep,info
+6838,16,True,curva
+6839,16,True,curva
+6840,16,True,curva
+6841,16,True,curva
+6842,6,True,curva
+6843,16,True,curva
+6844,16,True,curva
+6845,4,True,curva
+6846,4,True,curva
+6847,24,True,curva
+6848,24,True,curva
+6849,9,True,curva
+6850,24,True,curva
+6851,23,True,curva
+6852,23,True,curva
+6853,32,True,curva
+6854,32,True,curva
+6855,32,True,curva
+6856,32,True,curva
+6857,32,True,curva
+6858,32,True,curva
+6859,43,True,curva
+6860,34,True,curva
+6861,36,True,curva
+6862,36,True,curva
+6863,36,True,curva
+6864,41,True,curva
+6865,36,True,curva
+6866,36,True,curva
+6867,44,True,curva
+6868,36,True,curva
+6869,36,True,curva
+6870,44,True,curva
+6871,36,True,curva
+6872,44,True,curva
+6873,36,True,curva
+6874,34,True,curva
+6875,36,True,curva
+6876,36,True,curva
+6877,36,True,curva
+6878,49,True,curva
+6879,49,True,curva
+6880,49,True,curva
+6881,49,True,curva
+6882,49,True,curva
+6883,49,True,curva
+6884,49,True,curva
+6885,49,True,ventana_corta
+6886,49,True,ventana_corta
+6887,49,True,ventana_corta
+6888,49,True,ventana_corta
+6889,49,True,ventana_corta
+6890,49,True,ventana_corta
+6892,49,True,ventana_corta
+6893,49,True,ventana_corta
+6894,49,True,ventana_corta
+6895,49,True,ventana_corta
+6896,49,True,curva
+6897,44,True,curva
+6898,49,True,curva
+6899,49,True,curva
+6900,44,True,curva
+6901,73,True,curva
+6902,75,True,curva
+6903,75,True,curva
+6904,71,True,curva
+6905,71,True,curva
+6906,71,True,curva
+6907,71,True,curva
+6908,71,True,curva
+6909,71,True,curva
+6911,76,True,curva
+6912,84,True,pnp_lateral
+6913,72,True,curva
+6914,71,True,curva
+6915,96,True,pnp_lateral
+6916,93,True,pnp_lateral
+6917,72,True,curva
+6918,97,True,pnp_lateral
+6919,96,True,pnp_lateral
+6920,72,True,curva
+6921,71,True,curva
+6922,97,True,pnp_lateral
+6923,97,True,pnp_lateral
+6924,97,True,pnp_lateral
+6925,96,True,pnp_lateral
+6926,80,True,ventana_corta
+6927,83,True,pnp_lateral
+6929,115,True,pnp_lateral
+6930,91,True,pnp_lateral
+6931,90,True,pnp_lateral
+6932,91,True,pnp_lateral
+6933,91,True,pnp_lateral
+6934,92,True,pnp_lateral
+6935,120,True,pnp_lateral
+6936,121,True,pnp_lateral
+6937,121,True,pnp_lateral
+6938,121,True,pnp_lateral
+6939,145,True,pnp_lateral
+6940,120,True,pnp_lateral
+6941,120,True,pnp_lateral
+6942,120,True,pnp_lateral
+6943,115,True,pnp_lateral
+6944,145,True,pnp_lateral
+6947,125,True,pnp_lateral
+6948,125,True,pnp_lateral
+6949,125,True,pnp_lateral
+6950,125,True,pnp_lateral
+6952,125,True,pnp_lateral
+6953,125,True,pnp_lateral
+6955,125,True,pnp_lateral
+6956,125,True,pnp_lateral
+6957,145,True,pnp_lateral
+6960,125,True,pnp_lateral
+6965,125,True,pnp_lateral
+6975,145,True,pnp_lateral
+6980,161,True,pnp_lateral
+6985,145,True,pnp_lateral
+6999,223,True,pnp_lateral
+7000,196,True,pnp_lateral
+7001,221,True,pnp_lateral
+7002,191,True,pnp_lateral
+7003,193,True,pnp_lateral
+7004,222,True,pnp_lateral
+7005,221,True,pnp_lateral
+7006,221,True,pnp_lateral
+7008,214,True,pnp_lateral
+7009,193,True,pnp_lateral
+7010,193,True,pnp_lateral
+7011,196,True,pnp_lateral
+7012,193,True,pnp_lateral
+7023,220,True,pnp_lateral
+7024,222,True,pnp_lateral
+7025,205,True,pnp_lateral
+7027,205,True,pnp_lateral
+7028,205,True,pnp_lateral
+7030,205,True,pnp_lateral
+7031,193,True,pnp_lateral
+7033,222,True,pnp_lateral
+7034,220,True,pnp_lateral
+7035,223,True,pnp_lateral
+7036,223,True,pnp_lateral
+7037,222,True,pnp_lateral
+7038,222,True,pnp_lateral
+7039,214,True,pnp_lateral
+7040,214,True,pnp_lateral
+7041,214,True,pnp_lateral
+7042,214,True,pnp_lateral
+7043,223,True,pnp_lateral
+7044,214,True,pnp_lateral
+7049,214,True,pnp_lateral
+7050,223,True,pnp_lateral
+7053,222,True,pnp_lateral
+7054,224,True,pnp_lateral
+7055,224,True,pnp_lateral
+7057,224,True,pnp_lateral
+7059,214,True,pnp_lateral
+7064,237,True,pnp_lateral
+7097,263,True,pnp_lateral
+7109,280,True,pnp_lateral
+7134,315,True,pnp_lateral
+7136,320,True,pnp_lateral
+7165,331,True,pnp_lateral
+7190,379,True,pnp_lateral
+7199,379,True,pnp_lateral
+7200,380,True,pnp_lateral
+7201,379,True,pnp_lateral
+7206,380,True,pnp_lateral
+7208,379,True,pnp_lateral
+7211,379,True,pnp_lateral
+7213,379,True,pnp_lateral
+7214,379,True,pnp_lateral
+7215,379,True,pnp_lateral
+7217,401,True,pnp_lateral
+7218,391,True,pnp_lateral
+7219,379,True,pnp_lateral
+7220,379,True,pnp_lateral
+7222,391,True,pnp_lateral
+7223,391,True,pnp_lateral
+7225,400,True,pnp_lateral
+7231,401,True,pnp_lateral
+7235,401,True,pnp_lateral
+7283,467,True,pnp_lateral
+7284,461,True,pnp_lateral
+7297,467,True,pnp_lateral
+7298,461,True,pnp_lateral
+7328,483,True,pnp_lateral
+7331,500,True,pnp_lateral
+7336,537,True,pnp_lateral
+7337,537,True,pnp_lateral
+7340,526,True,pnp_lateral
+7342,498,True,pnp_lateral
+7344,498,True,pnp_lateral
+7347,529,True,pnp_lateral
+7348,529,True,pnp_lateral
+7355,526,True,pnp_lateral
+7356,555,True,pnp_lateral
+7358,529,True,pnp_lateral
+7360,537,True,pnp_lateral
+7361,537,True,pnp_lateral
+7362,537,True,pnp_lateral
+7363,537,True,pnp_lateral
+7369,556,True,pnp_lateral
+7371,535,True,pnp_lateral
+7372,535,True,pnp_lateral
+7375,579,True,pnp_lateral
+7382,579,True,pnp_lateral
+7385,579,True,pnp_lateral
+7389,579,True,pnp_lateral
+7390,579,True,pnp_lateral
+7391,579,True,pnp_lateral
+7392,579,True,pnp_lateral
+7393,579,True,pnp_lateral
+7394,579,True,pnp_lateral
+7395,579,True,pnp_lateral
+7396,579,True,pnp_lateral
+7397,579,True,pnp_lateral
+7400,579,True,pnp_lateral
+7402,579,True,pnp_lateral
+7405,579,True,pnp_lateral
+7406,579,True,pnp_lateral
+7407,579,True,pnp_lateral
+7409,579,True,pnp_lateral
+7410,579,True,pnp_lateral
+7411,579,True,pnp_lateral
+7413,579,True,pnp_lateral
+7415,579,True,pnp_lateral
+7416,579,True,pnp_lateral
+7417,598,True,pnp_lateral
+7443,599,True,pnp_lateral
+7464,630,True,pnp_lateral
+7466,637,True,pnp_lateral
+7467,637,True,pnp_lateral
+7468,637,True,pnp_lateral
+7470,637,True,pnp_lateral
+7474,637,True,pnp_lateral
+7475,640,True,pnp_lateral
+7490,679,True,pnp_lateral
+7491,679,True,pnp_lateral
+7492,686,True,pnp_lateral
+7494,681,True,pnp_lateral
+7495,686,True,pnp_lateral
+7497,681,True,pnp_lateral
+7498,679,True,pnp_lateral
+7499,679,True,pnp_lateral
+7500,679,True,pnp_lateral
+7501,686,True,pnp_lateral
+7502,686,True,pnp_lateral
+7503,686,True,pnp_lateral
+7505,679,True,pnp_lateral
+7506,686,True,pnp_lateral
+7507,679,True,pnp_lateral
+7508,681,True,pnp_lateral
+7509,679,True,pnp_lateral
+7510,679,True,pnp_lateral
+7511,679,True,pnp_lateral
+7512,679,True,pnp_lateral
+7513,679,True,pnp_lateral
+7514,686,True,pnp_lateral
+7515,679,True,pnp_lateral
+7517,681,True,pnp_lateral
+7518,679,True,pnp_lateral
+7519,679,True,pnp_lateral
+7520,679,True,pnp_lateral
+7521,682,True,pnp_lateral
+7522,679,True,pnp_lateral
+7523,679,True,pnp_lateral
+7524,679,True,pnp_lateral
+7526,686,True,pnp_lateral
+7527,686,True,pnp_lateral
+7529,686,True,pnp_lateral
+7567,765,True,pnp_lateral
+7572,768,True,pnp_lateral
+7573,768,True,pnp_lateral
+7574,768,True,pnp_lateral
+7576,768,True,pnp_lateral
+7579,765,True,pnp_lateral
+7580,776,True,pnp_lateral
+7581,776,True,pnp_lateral
+7582,768,True,pnp_lateral
+7586,776,True,pnp_lateral
+7587,776,True,pnp_lateral
+7590,768,True,pnp_lateral
+7592,765,True,pnp_lateral
+7593,765,True,pnp_lateral
+7595,765,True,pnp_lateral
+7596,765,True,pnp_lateral
+7597,765,True,pnp_lateral
+7598,765,True,pnp_lateral
+7600,762,True,pnp_lateral
+7601,765,True,pnp_lateral
+7653,845,True,pnp_lateral
+7655,824,True,pnp_lateral
+7657,824,True,pnp_lateral
+7659,824,True,pnp_lateral
+7663,824,True,pnp_lateral
+7716,899,True,pnp_lateral
+7717,899,True,pnp_lateral
+7718,884,True,pnp_lateral
+7719,901,True,pnp_lateral
+7721,901,True,pnp_lateral
+7722,901,True,pnp_lateral
+7723,901,True,pnp_lateral
+7724,888,True,pnp_lateral
+7730,913,True,pnp_lateral
+7731,913,True,pnp_lateral
+7732,913,True,pnp_lateral
+7734,930,True,pnp_lateral
+7735,927,True,pnp_lateral
+7736,899,True,pnp_lateral
+7737,895,True,pnp_lateral
+7739,930,True,pnp_lateral
+7740,928,True,pnp_lateral
+7743,888,True,pnp_lateral
+7751,930,True,pnp_lateral
+7753,930,True,pnp_lateral
+7755,927,True,pnp_lateral
+7756,930,True,pnp_lateral
+7759,930,True,pnp_lateral
+7760,930,True,pnp_lateral
+7761,925,True,pnp_lateral
+7762,931,True,pnp_lateral
+7763,924,True,pnp_lateral
+7764,930,True,pnp_lateral
+7766,927,True,pnp_lateral
+7767,960,True,pnp_lateral
+7768,958,True,pnp_lateral
+7770,930,True,pnp_lateral
+7771,957,True,pnp_lateral
+7772,930,True,pnp_lateral
+7773,930,True,pnp_lateral
+7776,930,True,pnp_lateral
+7777,929,True,pnp_lateral
+7778,930,True,pnp_lateral
+7779,930,True,pnp_lateral
+7780,930,True,pnp_lateral
+7781,929,True,pnp_lateral
+7783,939,True,pnp_lateral
+7785,956,True,pnp_lateral
+7787,958,True,pnp_lateral
+7788,958,True,pnp_lateral
+7789,948,True,pnp_lateral
+7791,958,True,pnp_lateral
+7792,956,True,pnp_lateral
+7793,959,True,pnp_lateral
+7795,958,True,pnp_lateral
+7796,952,True,pnp_lateral
+7797,948,True,pnp_lateral
+7798,956,True,pnp_lateral
+7799,956,True,pnp_lateral
+7800,956,True,pnp_lateral
+7801,956,True,pnp_lateral
+7802,956,True,pnp_lateral
+7804,958,True,pnp_lateral
+7805,955,True,pnp_lateral
+7806,956,True,pnp_lateral
+7808,966,True,pnp_lateral
+7809,958,True,pnp_lateral
+7810,966,True,pnp_lateral
+7811,976,True,pnp_lateral
+7812,991,True,pnp_lateral
+7813,979,True,pnp_lateral
+7815,981,True,pnp_lateral
+7816,988,True,pnp_lateral
+7818,981,True,pnp_lateral
+7821,976,True,pnp_lateral
+7825,988,True,pnp_lateral
+7826,988,True,pnp_lateral
+7831,991,True,pnp_lateral
+7832,991,True,pnp_lateral
+7833,991,True,pnp_lateral
+7834,981,True,pnp_lateral
+7835,981,True,pnp_lateral
+7836,990,True,pnp_lateral
+7837,981,True,pnp_lateral
+7838,990,True,pnp_lateral
+7839,990,True,pnp_lateral
+7840,996,True,pnp_lateral
+7841,990,True,pnp_lateral
+7842,988,True,pnp_lateral
+7843,988,True,pnp_lateral
+7844,991,True,pnp_lateral
+7845,982,True,pnp_lateral
+7846,991,True,pnp_lateral
+7849,990,True,pnp_lateral
+7904,1082,True,pnp_lateral
+7928,1082,True,pnp_lateral
+7934,1082,True,pnp_lateral
+7935,1082,True,pnp_lateral
+8002,1165,True,pnp_lateral
+8003,1164,True,pnp_lateral
+8004,1164,True,pnp_lateral
+8005,1163,True,pnp_lateral
+8007,1155,True,pnp_lateral
+8009,1160,True,pnp_lateral
+8010,1155,True,pnp_lateral
+8046,1211,True,pnp_lateral
+8050,1205,True,pnp_lateral
+8685,1825,True,pnp_lateral
+8687,1828,True,pnp_lateral
+8762,1931,True,pnp_lateral
+8765,1931,True,pnp_lateral
+8773,1931,True,pnp_lateral
+8774,1931,True,pnp_lateral
+8775,1932,True,pnp_lateral
+8776,1931,True,pnp_lateral
+8778,1932,True,pnp_lateral
+8779,1931,True,pnp_lateral
+8784,1932,True,pnp_lateral
+8786,1942,True,pnp_lateral
+8787,1932,True,pnp_lateral
+8791,1931,True,pnp_lateral
+8793,1931,True,pnp_lateral
+8794,1964,True,pnp_lateral
+8796,1964,True,pnp_lateral
+8813,1964,True,pnp_lateral
+8814,1964,True,pnp_lateral
+8815,1966,True,pnp_lateral
+8816,1967,True,pnp_lateral
+8817,1983,True,pnp_lateral
+8818,1990,True,pnp_lateral
+8819,1983,True,pnp_lateral
+8844,1983,True,pnp_lateral
+8846,1983,True,pnp_lateral
+8877,2022,True,pnp_lateral
+9046,2215,True,pnp_lateral
+9065,2257,True,pnp_lateral
+9066,2243,True,pnp_lateral
+9077,2257,True,pnp_lateral
+9078,2257,True,pnp_lateral
+9079,2257,True,pnp_lateral
+9080,2257,True,pnp_lateral
+9083,2272,True,pnp_lateral
+9090,2272,True,pnp_lateral
+9091,2279,True,pnp_lateral
+9093,2272,True,pnp_lateral
+9094,2272,True,pnp_lateral
+9095,2271,True,pnp_lateral
+9096,2271,True,pnp_lateral
+9097,2271,True,pnp_lateral
+9098,2269,True,pnp_lateral
+9099,2272,True,pnp_lateral
+9100,2272,True,pnp_lateral
+9101,2269,True,pnp_lateral
+9102,2269,True,pnp_lateral
+9103,2269,True,pnp_lateral
+9110,2279,True,pnp_lateral
+9111,2272,True,pnp_lateral
+9112,2269,True,pnp_lateral
+9113,2269,True,pnp_lateral
+9114,2267,True,pnp_lateral
+9115,2267,True,pnp_lateral
+9118,2279,True,pnp_lateral
+9119,2279,True,pnp_lateral
+9120,2279,True,pnp_lateral
+9121,2279,True,pnp_lateral
+9122,2279,True,pnp_lateral
+9123,2301,True,pnp_lateral
+9124,2301,True,pnp_lateral
+9165,2307,True,pnp_lateral
+9166,2307,True,pnp_lateral
+9167,2307,True,pnp_lateral
+9168,2307,True,pnp_lateral
+9169,2307,True,pnp_lateral
+9170,2308,True,pnp_lateral
+9171,2308,True,pnp_lateral
+9172,2306,True,pnp_lateral
+9174,2307,True,pnp_lateral
+9175,2307,True,pnp_lateral
+9176,2307,True,pnp_lateral
+9177,2307,True,pnp_lateral
+9205,2377,True,pnp_lateral
+9206,2377,True,pnp_lateral
+9207,2377,True,pnp_lateral
+9208,2361,True,pnp_lateral
+9209,2377,True,pnp_lateral
+9216,2377,True,pnp_lateral
+9218,2361,True,pnp_lateral
+9219,2371,True,pnp_lateral
+9221,2361,True,pnp_lateral
+9222,2370,True,pnp_lateral
+9223,2380,True,pnp_lateral
+9226,2371,True,pnp_lateral
+9227,2371,True,pnp_lateral
+9228,2377,True,pnp_lateral
+9229,2377,True,pnp_lateral
+9231,2377,True,pnp_lateral
+9232,2380,True,pnp_lateral
+9233,2380,True,pnp_lateral
+9234,2372,True,pnp_lateral
+9235,2370,True,pnp_lateral
+9236,2370,True,pnp_lateral
+9242,2380,True,pnp_lateral
+9243,2375,True,pnp_lateral
+9250,2379,True,pnp_lateral
+9261,2436,True,pnp_lateral
+9271,2454,True,pnp_lateral
+9272,2454,True,pnp_lateral
+9274,2436,True,pnp_lateral
+9275,2436,True,pnp_lateral
+9276,2454,True,pnp_lateral
+9277,2454,True,pnp_lateral
+9278,2436,True,pnp_lateral
+9279,2454,True,pnp_lateral
+9280,2454,True,pnp_lateral
+9281,2454,True,pnp_lateral
+9282,2454,True,pnp_lateral
+9283,2454,True,pnp_lateral
+9285,2423,True,pnp_lateral
+9286,2434,True,pnp_lateral
+9290,2454,True,pnp_lateral
+9291,2454,True,pnp_lateral
+9294,2459,True,pnp_lateral
+9297,2454,True,pnp_lateral
+9298,2454,True,pnp_lateral
+9299,2454,True,pnp_lateral
+9300,2454,True,pnp_lateral
+9301,2454,True,pnp_lateral
+9302,2479,True,pnp_lateral
+9303,2454,True,pnp_lateral
+9304,2479,True,pnp_lateral
+9305,2479,True,pnp_lateral
+9306,2479,True,pnp_lateral
+9309,2461,True,pnp_lateral
+9315,2479,True,pnp_lateral
+9322,2479,True,pnp_lateral
+9325,2452,True,pnp_lateral
+9326,2459,True,pnp_lateral
+9327,2459,True,pnp_lateral
+9329,2479,True,pnp_lateral
+9340,2519,True,pnp_lateral
+9346,2512,True,pnp_lateral
+9347,2520,True,pnp_lateral
+9350,2501,True,pnp_lateral
+9351,2512,True,pnp_lateral
+9352,2532,True,pnp_lateral
+9353,2523,True,pnp_lateral
+9354,2523,True,pnp_lateral
+9356,2519,True,pnp_lateral
+9358,2532,True,pnp_lateral
+9359,2530,True,pnp_lateral
+9362,2523,True,pnp_lateral
+9363,2505,True,pnp_lateral
+9364,2532,True,pnp_lateral
+9368,2532,True,pnp_lateral
+9369,2545,True,pnp_lateral
+9370,2523,True,pnp_lateral
+9371,2523,True,pnp_lateral
+9372,2523,True,pnp_lateral
+9373,2552,True,pnp_lateral
+9375,2523,True,pnp_lateral
+9376,2552,True,pnp_lateral
+9378,2523,True,pnp_lateral
+9379,2552,True,pnp_lateral
+9380,2552,True,pnp_lateral
+9381,2552,True,pnp_lateral
+9382,2552,True,pnp_lateral
+9383,2514,True,pnp_lateral
+9384,2552,True,pnp_lateral
+9385,2545,True,pnp_lateral
+9386,2536,True,pnp_lateral
+9387,2552,True,pnp_lateral
+9389,2536,True,pnp_lateral
+9390,2536,True,pnp_lateral
+9391,2536,True,pnp_lateral
+9392,2535,True,pnp_lateral
+9393,2534,True,pnp_lateral
+9394,2553,True,pnp_lateral
+9395,2552,True,pnp_lateral
+9396,2523,True,pnp_lateral
+9397,2552,True,pnp_lateral
+9398,2552,True,pnp_lateral
+9399,2552,True,pnp_lateral
+9400,2552,True,pnp_lateral
+9401,2552,True,pnp_lateral
+9402,2552,True,pnp_lateral
+9403,2542,True,pnp_lateral
+9404,2552,True,pnp_lateral
+9405,2552,True,pnp_lateral
+9406,2552,True,pnp_lateral
+9407,2552,True,pnp_lateral
+9408,2552,True,pnp_lateral
+9409,2536,True,pnp_lateral
+9410,2552,True,pnp_lateral
+9411,2543,True,pnp_lateral
+9412,2543,True,pnp_lateral
+9413,2552,True,pnp_lateral
+9414,2552,True,pnp_lateral
+9415,2552,True,pnp_lateral
+9416,2552,True,pnp_lateral
+9417,2552,True,pnp_lateral
+9418,2552,True,pnp_lateral
+9420,2552,True,pnp_lateral
+9421,2552,True,pnp_lateral
+9423,2552,True,pnp_lateral
+9424,2552,True,pnp_lateral
+9425,2552,True,pnp_lateral
+9426,2552,True,pnp_lateral
+9428,2552,True,pnp_lateral
+9429,2552,True,pnp_lateral
+9430,2552,True,pnp_lateral
+9431,2552,True,pnp_lateral
+9432,2552,True,pnp_lateral
+9478,2626,True,pnp_lateral
+9479,2628,True,pnp_lateral
+9481,2626,True,pnp_lateral
+9482,2632,True,pnp_lateral
+9486,2628,True,pnp_lateral
+9490,2624,True,pnp_lateral
+9491,2624,True,pnp_lateral
+9492,2624,True,pnp_lateral
+9516,2687,True,pnp_lateral
+9518,2688,True,pnp_lateral
+9519,2687,True,pnp_lateral
+9520,2688,True,pnp_lateral
+9521,2687,True,pnp_lateral
+9522,2688,True,pnp_lateral
+9524,2687,True,pnp_lateral
+9525,2688,True,pnp_lateral
+9526,2688,True,pnp_lateral
+9527,2688,True,pnp_lateral
+9528,2688,True,pnp_lateral
+9529,2688,True,pnp_lateral
+9530,2688,True,pnp_lateral
+9531,2688,True,pnp_lateral
+9532,2687,True,pnp_lateral
+9533,2688,True,pnp_lateral
+9534,2691,True,pnp_lateral
+9535,2688,True,pnp_lateral
+9536,2691,True,pnp_lateral
+9537,2691,True,pnp_lateral
+9538,2691,True,pnp_lateral
+9539,2691,True,pnp_lateral
+9540,2691,True,pnp_lateral
+9541,2691,True,pnp_lateral
+9542,2691,True,pnp_lateral
+9543,2687,True,pnp_lateral
+9544,2691,True,pnp_lateral
+9545,2691,True,pnp_lateral
+9546,2691,True,pnp_lateral
+9547,2691,True,pnp_lateral
+9548,2691,True,pnp_lateral
+9549,2688,True,pnp_lateral
+9550,2688,True,pnp_lateral
+9551,2691,True,pnp_lateral
+9552,2691,True,pnp_lateral
+9553,2691,True,pnp_lateral
+9554,2691,True,pnp_lateral
+9555,2691,True,pnp_lateral
+9556,2691,True,pnp_lateral
+9557,2688,True,pnp_lateral
+9558,2691,True,pnp_lateral
+9560,2687,True,pnp_lateral
+9561,2688,True,pnp_lateral
+9563,2691,True,pnp_lateral
+9564,2691,True,pnp_lateral
+9566,2688,True,pnp_lateral
+9568,2691,True,pnp_lateral
+9569,2691,True,pnp_lateral
+9571,2691,True,pnp_lateral
+9611,2776,True,pnp_lateral
+9649,2793,True,pnp_lateral
+9650,2796,True,pnp_lateral
+9651,2787,True,pnp_lateral
+9654,2796,True,pnp_lateral
+9661,2794,True,pnp_lateral
+9669,2833,True,pnp_lateral
+9670,2838,True,pnp_lateral
+9671,2834,True,pnp_lateral
+9672,2840,True,pnp_lateral
+9673,2840,True,pnp_lateral
+9674,2834,True,pnp_lateral
+9675,2834,True,pnp_lateral
+9676,2840,True,pnp_lateral
+9677,2838,True,pnp_lateral
+9678,2837,True,pnp_lateral
+9679,2833,True,pnp_lateral
+9680,2829,True,pnp_lateral
+9681,2833,True,pnp_lateral
+9682,2834,True,pnp_lateral
+9683,2834,True,pnp_lateral
+9684,2834,True,pnp_lateral
+9685,2834,True,pnp_lateral
+9686,2839,True,pnp_lateral
+9687,2847,True,pnp_lateral
+9688,2845,True,pnp_lateral
+9689,2847,True,pnp_lateral
+9690,2834,True,pnp_lateral
+9691,2836,True,pnp_lateral
+9692,2836,True,pnp_lateral
+9693,2844,True,pnp_lateral
+9694,2845,True,pnp_lateral
+9695,2837,True,pnp_lateral
+9696,2842,True,pnp_lateral
+9697,2842,True,pnp_lateral
+9698,2842,True,pnp_lateral
+9699,2842,True,pnp_lateral
+9700,2842,True,pnp_lateral
+9701,2842,True,pnp_lateral
+9702,2837,True,pnp_lateral
+9703,2845,True,pnp_lateral
+9704,2844,True,pnp_lateral
+9705,2842,True,pnp_lateral
+9706,2842,True,pnp_lateral
+9707,2842,True,pnp_lateral
+9708,2842,True,pnp_lateral
+9709,2842,True,pnp_lateral
+9711,2841,True,pnp_lateral
+9714,2841,True,pnp_lateral
+9715,2842,True,pnp_lateral
+9716,2843,True,pnp_lateral
+9718,2842,True,pnp_lateral
+9721,2843,True,pnp_lateral
+9722,2837,True,pnp_lateral
+9726,2843,True,pnp_lateral
+9727,2842,True,pnp_lateral
+9730,2853,True,pnp_lateral
+9757,2892,True,pnp_lateral
+9767,2944,True,pnp_lateral
+9781,2919,True,pnp_lateral
+9782,2944,True,pnp_lateral
+9795,2937,True,pnp_lateral
+9796,2937,True,pnp_lateral
+9810,2967,True,pnp_lateral
+9817,2967,True,pnp_lateral
+9818,2967,True,pnp_lateral
+9819,2967,True,pnp_lateral
+9821,2967,True,pnp_lateral
+9824,2967,True,pnp_lateral
+9826,2967,True,pnp_lateral
+9827,2967,True,pnp_lateral
+9829,2976,True,pnp_lateral
+9830,2967,True,pnp_lateral
+9831,2967,True,pnp_lateral
+9832,2976,True,pnp_lateral
+9833,2967,True,pnp_lateral
+9835,2969,True,pnp_lateral
+9838,2967,True,pnp_lateral
+9852,2986,True,pnp_lateral
+9853,2986,True,pnp_lateral
+9858,2986,True,pnp_lateral
+9877,3064,True,pnp_lateral
+9878,3052,True,pnp_lateral
+9879,3034,True,pnp_lateral
+9880,3023,True,pnp_lateral
+9881,3035,True,pnp_lateral
+9882,3023,True,pnp_lateral
+9883,3023,True,pnp_lateral
+9884,3035,True,pnp_lateral
+9885,3055,True,pnp_lateral
+9887,3035,True,pnp_lateral
+9888,3055,True,pnp_lateral
+9889,3055,True,pnp_lateral
+9890,3055,True,pnp_lateral
+9891,3023,True,pnp_lateral
+9892,3023,True,pnp_lateral
+9894,3067,True,pnp_lateral
+9895,3055,True,pnp_lateral
+9897,3067,True,pnp_lateral
+9898,3067,True,pnp_lateral
+9899,3067,True,pnp_lateral
+9900,3038,True,pnp_lateral
+9901,3067,True,pnp_lateral
+9902,3067,True,pnp_lateral
+9903,3067,True,pnp_lateral
+9904,3038,True,pnp_lateral
+9905,3055,True,pnp_lateral
+9906,3072,True,pnp_lateral
+9907,3055,True,pnp_lateral
+9908,3052,True,pnp_lateral
+9909,3067,True,pnp_lateral
+9910,3064,True,pnp_lateral
+9911,3069,True,pnp_lateral
+9914,3070,True,pnp_lateral
+9915,3072,True,pnp_lateral
+9916,3072,True,pnp_lateral
+9918,3072,True,pnp_lateral
+9919,3077,True,pnp_lateral
+9921,3075,True,pnp_lateral
+9923,3075,True,pnp_lateral
+9924,3075,True,pnp_lateral
+9925,3075,True,pnp_lateral
+9926,3075,True,pnp_lateral
+9927,3075,True,pnp_lateral
+9928,3075,True,pnp_lateral
+9932,3075,True,pnp_lateral
+9938,3075,True,pnp_lateral
+9939,3077,True,pnp_lateral
+9976,3152,True,pnp_lateral
+9977,3152,True,pnp_lateral
+9980,3152,True,pnp_lateral
+9982,3152,True,pnp_lateral
+9985,3152,True,pnp_lateral
+9986,3152,True,pnp_lateral
+9987,3152,True,pnp_lateral
+9988,3137,True,pnp_lateral
+9989,3132,True,pnp_lateral
+9990,3140,True,pnp_lateral
+9991,3132,True,pnp_lateral
+9992,3132,True,pnp_lateral
+9993,3168,True,pnp_lateral
+9996,3173,True,pnp_lateral
+9997,3167,True,pnp_lateral
+9998,3167,True,pnp_lateral
+9999,3174,True,pnp_lateral
+10000,3174,True,pnp_lateral
+10001,3173,True,pnp_lateral
+10002,3174,True,pnp_lateral
+10003,3174,True,pnp_lateral
+10004,3181,True,pnp_lateral
+10005,3174,True,pnp_lateral
+10006,3181,True,pnp_lateral
+10007,3181,True,pnp_lateral
+10008,3181,True,pnp_lateral
+10009,3181,True,pnp_lateral
+10010,3181,True,pnp_lateral
+10012,3181,True,pnp_lateral
+10013,3174,True,pnp_lateral
+10014,3181,True,pnp_lateral
+10015,3181,True,pnp_lateral
+10016,3179,True,pnp_lateral
+10017,3174,True,pnp_lateral
+10018,3174,True,pnp_lateral
+10019,3168,True,pnp_lateral
+10020,3164,True,pnp_lateral
+10021,3174,True,pnp_lateral
+10022,3173,True,pnp_lateral
+10023,3173,True,pnp_lateral
+10024,3176,True,pnp_lateral
+10025,3174,True,pnp_lateral
+10026,3174,True,pnp_lateral
+10027,3174,True,pnp_lateral
+10028,3163,True,pnp_lateral
+10029,3174,True,pnp_lateral
+10030,3174,True,pnp_lateral
+10031,3170,True,pnp_lateral
+10032,3174,True,pnp_lateral
+10033,3172,True,pnp_lateral
+10034,3173,True,pnp_lateral
+10035,3174,True,pnp_lateral
+10036,3174,True,pnp_lateral
+10037,3168,True,pnp_lateral
+10038,3176,True,pnp_lateral
+10040,3172,True,pnp_lateral
+10041,3174,True,pnp_lateral
+10043,3181,True,pnp_lateral
+10046,3217,True,pnp_lateral
+10053,3223,True,pnp_lateral
+10054,3223,True,pnp_lateral
+10055,3223,True,pnp_lateral
+10056,3217,True,pnp_lateral
+10060,3220,True,pnp_lateral
+10061,3223,True,pnp_lateral
+10062,3223,True,pnp_lateral
+10063,3223,True,pnp_lateral
+10064,3238,True,pnp_lateral
+10065,3223,True,pnp_lateral
+10069,3235,True,pnp_lateral
+10070,3223,True,pnp_lateral
+10071,3223,True,pnp_lateral
+10072,3223,True,pnp_lateral
+10073,3245,True,pnp_lateral
+10074,3223,True,pnp_lateral
+10075,3244,True,pnp_lateral
+10076,3244,True,pnp_lateral
+10077,3244,True,pnp_lateral
+10078,3237,True,pnp_lateral
+10079,3223,True,pnp_lateral
+10080,3223,True,pnp_lateral
+10082,3245,True,pnp_lateral
+10083,3245,True,pnp_lateral
+10084,3244,True,pnp_lateral
+10085,3245,True,pnp_lateral
+10086,3244,True,pnp_lateral
+10087,3244,True,pnp_lateral
+10088,3244,True,pnp_lateral
+10089,3244,True,pnp_lateral
+10090,3244,True,pnp_lateral
+10091,3244,True,pnp_lateral
+10093,3223,True,pnp_lateral
+10095,3245,True,pnp_lateral
+10096,3244,True,pnp_lateral
+10097,3223,True,pnp_lateral
+10098,3232,True,pnp_lateral
+10102,3244,True,pnp_lateral
+10104,3245,True,pnp_lateral
+10105,3245,True,pnp_lateral
+10108,3267,True,pnp_lateral
+10109,3267,True,pnp_lateral
+10110,3267,True,pnp_lateral
+10111,3267,True,pnp_lateral
+10113,3246,True,pnp_lateral
+10114,3246,True,pnp_lateral
+10116,3264,True,pnp_lateral
+10123,3249,True,pnp_lateral
+10134,3263,True,pnp_lateral
+10167,3328,True,pnp_lateral
+10168,3328,True,pnp_lateral
+10179,3325,True,pnp_lateral
+10181,3328,True,pnp_lateral
+10183,3328,True,pnp_lateral
+10185,3328,True,pnp_lateral
+10201,3333,True,pnp_lateral
+10204,3337,True,pnp_lateral
+10207,3337,True,pnp_lateral
+10208,3336,True,pnp_lateral
+13919,43,True,pnp_lateral
+13923,3,True,pnp_lateral
+13924,5,True,pnp_lateral
+13925,5,True,pnp_lateral
+13926,3,True,pnp_lateral
+13927,20,True,pnp_lateral
+13928,17,True,pnp_lateral
+13929,4,True,pnp_lateral
+13930,4,True,pnp_lateral
+13931,4,True,pnp_lateral
+13932,3,True,curva
+13933,14,True,curva
+13934,14,True,curva
+13935,3,True,curva
+13936,21,True,curva
+13937,19,True,curva
+13938,18,True,curva
+13939,3,True,curva
+13940,24,True,curva
+13941,19,True,curva
+13942,19,True,curva
+13943,19,True,curva
+13958,20,True,curva
+13959,19,True,curva
+13960,19,True,curva
+13966,6850,True,pnp_lateral
+13967,6850,True,pnp_lateral
+13968,6850,True,pnp_lateral
+13985,19,True,ventana_corta
+13987,19,True,ventana_corta
+14008,38,True,ventana_corta
+14011,44,True,ventana_corta
+14012,40,True,ventana_corta
+14013,46,True,ventana_corta
+14028,45,True,curva
+14029,45,True,curva
+14030,46,True,curva
+14031,45,True,curva
+14032,45,True,curva
+14033,50,True,curva
+14034,56,True,curva
+14035,47,True,curva
+14036,46,True,curva
+14037,47,True,curva
+14038,48,True,curva
+14039,47,True,curva
+14040,47,True,curva
+14041,47,True,curva
+14042,56,True,curva
+14043,56,True,curva
+14044,56,True,curva
+14045,56,True,curva
+14046,56,True,curva
+14047,56,True,curva
+14048,56,True,curva
+14049,50,True,curva
+14050,47,True,curva
+14051,48,True,curva
+14052,56,True,curva
+14053,56,True,curva
+14054,56,True,curva
+14055,56,True,curva
+14056,47,True,curva
+14057,47,True,curva
+14058,56,True,curva
+14059,47,True,curva
+14060,47,True,curva
+14061,47,True,curva
+14062,47,True,curva
+14063,56,True,curva
+14064,50,True,curva
+14065,56,True,curva
+14066,56,True,curva
+14067,56,True,curva
+14068,48,True,curva
+14069,48,True,curva
+14070,48,True,curva
+14071,47,True,curva
+14072,56,True,curva
+14073,56,True,curva
+14074,56,True,curva
+14075,56,True,curva
+14076,56,True,curva
+14077,56,True,curva
+14078,57,True,curva
+14079,57,True,curva
+14080,57,True,curva
+14081,57,True,curva
+14082,57,True,curva
+14083,57,True,curva
+14084,62,True,curva
+14085,62,True,curva
+14086,59,True,curva
+14087,63,True,curva
+14088,63,True,curva
+14101,68,True,curva
+14121,63,True,curva
+14123,63,True,curva
+14137,56,True,curva
+14138,56,True,curva
+14139,57,True,ventana_corta
+14140,56,True,ventana_corta
+14141,56,True,ventana_corta
+14142,56,True,ventana_corta
+14143,49,True,ventana_corta
+14144,56,True,ventana_corta
+14145,52,True,ventana_corta
+14146,52,True,ventana_corta
+14147,52,True,curva
+14148,52,True,curva
+14149,52,True,curva
+14150,48,True,curva
+14151,46,True,curva
+14152,46,True,curva
+14153,46,True,curva
+14154,42,True,curva
+14155,43,True,curva
+14156,42,True,curva
+14157,48,True,curva
+14158,42,True,ventana_corta
+14159,40,True,ventana_corta
+14160,40,True,ventana_corta
+14161,40,True,ventana_corta
+14162,36,True,ventana_corta
+14163,36,True,ventana_corta
+14164,40,True,ventana_corta
+14165,37,True,ventana_corta
+14166,40,True,ventana_corta
+14167,37,True,ventana_corta
+14168,40,True,ventana_corta
+14169,35,True,ventana_corta
+14170,32,True,ventana_corta
+14171,35,True,ventana_corta
+14172,32,True,ventana_corta
+14173,32,True,ventana_corta
+14174,32,True,ventana_corta
+14175,32,True,ventana_corta
+14176,23,True,curva
+14177,21,True,curva
+14178,26,True,curva
+14187,18,True,curva
+14188,20,True,curva
+14189,19,True,curva
+14190,20,True,curva
+14191,20,True,curva
+14192,20,True,curva
+14193,19,True,curva
+14194,20,True,curva
+14201,20,True,curva
+14202,20,True,curva
+14203,20,True,curva
+14204,18,True,curva
+14205,18,True,curva
+14206,18,True,curva
+14207,1,True,curva
+14208,20,True,curva
+14215,3,True,curva
+14216,1,True,curva
+14225,3,True,ventana_corta
+14226,1,True,ventana_corta
+14227,3,True,ventana_corta
+14228,3,True,ventana_corta
+14229,1,True,ventana_corta
+14230,44,True,ventana_corta
+14231,3,True,ventana_corta
+14232,44,True,ventana_corta
+14233,44,True,ventana_corta
+14234,3,True,ventana_corta
+14235,46,True,ventana_corta
+14236,3,True,ventana_corta
+14237,44,True,ventana_corta
+14238,1,True,ventana_corta
+14239,2,True,ventana_corta
+14240,32,True,pnp_lateral
+14241,1,True,ventana_corta
+14245,45,True,pnp_lateral
+14250,45,True,pnp_lateral
+14251,40,True,pnp_lateral
+14257,45,True,pnp_lateral
+14258,45,True,pnp_lateral
+14263,45,True,pnp_lateral
+14265,45,True,pnp_lateral
+14311,18,True,curva
+14312,20,True,curva
+14314,6,True,curva
+14367,6850,True,curva
+14402,6850,True,curva
+14403,6850,True,curva
+14404,6850,True,curva
+14405,6849,True,curva
+14406,6849,True,curva
+14407,6850,True,curva
+14408,6850,True,curva
+14409,6850,True,curva
+14415,1,True,ventana_corta
+14416,0,True,ventana_corta
+14417,4,True,ventana_corta
+14418,4,True,ventana_corta
+14419,2,True,ventana_corta
+14420,2,True,ventana_corta
+14421,4,True,ventana_corta
+14422,1,True,ventana_corta
+14429,12,False,firma margen 0.19 pu 15.07 pw -0.53
+14430,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14431,0,False,firma margen 0.01 pu 14.93 pw 0.01
+14441,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14442,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14443,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14444,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14445,3,False,firma margen 0.01 pu 14.93 pw 0.01
+14446,3,False,firma margen 0.01 pu 14.93 pw 0.01
+14447,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14448,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14449,3,False,firma margen 0.01 pu 14.93 pw 0.01
+14450,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14451,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14452,3,False,firma margen 0.01 pu 14.93 pw 0.01
+14453,3,False,firma margen 0.01 pu 14.93 pw 0.01
+14454,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14455,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14456,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14457,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14458,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14459,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14460,3,False,firma margen 0.01 pu 14.93 pw 0.01
+14461,1,False,firma margen 0.01 pu 14.93 pw 0.01
+14462,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14463,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14464,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14465,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14466,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14467,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14473,6854,True,curva
+14484,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14485,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14486,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14487,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14498,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14499,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14500,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14501,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14502,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14503,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14504,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14505,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14519,6855,True,curva
+14520,6855,True,curva
+14521,6855,True,curva
+14522,6855,True,curva
+14530,6855,True,curva
+14531,6855,True,curva
+14532,6855,True,curva
+14533,6855,True,curva
+14534,6855,True,curva
+14535,6855,True,curva
+14536,6855,True,curva
+14562,1,False,firma margen 0.08 pu 14.38 pw -0.09
+14596,1,False,firma margen 0.00 pu 14.52 pw -0.01
+14597,1,False,firma margen 0.00 pu 14.52 pw -0.01
+14598,1,False,firma margen 0.00 pu 14.52 pw -0.01
+14599,1,False,firma margen 0.00 pu 14.52 pw -0.01
+14600,1,False,firma margen 0.00 pu 14.52 pw -0.01
+14601,1,False,firma margen 0.00 pu 14.52 pw -0.01
+14619,6856,True,curva
+14620,9,False,firma margen 0.10 pu 14.48 pw 0.53
+14621,6856,True,curva
+14644,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14645,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14646,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14659,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14660,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14661,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14662,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14663,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14664,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14665,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14666,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14667,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14668,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14669,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14670,1,False,firma margen 0.10 pu 14.48 pw 0.54
+14679,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14680,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14681,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14682,1,False,firma margen 0.10 pu 14.48 pw 0.54
+14683,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14693,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14709,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14710,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14711,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14712,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14719,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14742,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14743,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14744,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14745,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14746,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14747,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14748,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14749,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14750,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14751,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14752,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14753,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14754,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14755,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14756,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14757,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14758,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14759,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14760,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14761,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14762,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14763,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14764,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14765,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14766,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14767,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14768,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14769,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14770,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14771,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14772,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14773,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14774,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14775,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14776,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14777,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14778,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14779,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14780,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14781,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14782,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14783,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14784,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14785,3,False,firma margen 0.10 pu 14.48 pw 0.54
+14786,3,False,firma margen 0.10 pu 14.48 pw 0.54
+14787,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14788,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14789,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14790,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14791,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14792,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14793,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14794,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14795,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14796,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14797,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14798,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14799,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14800,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14801,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14808,3,False,firma margen 0.10 pu 14.48 pw 0.54
+14809,3,False,firma margen 0.10 pu 14.48 pw 0.54
+14817,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14818,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14819,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14820,12,False,firma margen 0.15 pu 15.08 pw -0.50
+14827,12,False,firma margen 0.15 pu 15.08 pw -0.50
