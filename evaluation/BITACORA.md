@@ -542,3 +542,21 @@ En curso en 13:39 y 13:14 (control de pérdida de TP).
 **Idea del usuario en investigación**: usar los huecos de cultivo (plantas muertas/faltantes) como codificación
 de la hilera — firma 1D/2D de ocupación a lo largo del surco, matcheable entre pasadas y que rompe la
 periodicidad. Encargada al agente investigador (`INVESTIGACION.md`, scripts en `evaluation/research/`).
+
+**Test de unicidad — resultado completo** (razón = soporte de la mejor alternativa de otra pasada / soporte del match):
+
+| Secuencia | TP / FP | Razón mediana TP / FP | Rechazando razón ≥ 0.5: FP que quedan / TP que quedan |
+|---|---|---|---|
+| 16:31 | 155 / 43 | 0.00 / 0.54 | 17 / 150 |
+| 13:39 | 2100 / 15 | **0.78** / 0.58 | 4 / 882 |
+| 13:14 (600) | 600 / 0 | 0.02 / — | 0 / 430 |
+
+→ No sirve como filtro general: en el interior de 13:39 la hilera vecina verifica tan bien como la correcta,
+incluso en los loops reales, así que descarta más TP que FP. Se descarta como solución; el agente sigue con la
+firma de huecos de cultivo.
+
+**Firma de huecos (agente, primera prueba, poses GT para proyectar)**: BEV de vegetación en el marco de las
+hileras, firma 1D de ocupación por fila, NCC sobre (fila k, corrimiento du). 13:39, pasadas en sentidos
+opuestos a ~1 m: **7/7 ventanas de 10 m correctas** (fila y posición), margen 0.28–0.37; 9/9 con 5 m. Los huecos
+solos alcanzan (7/7). Límite: trazas a > 1.6 m lateral → 0/30. Siguiente: repetirlo con la pose de la
+odometría visual (sin GT) y diseñar la integración.

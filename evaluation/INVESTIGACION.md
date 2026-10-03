@@ -553,3 +553,118 @@ esperada), y R2-2(a) en paralelo; #3 y #5 como experimentos offline en Python an
   frontal.
 - **Filtro de partículas sobre la trayectoria completa (FastSLAM-like)**: más pesado que #6 y que PCM sobre loops
   verificados para el mismo beneficio en esta escala (unos km, una sola hipótesis de odometría razonable).
+
+---
+
+# Capítulo: interior del campo y codificación de hileras por huecos de cultivo
+
+Estado: en progreso (2026-10-02). Idea del usuario: usar los huecos del cultivo (plantas muertas/faltantes) como
+"código de barras" natural de cada hilera para cerrar loops en el interior del lote, donde SALAD+ALIKED+PnP falla
+por aliasing periódico (13:39: cobertura interior 5 % vs 44 % en borde; loops falsos con ~0.1 m estimado vs 5-9 m
+reales a lo largo y 2-4 m laterales).
+
+## C.1 Literatura
+
+**[C1] Robot Localization Based on Aerial Images for Precision Agriculture Tasks in Crop Fields** — N. Chebrolu,
+P. Lottes, T. Läbe, C. Stachniss, ICRA 2019 ([pdf](https://www.ipb.uni-bonn.de/pdfs/chebrolu2019icra.pdf)). **La
+evidencia más directa a favor de la idea.** Mapa aéreo de tallos de cultivo, malezas **y huecos**; el robot
+(cámara inclinada, no nadir) detecta tallos con una FCN reentrenada, los proyecta al plano del suelo y **acumula
+~15 m² de observaciones** (un frame da sólo ~30 detecciones, insuficiente contra el aliasing) antes de evaluarlas
+en un filtro de partículas (5000 partículas, campo de verosimilitud por transformada de distancia, por tipo
+semántico). Ablación (Tabla I): crops+malezas+**huecos** → error medio 4.3-5.1 cm; **sólo crops → 54.5 cm: el filtro
+converge a la hilera equivocada (corrida dos hileras)**. Funciona a lo largo de varias semanas de crecimiento
+(mapa con filtro de persistencia).
+*Relevancia*: demuestra (i) que la posición de plantas sola no rompe el aliasing periódico y los huecos sí;
+(ii) que hay que acumular varios metros; (iii) que la proyección al suelo desde cámara inclinada funciona.
+
+**[C2] Robust Long-Term Registration of UAV Images of Crop Fields** — Chebrolu, Läbe, Stachniss, RA-L 2018 (ya
+citado en P27): la *disposición geométrica* de las plantas es estable en el tiempo aunque la apariencia cambie.
+
+**[C3] From Plants to Landmarks: Time-invariant Plant Localization that uses Deep Pose Regression** — F. Kraemer,
+A. Schaefer, A. Eitel, J. Vertens, W. Burgard, IROS 2017 WS AGROB, [arXiv 1709.04751](https://arxiv.org/abs/1709.04751).
+El punto de emergencia del tallo es invariante en el tiempo; FCN sobre RGB+NIR, precisión centimétrica en BoniRob.
+*Relevancia*: alternativa más fina que la ocupación de vegetación (tallos en vez de manchas), útil entre sesiones.
+
+**[C4] Registration of spatio-temporal point clouds of plants for phenotyping** — Chebrolu, Magistri, Läbe,
+Stachniss, PLOS ONE 2021: correspondencias temporales entre plantas con un **HMM** sobre esqueletos.
+*Relevancia*: el alineamiento de secuencias de plantas como inferencia HMM/DTW es estándar en fenotipado.
+
+**[C5] End-to-End Deep Learning Models for Gap Identification in Maize Fields** — Waqar et al., CVPR 2024 WS
+(Vision4Ag). Conteo de plantas + detección de huecos multitarea; multiespectral > RGB. **Stand counting/huecos
+en soja**: flujos comerciales de "gap analysis" en V2-V3. *Relevancia*: los huecos son un objeto agronómico de
+interés en sí (mapa de huecos = subproducto útil), y la detección es más fácil en estadios tempranos.
+
+**[C6] Semantic Landmark / Semantic-Aware Particle Filter for vineyard localisation** — R. de Silva et al.,
+[arXiv 2509.18342](https://arxiv.org/abs/2509.18342) (ICRA 2026 sub.) y [arXiv 2603.10847](https://arxiv.org/abs/2603.10847):
+el aliasing es por hilera; landmarks semánticos + "muros" por hilera + prior GNSS; RTAB-Map visual falla.
+*Relevancia*: confirma que la identidad de hilera es el problema central y que un filtro con observaciones
+estructurales lo resuelve.
+
+**[C7] Índices de vegetación**: ExG = 2g−r−b (Woebbecke et al., Trans. ASAE 1995) y ExG−ExR con umbral fijo en 0
+(Meyer & Camargo Neto, Comput. Electron. Agric. 2008; calidad 0.88 vs 0.53 de ExG+Otsu). En NIR, el suelo arenoso
+también satura (observado abajo), por lo que el IR solo no separa planta/suelo por intensidad.
+
+**[C8] Matching de firmas 1D**: SeqSLAM/SMART (P30), alineamiento con DTW/HMM (C4), y localización por perfil
+longitudinal de la ruta (perfil de rugosidad estimado con IMU, emparejado contra perfiles indexados; Sensors 2018,
+PMC6210071). En patentes de guiado agrícola aparece "elegir la hilera del mapa que maximiza la correlación
+cruzada" para georreferenciar la hilera detectada (familia US 11,277,956 / 11,789,459, "Vehicle controllers for
+agricultural and industrial applications"). *Relevancia*: correlación cruzada normalizada sobre una firma
+acumulada con odometría es la técnica base; DTW/HMM si la escala de la odometría deriva.
+
+## C.2 Experimento de factibilidad (scripts en `evaluation/research/`)
+
+**Montaje.** Sesión 2023-12-26-13-39-43, tramo interior (se descartan 15 m en cada cabecera). El GT se usa sólo
+para elegir pasadas y para evaluar (y, en esta primera prueba, para proyectar).
+- Geometría medida: cámara a **1.44 m** sobre el suelo (SGBM estéreo + orientación GT, desvío 1.8 cm entre 14
+  frames; `cam_height.py`), inclinada ~17.5° hacia abajo; canopeo ~0.25 m. Hileras a **0.58-0.60 m**, con una
+  orientación de 1.05° respecto de x del GT, igual en las 4 pasadas (estimada maximizando el contraste del perfil
+  lateral del BEV).
+- **Firma**: máscara de vegetación por frame → proyección al plano del canopeo bajo (h = 1.30 m) con la pose →
+  acumulación en una grilla cenital de 2 cm en el **marco de las hileras** (u a lo largo, w lateral) → filas
+  detectadas como picos del perfil lateral → **firma 1D por fila** = ocupación media en una banda de ±10 cm vs u
+  (`bev.py`, `sig1d.py`).
+- **Matching** (`barcode.py`): una ventana de L m de la pasada consulta con todas las filas observadas por ambas
+  pasadas (|w − traza| ≤ 1.6 m) se compara contra el mapa de una pasada anterior. El score es la NCC media entre
+  filas en función de (k = corrimiento en índice de fila, du = corrimiento a lo largo, ±10 m). Correcto = k=0 y
+  |du| < 1 m.
+- Dos máscaras: **ExG** en la cámara color (640×360, sincronizada por timestamp) e **IR** del pipeline
+  (1280×720, intensidad suavizada < 240: en NIR el suelo cercano satura y las plantas no).
+
+**Observaciones cualitativas.**
+- En IR el suelo arenoso cercano satura (≈255) y las hojas también son brillantes. La textura **no** separa planta
+  de suelo (el suelo tiene marcas de surco), pero un umbral de saturación sí sirve en la franja cercana (v ≥ 400 px,
+  1.2-3.2 m adelante).
+- Hay **huecos visibles** en casi todas las filas que no están pegadas a la cámara: 0.3-0.56 huecos ≥10 cm por
+  metro y 8-16 % de la longitud en hueco. Las dos filas inmediatas al robot dan casi 0 (hojas en primer plano lo
+  tapan todo) y las más lejanas se emborronan (`out/firmas_AC.png`).
+
+**Resultado 1: pasadas cercanas (A+ vs C−, sentidos OPUESTOS, trazas a ~1 m).** Ventanas de 10 m, 7 posiciones:
+
+| Firma | Correctas | score medio | 2º mejor (otra fila u otro du) | margen |
+|---|---|---|---|---|
+| Color ExG, continua | 7/7 | 0.67 | 0.38 | 0.28 |
+| Color, **sólo huecos** (binaria, 20 % más bajo) | 7/7 | 0.47 | 0.27 | 0.20 |
+| Color, sin huecos (recortada al percentil 20) | 7/7 | 0.61 | 0.35 | 0.26 |
+| **IR**, continua | 7/7 | 0.59 | 0.22 | **0.37** |
+| IR, sólo huecos | 7/7 | 0.45 | 0.21 | 0.25 |
+
+Además, con ventana de 5 m: 9/9 correctas (margen 0.06-0.26); con 15 m: 4/4 (margen ≈0.27).
+- **La firma identifica a la vez la fila (k) y la posición a lo largo (du)**, que es justo la ambigüedad
+  periódica que hace fallar a SALAD+PnP.
+- **Funciona en sentido opuesto**: el BEV en el marco de las hileras no depende del sentido de marcha. El
+  pipeline actual no puede cerrar esos loops (la cámara frontal ve escenas distintas).
+- **Los huecos solos alcanzan** (binaria, 7/7), pero la densidad continua da más margen: la "codificación" es
+  el perfil de densidad de plantas, con los huecos como su parte más saliente.
+
+**Sesgo sistemático.** du* = +0.36 m (color) / −0.34 m (IR), constante en todas las ventanas. Es un sesgo
+dependiente del sentido de marcha: puede ser paralaje de proyectar hojas de altura variable sobre un plano, un
+desfase temporal imagen-GT de ~0.2 s, o el brazo de palanca del GT. Se corrige calibrando h por dirección o
+proyectando con profundidad estéreo. No afecta la identificación.
+
+**Sensibilidad.** El umbral IR es sensible a la exposición: 225 y 240 andan; con 250, 4/4 ventanas siguen
+siendo correctas pero el margen cae a ~0.07 (score 0.22 vs 0.16). En la integración hay que usar un umbral
+relativo (percentil por frame).
+
+**Límite observado (D− vs A+, trazas a 2.7 m).** 0/30 ventanas correctas y score ≈ 0.2-0.4 (nivel impostor):
+casi no hay filas bien observadas por ambas pasadas. Con la franja cercana actual el alcance lateral útil es
+≈ ±1.6 m alrededor de cada traza.
