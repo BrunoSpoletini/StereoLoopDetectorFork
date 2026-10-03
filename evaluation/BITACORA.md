@@ -600,3 +600,9 @@ Ronda del agente (INVESTIGACION.md C.6), sobre las 6 secuencias rof completas (1
 `gen_loops.py` suma los loops del generador al pipeline (`p9_gen` = p6_odo + generador), con pose desde la firma.
 Sin contar consultas que el pipeline ya tenía: 26 loops nuevos (13:14: 2, 13:39: 13, 15:10: 11), **26/26 con pose
 correcta** (e_vec mediano 0.08–0.57 m, yaw 1.9–5.3°). En curso: ATE con y sin estos loops.
+
+**ATE con los loops del generador**: 13:39 72.5 → 71.9 m; 15:10 38.45 → 38.44 m (solo odometría: 101.0 y 65.8 m).
+Los loops del generador son correctos pero pocos frente a ~2100 del pipeline; el ATE de Rosario a 1280×720 está
+limitado por la deriva de la odometría visual (2000 ORB a 1280×720), no por la falta de loops en el interior.
+→ Próximo paso con más impacto: mejorar la odometría (más features / ALIKED en keyframes) y recién ahí volver a
+medir el aporte del interior.
