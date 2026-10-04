@@ -1503,11 +1503,16 @@ bool TemplatedLoopDetector<TDescriptor, F>::
     // Calculate the position of the current left image to the previously
     // triangulated points via PnP of 2D matches to 3D points
     try {
+      // The images and the triangulation are rectified, so PnP must use the
+      // rectified intrinsics (P) without distortion, not the raw camera
+      // matrix: the mismatch biased the translation (~0.16 m with the robot
+      // stopped in FieldSAFE, where fx differs by 4 %)
+      cv::Mat K =
+        m_params.stereo_params.left_projection.colRange(0, 3).clone();
       cv::Mat rotation, translation;
       cv::solvePnP(
         good_3d_points, good_cur_points,
-        m_params.stereo_params.left_camera_matrix, 
-        m_params.stereo_params.left_dist_coeffs, 
+        K, cv::Mat(),
         rotation, translation, cv::SOLVEPNP_ITERATIVE);
 
       // TODO: test this works
