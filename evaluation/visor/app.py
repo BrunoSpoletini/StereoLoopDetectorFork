@@ -88,7 +88,7 @@ def segmented(label, options, default, key):
 def class_filter(key, default):
     return st.multiselect('Clases de loop', data.CLASSES, default=default, key=key,
                           help='detenido: el robot recorrió menos de la distancia de "detenido" entre match y query; '
-                               'lejano: query y match a más de la distancia de "lejano" según el GT')
+                               'falso positivo: query y match a más de la distancia de "falso positivo" según el GT')
 
 
 def run_cards(runs, df, colors):
@@ -141,7 +141,7 @@ def main():
         sessions = st.multiselect('Sesiones', all_sessions, default=all_sessions, format_func=data.session_label)
 
         with st.expander('Clasificación y datos'):
-            far_m = st.number_input('Lejano: distancia GT query–match mayor a [m]', 0.5, 100.0, data.FAR_M, 0.5)
+            far_m = st.number_input('Falso positivo: distancia GT query–match mayor a [m]', 0.5, 100.0, data.FAR_M, 0.5)
             stopped_m = st.number_input('Detenido: camino entre match y query menor a [m]', 0.0, 100.0,
                                         float(data.STOPPED_PATH_M), 0.5)
             roots = {}
@@ -203,7 +203,7 @@ def main():
     else:
         c1, c2, c3 = st.columns([2, 1, 1])
         with c1:
-            cls = class_filter('traj_cls', ['en movimiento', 'lejano'])
+            cls = class_filter('traj_cls', ['en movimiento', 'falso positivo'])
         max_loops = c2.number_input('Máx. loops por corrida y clase', 50, 50000, 3000, step=500,
                                     help='Se submuestrea uniformemente para que el gráfico siga fluido')
         color_time = view == 'Trayectoria 3D' and c3.toggle('Color por tiempo', True)

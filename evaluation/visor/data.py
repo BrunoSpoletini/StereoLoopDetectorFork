@@ -29,7 +29,7 @@ DATASETS = {  # dataset -> (nombre para mostrar, variable de entorno, carpeta pr
     'rosario': ('RosarioV2 640×360', 'SLD_ROSARIO', '/mnt/datalake/datasets/rosariov2/prepared'),
     'rosariofr': ('RosarioV2 1280×720', 'SLD_ROSARIO_FR', '/home/bruno/Desktop/tesina/datasets/rosariov2_fullres/prepared'),
 }
-CLASSES = ['en movimiento', 'detenido', 'lejano']
+CLASSES = ['en movimiento', 'detenido', 'falso positivo']
 
 
 @dataclass
@@ -123,7 +123,7 @@ def load_trajectory(session, roots):
 def loops_table(results_yml, session, run_id, traj, far_m=FAR_M, stopped_m=STOPPED_PATH_M):
     """Una fila por loop detectado, con el error de traslacion de commons.translation_errors.
 
-    Clase de cada loop: 'detenido' si el robot recorrio menos de stopped_m entre match y query, 'lejano' si
+    Clase de cada loop: 'detenido' si el robot recorrio menos de stopped_m entre match y query, 'falso positivo' si
     query y match estan a mas de far_m segun el GT, 'en movimiento' en otro caso.
     """
     xy, cum, times = traj
@@ -132,7 +132,7 @@ def loops_table(results_yml, session, run_id, traj, far_m=FAR_M, stopped_m=STOPP
         raise ValueError(f"{res['num_images']} imágenes en el .yml vs {len(xy)} poses")
     err, stopped = translation_errors(xy, q, m, t, stopped_m)
     gd = np.linalg.norm(xy[q] - xy[m], axis=1)
-    cls = np.where(stopped, 'detenido', np.where(gd > far_m, 'lejano', 'en movimiento'))
+    cls = np.where(stopped, 'detenido', np.where(gd > far_m, 'falso positivo', 'en movimiento'))
     df = pd.DataFrame(dict(
         run=run_id, session=session, query=q, match=m, t_query=times[q], t_match=times[m],
         x_query=xy[q, 0], y_query=xy[q, 1], x_match=xy[m, 0], y_match=xy[m, 1],
@@ -155,7 +155,7 @@ def summary(df, info):
         rows.append({
             'corrida': run, 'sesión': session, 'imágenes': res.get('num_images'), 'loops': len(d),
             'en movimiento': int((d.clase == 'en movimiento').sum()), 'detenido': int((d.clase == 'detenido').sum()),
-            'lejano': int((d.clase == 'lejano').sum()),
+            'falso positivo': int((d.clase == 'falso positivo').sum()),
             'error mediano [m]': mov.median() if len(mov) else np.nan,
             'error p90 [m]': mov.quantile(0.9) if len(mov) else np.nan,
             'error máx [m]': mov.max() if len(mov) else np.nan,

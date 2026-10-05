@@ -6,8 +6,8 @@ respeta los colores de las trazas.
 import numpy as np
 import plotly.graph_objects as go
 
-CLASS_COLOR = {'en movimiento': '#2a78d6', 'detenido': '#eb6834', 'lejano': '#e34948'}
-CLASS_DASH = {'en movimiento': 'solid', 'detenido': 'dot', 'lejano': 'dash'}
+CLASS_COLOR = {'en movimiento': '#2a78d6', 'detenido': '#eb6834', 'falso positivo': '#e34948'}
+CLASS_DASH = {'en movimiento': 'solid', 'detenido': 'dot', 'falso positivo': 'dash'}
 SERIES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948']
 OTHER = '#8a8984'
 TRACK = '#a8a7a1'
