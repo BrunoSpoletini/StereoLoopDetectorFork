@@ -41,4 +41,5 @@ distancia GPS entre query y match. El gráfico es `translation_error_boxplot.png
   después de más de 20 s quieto. La mediana de ~0,15 m del error sale casi toda de esos loops.
 - Con el robot quieto, PnP devuelve ‖t‖ ≈ 0,16 m cuando la verdad es ≈ 0. Es un sesgo del código original:
   PnP usa la K cruda con distorsión en vez de la matriz rectificada P (4 % de diferencia de focal en
-  FieldSAFE). Está diagnosticado en la rama `claude` (`evaluation/BITACORA.md`, Fase 1, config `p1_rectK`).
+  FieldSAFE). Está diagnosticado en la rama `claude` (`evaluation/BITACORA.md`, Fase 1, config `p1_rectK`) y
+  arreglado en [pnp_rectificado](../pnp_rectificado/).

@@ -25,3 +25,4 @@ Nombres de sesión:
 | Carpeta | Descripción |
 |---|---|
 | [originales_paper](originales_paper/) | Réplica del paper original de StereoLoopDetector en FieldSAFE |
+| [pnp_rectificado](pnp_rectificado/) | originales_paper con el PnP usando los intrínsecos rectificados |
