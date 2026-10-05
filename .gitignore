@@ -4,5 +4,6 @@ resources/ORBvoc.txt
 resources/ORBvoc.txt.tar.gz
 resources/ORBvoc_orbslam3.yml.gz
 evaluation/__pycache__/
+evaluation/visor/__pycache__/
 .venv/
 evaluation/testRuns/
