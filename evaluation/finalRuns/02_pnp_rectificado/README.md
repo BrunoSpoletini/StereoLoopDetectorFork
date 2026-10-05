@@ -1,6 +1,6 @@
-# pnp_rectificado — PnP con los intrínsecos rectificados
+# 02_pnp_rectificado — PnP con los intrínsecos rectificados
 
-Misma corrida que [originales_paper](../originales_paper/) (algoritmo original, ventana de exclusión temporal de 20 s,
+Misma corrida que [01_originales_paper](../01_originales_paper/) (algoritmo original, ventana de exclusión temporal de 20 s,
 parámetros del demo original) con un único cambio: el PnP de la verificación geométrica usa los intrínsecos
 rectificados (las 3 primeras columnas de la matriz de proyección P izquierda) y sin distorsión, en vez de la K cruda +
 coeficientes de distorsión.
@@ -18,12 +18,12 @@ Commit **59db499** ("Arreglo de Solver PnP en robot estatico"), que es d3fff0e +
 | `fs_static1_results.yml` | Estática #1 (2016-10-25-11-09-42) | 9475 | 198 |
 | `fs_dynamic2_results.yml` | Dinámica #2 (2016-10-25-12-07-22) | 12182 | 122 |
 
-Los loops (ids de query y match) son exactamente los mismos que en originales_paper: el PnP no decide si se acepta un
+Los loops (ids de query y match) son exactamente los mismos que en 01_originales_paper: el PnP no decide si se acepta un
 loop. Solo cambia la traslación estimada.
 
 ## Evaluación
 
-[translation_error.ipynb](translation_error.ipynb) compara, loop por loop, el error de traslación de originales_paper
+[translation_error.ipynb](translation_error.ipynb) compara, loop por loop, el error de traslación de 01_originales_paper
 (K cruda) contra esta corrida (K rectificada). Gráficos: `translation_error_boxplot.png` y `translation_scatter.png`.
 
 ## Resultados

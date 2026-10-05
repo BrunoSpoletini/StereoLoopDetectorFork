@@ -1,4 +1,4 @@
-# originales_paper — réplica del paper original de StereoLoopDetector
+# 01_originales_paper — réplica del paper original de StereoLoopDetector
 
 Corrida que replica los resultados del paper original de StereoLoopDetector en FieldSAFE. El algoritmo es el
 original, sin cambios: la ventana de exclusión es temporal (`dislocal` = 20 s, o sea 200 imágenes a 10 Hz) y
@@ -42,4 +42,4 @@ distancia GPS entre query y match. El gráfico es `translation_error_boxplot.png
 - Con el robot quieto, PnP devuelve ‖t‖ ≈ 0,16 m cuando la verdad es ≈ 0. Es un sesgo del código original:
   PnP usa la K cruda con distorsión en vez de la matriz rectificada P (4 % de diferencia de focal en
   FieldSAFE). Está diagnosticado en la rama `claude` (`evaluation/BITACORA.md`, Fase 1, config `p1_rectK`) y
-  arreglado en [pnp_rectificado](../pnp_rectificado/).
+  arreglado en [02_pnp_rectificado](../02_pnp_rectificado/).

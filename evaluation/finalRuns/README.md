@@ -24,6 +24,6 @@ Nombres de sesión:
 
 | Carpeta | Descripción |
 |---|---|
-| [originales_paper](originales_paper/) | Réplica del paper original de StereoLoopDetector en FieldSAFE |
-| [pnp_rectificado](pnp_rectificado/) | originales_paper con el PnP usando los intrínsecos rectificados |
-| [distancia_minima_20m](distancia_minima_20m/) | pnp_rectificado con exclusión por 20 m recorridos en vez de 20 s |
+| [01_originales_paper](01_originales_paper/) | Réplica del paper original de StereoLoopDetector en FieldSAFE |
+| [02_pnp_rectificado](02_pnp_rectificado/) | 01_originales_paper con el PnP usando los intrínsecos rectificados |
+| [03_distancia_minima_20m](03_distancia_minima_20m/) | 02_pnp_rectificado con exclusión por 20 m recorridos en vez de 20 s |
