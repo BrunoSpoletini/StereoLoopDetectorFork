@@ -1,0 +1,13 @@
+%YAML:1.0
+---
+vocabulary: "/home/bruno/Desktop/tesina/StereoLoopDetectorFork/resources/ORBvoc.yml.gz"
+min_travel_distance: 20.
+num_images: 9475
+num_loops: 0
+loop_query_ids: []
+loop_match_ids: []
+loop_translation_x: []
+loop_translation_y: []
+loop_translation_z: []
+feature_time_ms: 5.9173885310230908e+01
+loop_detection_time_ms: 3.1649425602210858e+01
