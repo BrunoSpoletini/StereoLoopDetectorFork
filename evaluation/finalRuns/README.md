@@ -27,3 +27,10 @@ Nombres de sesión:
 | [01_originales_paper](01_originales_paper/) | Réplica del paper original de StereoLoopDetector en FieldSAFE |
 | [02_pnp_rectificado](02_pnp_rectificado/) | 01_originales_paper con el PnP usando los intrínsecos rectificados |
 | [03_distancia_minima_20m](03_distancia_minima_20m/) | 02_pnp_rectificado con exclusión por 20 m recorridos en vez de 20 s |
+
+## Visor
+
+`streamlit run evaluation/visor/app.py` (requiere `pip install streamlit plotly pandas pyyaml`) abre un visor interactivo
+de las corridas de `finalRuns/` y `testRuns/`: resumen por sesión, error de traslación, dispersión, trayectoria 3D en el
+tiempo y mapa de los loops. Las carpetas `prepared` de cada dataset se configuran en la barra lateral o con las variables
+de entorno `SLD_FIELDSAFE`, `SLD_ROSARIO` y `SLD_ROSARIO_FR`.
